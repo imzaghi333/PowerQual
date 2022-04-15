@@ -3,7 +3,93 @@ script1.type = "text/javascript";
 script1.src = "js/jquery-3.1.1.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
+function testchange(pp,ii){
+    var totalRowCount = 0;
+    var rowCount = 0;
+    var table = document.getElementById("customers");
+    var rows = table.getElementsByTagName("tr")
+    for (var i = 0; i < rows.length; i++) {
+        totalRowCount++;
+        if (rows[i].getElementsByTagName("td").length > 0) {
+            rowCount=rowCount+1;
+        }
+    }
+    var totalRowCount = rowCount;
+    this["oo"+ii] = "" ; //dropdown list containter
+    var arr_testorder = Array();
+    var test_order = document.getElementById("test_order"+pp+ii);
+    var strUser = test_order.value; //currently row two selecton item
+
+    if(strUser!="请选择"){
+        this["arrcontainer"+ii].push(strUser);
+    }
+    if(this["original select"+pp+ii]==undefined){
+        this["original select"+pp+ii]=strUser;
+        for(var aa=1; aa<totalRowCount+1; aa++){
+            if(JSON.stringify($("#test_order"+aa+ii+" option[value='"+this["original select"+pp+ii]+"']").length) > 0&&aa!==pp){
+                $("#test_order"+aa+ii+" option[value='"+this["original select"+pp+ii]+"']").remove();
+            }
+        }
+    }    
+    else{
+        for(var aa=1; aa<totalRowCount+1; aa++){
+            if(this["original select"+pp+ii]==undefined){
+            }
+            else{
+                var letterpo=this["original select"+pp+ii].charCodeAt(0)-63;
+                const iindex = this["arrcontainer"+ii].indexOf(this["original select"+pp+ii]);
+                if (iindex > -1){
+                    this["arrcontainer"+ii].splice(iindex, 1); // 2nd parameter means remove one item only
+                }
+                if(JSON.stringify($("#test_order"+aa+ii+" option[value='"+this["original select"+pp+ii]+"']").length) == 0){
+                    for(var mm=1;mm<(this["test_order"+aa+ii].options.length);mm++){
+                        if(this["original select"+pp+ii].charCodeAt(0)<this["test_order"+aa+ii].options[mm].value.charCodeAt(0)){
+                            this["test_order"+aa+ii].options.add(new Option(this["original select"+pp+ii],this["original select"+pp+ii]),this["test_order"+aa+ii][mm]);
+                            break;
+                        }
+                    }
+                }
+                else{
+                    //alert("old original selec option exist!");
+                    //test_order_ch.options.add(new Option(this["original selec"+ii],this["original selec"+ii]));
+                }
+            }
+        }
+        this["original select"+pp+ii]=strUser; //set new testorder1 value
+        for(var aa=1; aa<totalRowCount+1; aa++){
+            if(JSON.stringify($("#test_order"+aa+ii+" option[value='"+this["original select"+pp+ii]+"']").length) > 0&&aa!=pp){
+                $("#test_order"+aa+ii+" option[value='"+this["original select"+pp+ii]+"']").remove();
+            }
+        }
+    }
+    var test_order_opt = test_order.options;
+    for(var i=0; i<this["arrcontainer"+ii].length; i++){
+        //alert("unit num//content="+ii+"//"+ this["arrcontainer"+ii][i]);
+    }
+    for(var i=0; i<test_order_opt.length; i++){
+
+        if(this["arrcontainer"+ii].indexOf(test_order_opt[i].value)==-1)
+        {
+            arr_testorder.push(test_order_opt[i].value);
+        }
+    }
+    for(var j=0; j<arr_testorder.length; j++){
+        this["oo"+ii] += "<option value="+arr_testorder[j]+">"+arr_testorder[j]+"</option>";
+    }
+}
+
 window.onload = function(){
+    var units_qty = document.getElementById("units_qty");
+    var counts = units_qty.value;
+    var couts = 0;
+    var coutI = 0;
+
+    for(var i=0; i<counts; i++){
+        w=i+1;
+        this["arrcontainer"+w] = Array();
+        this["oo"+w]="";
+        this["select_temp"+w]="";
+    }
     var gg = ""    //用于保存option group的字符串
     var arr_group = Array();
     var group = document.getElementById("group");
@@ -14,7 +100,6 @@ window.onload = function(){
     for(var j=0; j<arr_group.length; j++){
         gg += "<option>"+arr_group[j]+"</option>";
     }
-
     var tt = ""    //用于保存option test item的字符串
     var arr_testitem = Array();
     var test_item = document.getElementById("test_item");
@@ -25,31 +110,38 @@ window.onload = function(){
     for(var j=0; j<arr_testitem.length; j++){
         tt += "<option>"+arr_testitem[j]+"</option>";
     }
-    //added on 2021-12-03,options for test order(A,B,C...)
-    var oo = ""
-    var arr_testorder = Array();
-    var test_order = document.getElementById("test_order");
-    var test_order_opt = test_order.options;
-    for(var i=0; i<test_order_opt.length; i++){
-        arr_testorder.push(test_order_opt[i].value);
+    for(var e=0; e<counts; e++){
+        ii=e+1;
+        var arr_testorder = Array();
+        var test_order = document.getElementById("test_order1"+ii);
+        var strUser = test_order.value;
+        if(strUser!="请选择"){
+             this["arrcontainer"+ii].push(strUser);
+        }
+        var test_order_opt = test_order.options;
+        for(var i=0; i<test_order_opt.length; i++){
+                arr_testorder.push(test_order_opt[i].value);
+        }
+        for(var j=0; j<arr_testorder.length; j++){
+            this["oo"+ii] += "<option value="+arr_testorder[j]+">"+arr_testorder[j]+"</option>";
+        }
     }
-    for(var j=0; j<arr_testorder.length; j++){
-        oo += "<option>"+arr_testorder[j]+"</option>";
-    }
-
-    var units_qty = document.getElementById("units_qty");
-    var counts = units_qty.value;
-    var couts = 0;
-    var coutI = 0;
     $(function(){
         $(':button[name=add]').click(function(){
-            addTr(couts);
+            var rowCount2=0;
+            var table = document.getElementById("customers");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount2=rowCount2+1;
+                }
+            }
+            addTr(rowCount2);
         })
         $('button[name=del]').click(function(){
             $(this).parents('tr').remove();
         })
     })
-    
     function addTr(couts){
         var html='';
         html+='<tr>';
@@ -60,32 +152,90 @@ window.onload = function(){
         html+='<td><select name="test_item[]" class="selbox" id="test_item">';
         html+=tt;
         html+='</select></td>';
-        
+        counts
         for(var i=0; i<counts; i++){
-            //html+='<td><input name="test_order[]" type="text" onkeyup="value=value.replace(/[^a-zA-Z]/g,")" />';
-            //html+='</td>';
-            //html+='<input name="unit_order[]" type="hidden" value='+(i+1)+'>';
-            //html+='<input name="unit_order[]" type="hidden" value="'+(i+1)+'" />';
-            html+='<td><select name="test_order[]" id="test_order">';
-            html+=oo;
+            ii=i+1;
+            html+='<td><select class="test_order" name="test_order[]" id="test_order'+(couts+1)+ii+'" onchange="testchange('+(couts+1)+','+ii+')">';
+            html+=this["oo"+ii] ;
             html+='</select></td>';
         }
-        couts=coutI+1;
-
-        html+='<td><input type="button" name="add" class="btn_add" value="Add" />&nbsp;&nbsp;<input type="button" name="del" class="btn_del" value="Del" /></td>';
+        var rowCount=0;
+        var table = document.getElementById("customers");
+        var rows = table.getElementsByTagName("tr")
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].getElementsByTagName("td").length > 0) {
+                rowCount=rowCount+1;
+            }
+        }
+        html+='<td><input type="button" id="'+(rowCount+1)+'add"  name="'+(rowCount+1)+'add" class="btn_add" value="Add" />&nbsp;&nbsp;<input type="button" id="'+(rowCount+1)+'del" name="'+(rowCount+1)+'del"  class="btn_del" value="Del" /></td>';
         html+='<tr>';
         $('#customers').append(html);
-        $(':button[name=add]').click(function(){
-            if(coutI<couts){
-                coutI += 1;
-                addTr(couts);
+        $(':button[name='+(rowCount+1)+'add]').click(function(){
+            var rowCount2=0;
+            var table = document.getElementById("customers");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount2=rowCount2+1;
+                }
             }
+            addTr(rowCount2);
         })
-        $(':button[name=del]').click(function(){
-            $(this).parents('tr').remove();
+        $(':button[name='+(rowCount+1)+'del]').click(function(){
+            var rowCount2=0;
+            var table = document.getElementById("customers");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount2=rowCount2+1;
+                }
+            }
+            for (var i = 1; i < (rowCount2+1); i++){
+                for (var d = 1; d <(Number(counts)+1); d++){
+                    var deletorder= document.getElementById("test_order"+(rowCount+1)+d).value;
+                    const iindex = eval('arrcontainer'+d).indexOf(deletorder);
+                    if (iindex > -1) {
+                        eval('arrcontainer'+d).splice(iindex, 1); // 2nd parameter means remove one item only
+                    }
+                    if(JSON.stringify($("#test_order"+i+d+" option[value='"+deletorder+"']").length) == 0 && deletorder!="请选择"){
+                        for(var mm=1;mm<(eval("test_order"+i+d).options.length);mm++){
+                            if(deletorder.charCodeAt(0)<eval("test_order"+i+d).options[mm].value.charCodeAt(0)){
+                                eval("test_order"+i+d).options.add(new Option(deletorder,deletorder),eval("test_order"+i+d)[mm]);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            $(this).parents('tr').remove();       
+            for (var i = (rowCount+1); i < (rowCount2); i++){
+                for (var d = 1; d <(Number(counts)+1); d++){
+                    document.getElementById("test_order"+(i+1)+d).setAttribute("id","test_order"+(i)+d);
+                    document.getElementById("test_order"+(i)+d).setAttribute("onchange","testchange("+(i)+","+d+")");
+                }
+                document.getElementById((i+1)+"add").setAttribute("id",i+"add");                    
+                document.getElementById((i+1)+"del").setAttribute("id",i+"del");
+                document.getElementById((i)+"add").setAttribute("name",(i)+"add");
+                document.getElementById((i)+"del").setAttribute("name",(i)+"del");
+            }
+            for (var d = 1; d <(Number(counts)+1); d++){
+                var test_order = document.getElementById("test_order1"+d);
+                var test_order_opt = test_order.options;
+                var arr_testorder=[];
+                for(var i=0; i<test_order_opt.length; i++){
+                    if(eval("arrcontainer"+d).indexOf(test_order_opt[i].value)==-1){
+                        arr_testorder.push(test_order_opt[i].value);
+                    }
+                }   
+                var p ="";
+                eval("oo"+d+"=p");
+                for(var j=0; j<arr_testorder.length; j++){
+                     p= "<option value="+arr_testorder[j]+">"+arr_testorder[j]+"</option>";
+                    eval("oo"+d+"+=p");
+                }
+            }       
         })
     }
-    // loading animation added on 2022-01-06
     $(document).ready(function(){
         $("#form2").on("submit", function(){
             $("#preloder").fadeIn();

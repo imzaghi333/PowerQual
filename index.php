@@ -170,6 +170,189 @@ date_default_timezone_set("PRC");
                     </table>
                 </form>
             </div>
+            <hr>
+            <div>
+                <div id="preloder"><div class="loader"></div></div>
+                <p class="note">
+                    Upload Test Matrix(請務必使用本站提供的Template), Dowload Template here: 
+                    <a style="text-decoration: none; color:#cc2229;" href="./images/MatrixTemplate.xlsx">Template Download <span class="download-icon"></span></a>
+                </p>
+                <form id="form15" name="form15" action="" method="POST" enctype="multipart/form-data">
+                    <input name="matrix_file" id="matrix_file" type="file" style="width: 400px;background-color:#731717;color:#e6d999;margin-left:130px;" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button name="matrix_upload" type="submit" class="btn_query">Upload</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button name="matrix_upload" type="reset" class="btn_reset">Clear</button>
+                    <input name="upload_matrix" value="upload_matrix_do" type="hidden" />
+                </form>
+                <?php
+                if(isset($_POST["upload_matrix"]) && $_POST["upload_matrix"]=="upload_matrix_do"){
+                    $fileInfo = $_FILES['matrix_file'];    //接收上传文件,二维数组
+                    $allowExt = array('xlsx','xls');    //检测扩展名,只允許Excel
+                    $ext = strtolower(pathinfo($fileInfo['name'],PATHINFO_EXTENSION));    //获取文件扩展名
+                    if(!in_array($ext,$allowExt)){
+                        echo "<font color='#be0f2d' size='5'>文件擴展名錯誤,僅支持Excel文件. <a href='index.php?dowhat=start'>點擊返回</a></font>";
+                        exit();
+                    }
+                    $uploadPath = "upload";        //上传的文件存储到这里
+                    if(!is_dir($uploadPath)){
+                        mkdir($uploadPath);
+                    }
+                    $basename = date("Ymd").$fileInfo["name"];    //上次成功后的文件名字(日期+原文件名)
+                    $dest = $uploadPath.'/'.$basename;            //上傳文件路徑
+                    if(move_uploaded_file($fileInfo['tmp_name'], $dest)){
+                        echo "<p style='color:#355386; text-align:left; font-size:14px;'>導入Test Matrix：{$fileInfo['name']}</p>";
+                    }
+                    else{
+                        echo "<font color='#be0f2d' size='7'>上传失败</font><br>";
+                        echo "<img src='images/ku.jpg' width='200'>";
+                        echo "<meta http-equiv='refresh' content='2; url=index.php'>";
+                    }
+                    
+                    //讀取Excel内容
+                    require_once "Classes/PHPExcel.php";
+                    require_once "Classes/PHPExcel/IOFactory.php";
+                    header("Content-Type:text/html;charset=utf8");
+                    header("Access-Control-Allow-Origin: *");      //解决跨域
+                    header("Access-Control-Allow-Methods:GET");    //响应类型
+                    header("Access-Control-Allow-Headers: *");
+                    set_time_limit(0);
+                    error_reporting(0);
+
+                    $excel_path = "upload"."/".$basename;    //上传好的文件路径
+                    $fileType = PHPExcel_IOFactory::identify($excel_path);    //获取文件类型
+                    $objReader = PHPExcel_IOFactory::createReader($fileType);    //获取文件操作读取对象
+                    $objPHPExcel = $objReader->load($excel_path);                //读取Excel
+                    $sheet = $objPHPExcel->getSheet(0);
+                    $highestRow = $sheet->getHighestRow();       //取得总行数
+                    $highestCol = $sheet->getHighestColumn();    //取得总列数
+                    $LAST_COL_NO = PHPExcel_Cell::columnIndexFromString($highestCol);    //最后一列转成数字
+                    define("OFFSET1",6);    //用于计算测试机数量
+                    define("OFFSET2",4);    //用于获取最后一个测试机所在列的下一列的字符串
+
+                    $title   = $sheet->getCell("B1")->getValue();
+                    $stage   = $sheet->getCell("B2")->getValue();
+                    $vt      = $sheet->getCell("B3")->getValue();
+                    $product = $sheet->getCell("B4")->getValue();
+                    $sku     = $sheet->getCell("B5")->getValue();
+                    $year    = $sheet->getCell("B6")->getValue();
+                    $month    = $sheet->getCell("B7")->getValue();
+                    $phase   = $sheet->getCell("B8")->getValue();
+                    $number  = $LAST_COL_NO-OFFSET1;    //避免有人在Excel填错数量
+                    $testlab = $sheet->getCell("B10")->getValue();
+                    $mfgsite = $sheet->getCell("B11")->getValue();
+                    $tester  = $sheet->getCell("B12")->getValue();
+
+                    $LAST_UNIT_COL_NO = $LAST_COL_NO-OFFSET2;
+                    $lastUnitCol = PHPExcel_Cell::stringFromColumnIndex($LAST_UNIT_COL_NO);    //从0开始
+                    if(!$stage){
+                        echo '<script>window.alert("Excel文件沒有填寫Stage");</script>';
+                        exit();
+                    }
+                    if(!$vt){
+                        echo '<script>window.alert("Excel文件沒有填寫Verification Type");</script>';
+                        exit();
+                    }
+                    if(!$product){
+                        echo '<script>window.alert("Excel文件沒有填寫Product");</script>';
+                        exit();
+                    }
+                    if(!$sku){
+                        echo '<script>window.alert("Excel文件沒有填寫SKU");</script>';
+                        exit();
+                    }
+                    if(!$year){
+                        echo '<script>window.alert("Excel文件沒有填寫年份");</script>';
+                        exit();
+                    }
+                    if(!$month){
+                        echo '<script>window.alert("Excel文件沒有填寫月份");</script>';
+                        exit();
+                    }
+                    if(!$phase){
+                        echo '<script>window.alert("Excel文件沒有填寫Phase");</script>';
+                        exit();
+                    }
+                    if(!$testlab){
+                        echo '<script>window.alert("Excel文件沒有填寫Test LAB");</script>';
+                        exit();
+                    }
+                    if(!$mfgsite){
+                        echo '<script>window.alert("Excel文件沒有填寫MFG Site");</script>';
+                        exit();
+                    }
+                    if(!$tester){
+                        echo '<script>window.alert("Excel文件沒有填寫测试人名");</script>';
+                        exit();
+                    }
+                    // ---------- -----------
+                    echo "测试机数量：".$number.", 总行数：".$highestRow.", 总列数：".$highestCol."<br>";
+                    echo "最后一列转数字: ".$LAST_COL_NO."<br>";
+                    echo "最后一个机台所在列: ".$lastUnitCol."<br>";
+                    // ------------ -----------
+                    $arr_group = array();
+                    $arr_items = array();
+                    $order = array();        // test order array
+                    $arr_order = array();    // 对空内容和小写字符处理后的新test order
+                    
+                    //PHPExcel行列从1开始计算，这里从第15行开始循环
+                    for($i=15; $i<=$highestRow; $i++){
+                        array_push($arr_group,$sheet->getCell("A".$i)->getValue());
+                        array_push($arr_items,$sheet->getCell("B".$i)->getValue());
+                    }
+                    // 有相同的Test item提示错误
+                    if(count($arr_items)!=count(array_unique($arr_items))){
+                        echo "<script>window.alert('有相同的Test Item!~點擊返回');history.back();</script>";
+                        exit();
+                    }
+                    for($i=15; $i<=$highestRow; $i++){
+                        for($j='C'; $j!=$lastUnitCol; $j++){
+                            array_push($order,$sheet->getCell("$j$i")->getValue());
+                        }
+                    }
+                    $len_order = count($order);
+                    //如果有小写字符转换成大写,空内容用空格表示
+                    for($loop=0; $loop<$len_order; $loop++){
+                        strtoupper($order[$loop]);
+                        //echo $loop."--->".$order[$loop]."<br>";
+                        if($order[$loop]=="请选择"){
+                            $arr_order[$loop] = ' ';
+                        }
+                        else{
+                            array_push($arr_order,$order[$loop]);
+                        }
+                    }
+                    /* Test order是一个二维数组,行是编号1,2,3...列是每个机台测试的项目，必须转置一下成每个机台对应几项测试的二维数组 */
+                    $tmp1 = array_chunk($arr_order,$number);
+                    $len1 = count($tmp1);
+                    $len2 = count($tmp1[0]);
+                    for($i=0; $i<$len1; $i++){
+                        for($j=0; $j<$len2; $j++){
+                            $tmp2[$j][$i] = $tmp1[$i][$j];    //转置后安装unit1,2,3...顺序排列
+                        }
+                    }
+                    $len3 = count($tmp2); 
+                    $len4 = count($tmp2[0]);
+                    $timedt = date("Y-m-d H:i:s");
+                    $counter = 0;        //作为测试机编号 1,2,3.......N
+                    for($i=0; $i<$len3; $i++){
+                        $counter++;
+                        for($j=0; $j<$len4; $j++){
+                            $group     = $arr_group[$j];
+                            $test_item = $arr_items[$j];
+                            $unit      = $tmp2[$i][$j];     //test order
+                            //SQL for adding records
+                            $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
+                            $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$testlab','$mfgsite','$tester','$timedt','$counter')";
+                            //echo $counter."----->".$sql_add."<br>";
+                            mysqli_query($con,$sql_add);
+                        }
+                    }
+                    mysqli_close($con);
+                    $url = "index.php";
+                    $message = urlencode("数据保存完成 :)");
+                    header("location:success.php?url=$url&message=$message");
+                }//end of uploading test matrix
+                ?>
+            </div>
+            <!-- 兄弟當你看到這個這段話的時候也就意味著你接盤了我的爛代碼 -->
         <?php
         }
         

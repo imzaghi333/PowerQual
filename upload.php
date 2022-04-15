@@ -13,7 +13,7 @@ $ext = strtolower(pathinfo($fileInfo['name'],PATHINFO_EXTENSION));    //获取�
 if(!in_array($ext,$allowExt)){
     echo "<font color='#be0f2d' size='7'>文件擴展名錯誤</font><br>";
     echo "<img src='images/ku.jpg' width='200'>";
-    echo "<meta http-equiv='refresh' content='2; url=index.php?dowhat=upload'>";
+    echo "<meta http-equiv='refresh' content='2; url=index.php'>";
     exit();
 }
 
@@ -279,8 +279,10 @@ else if($Dropbox == "Order"){
     }
     mysqli_close($con);
     echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>Excel数据导入MySQL完成:)</h1>";
-    echo "<meta http-equiv='refresh' content='2; url=index.php?dowhat=upload'>";
+    echo "<meta http-equiv='refresh' content='2; url=index.php'>";
 }
+
+
 //删除上传的Excel
 sleep(1);
 $arr_name = scandir("./upload");

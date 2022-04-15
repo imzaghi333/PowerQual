@@ -154,13 +154,13 @@ else{
     </div>
     <!--- 批量上传SN -->
     <div>
-    <p class="txt_sn">Batch upload SN(Excel only) <img src="./images/logo_excel.svg" height="20" /></p>
-    <p class="txt_sn">Excel Template: <a class="sn_template_link" href="./images/SNTemplate.xlsx">Template Download</a></p>
-    <form id="form10" name="form10" action="" method="POST" enctype="multipart/form-data" onsubmit="checkFormUploadSN();">
-        <label style="color: #00592d;font-size:14px">選擇文件<span class="icon">F</span>:</label>
-        <input name="sn_file" id="sn_file" type="file" style="width: 555px;background-color:#731717;color:#e6d999;" />
-        <button name="upload" type="submit" class="btn_update">上传文件</button>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn_edit" name="reset" type="reset">清 空</button>
+    <p class="txt_sn">
+        Upload Serial NO.(請務必使用本站提供的Template), Dowload Template: 
+        <a class="sn_template_link" href="./images/SNTemplate.xlsx">Template Download <span class="download-icon"></span></a>
+    </p>
+    <form id="form10" name="form10" action="" method="POST" enctype="multipart/form-data">
+        <input name="sn_file" id="sn_file" type="file" style="width: 500px;background-color:#731717;color:#e6d999;" required />&nbsp;&nbsp;
+        <button name="upload" type="submit" class="btn_query">Upload</button>
         <input name="sn_upload" value="sn_upload_do" type="hidden" />
 
         <?php
