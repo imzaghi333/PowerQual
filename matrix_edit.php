@@ -11,7 +11,7 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $tester   = urldecode($_GET["user"]);
     $starting = urldecode($_GET["starting"]);
     
-    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,點擊Unit Allocation可填入SN, 點擊Wistron Logo返回首頁</p>";
+    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,點擊Input SN可填入SN, 點擊Wistron Logo返回首頁</p>";
     
     $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ";
     $check = mysqli_query($con,$sql_query);
@@ -88,7 +88,7 @@ else{
                 <th colspan="2">Test Schedule</th>
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Test Result</th>
-                <th rowspan="2">Addition<br>info <span class="icon">A</span></th>
+                <th rowspan="2">For Result<br>Add Info</th>
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
@@ -210,6 +210,7 @@ else{
                         $row_result = mysqli_fetch_array($check_result,MYSQLI_NUM);
                         //----------- added on 2021-12-29 for fail informations -----------
                         $unit_id = $row_result[1];    //一个测试记录的ID
+                        $result = $row_result[0];     //一个测试记录的ID结构
                         echo "<input style='width:20px;display:none;' type='text' name='subject1[".$selectid."]' id='subject1[".$selectid."]' value='".$row_result[2]."'>";       //Defect Mode(Symptom)
                         echo "<input style='width:20px;display:none;' type='text' name='subject2[".$selectid."]' id='subject2[".$selectid."]' value='".$row_result[3]."'>";       //Defect Mode(Symptom+Finding)
                         echo "<input style='width:20px;display:none;' type='text' name='subject3[".$selectid."]' id='subject3[".$selectid."]' value='".$row_result[4]."'>";       //RCCA
@@ -228,7 +229,7 @@ else{
                         echo "<input style='width:20px;display:none;' type='text' name='subject16[".$selectid."]' id='subject16[".$selectid."]' value='".$row_result[18]."'>";    //ORTMFGDate
                         echo "<input style='width:20px;display:none;' type='text' name='subject17[".$selectid."]' id='subject17[".$selectid."]' value='".$row_result[19]."'>";    //ReportedDate
                         
-                        echo "<input style='width:20px;display:none;' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='Pass'>";     //Set default result is TBD
+                        echo "<input style='width:50px;display:none;' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result'>";     //Set default result is TBD
                         echo "<input style='width:20px;' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
 		                echo "<input type='text' style='width:25px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
@@ -242,19 +243,33 @@ else{
                 <td><input type='date' name='ending[]' id='ending' value="<?php echo $row["Endday"]; ?>" /></td>
                 <!-- ------- Status select box------- -->
                 <td>
-                    <select name='status[]' id='status' class="statusbox">
-                        <option value=''>Status</option>
-                        <?php
-                        $tc_item = $test_items[$i];
-                        $sql_status = "SELECT DISTINCT Teststatus from DQA_Test_Main WHERE Testitems='$tc_item' AND Products='$product' AND Testername='$tester' AND Timedt='$starting' ";
-                        $res_status = mysqli_query($con,$sql_status);
-                        $status = mysqli_fetch_array($res_status,MYSQLI_NUM)[0];
-                        ?>
-                        <option value="Complete" <?php if($status=="Complete"){echo "selected = 'selected'";} ?> >Complete</option>
-                        <option value="Ongoing" <?php if($status=="Ongoing"){echo "selected = 'selected'";} ?> >Ongoing</option>
-                        <option value="Not Started" <?php if($status=="Not Started"){echo "selected = 'selected'";} ?> >Not Started</option>
-                        <option value="In progress" <?php if($status=="In progress"){echo "selected = 'selected'";} ?> >In progress</option>
-                    </select>
+                    <?php
+                    $results_array = array();
+                    $sql_each_result = "SELECT Results from DQA_Test_Main WHERE Testitems='$tc_txt' AND Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Units!='' ";
+                    //echo $sql_each_result;
+                    $one_row_result = mysqli_query($con, $sql_each_result);
+                    while($info = mysqli_fetch_array($one_row_result,MYSQLI_BOTH)){
+                        array_push($results_array,$info[0]);
+                    }
+                    $len_results = count($results_array);
+                    $status = "";
+                    $num = 0;
+                    for($bb=0; $bb<$len_results; $bb++){
+                        if($results_array[$bb]=="TBD"){
+                            $num++;
+                            if($num == $len_results){
+                                $status = "Not start";
+                            }
+                            else if($num>0 && $num<$len_results){
+                                $status = "In progress";
+                            }
+                        }
+                        if($results_array[$bb]!="TBD"){
+                            $status = "Complete";
+                        }
+                    }
+                    echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
+                    ?>
                 </td>
                 <!-- -------Result select box ------- -->
                 <td>
@@ -281,9 +296,7 @@ else{
                     elseif(in_array("EC Fail",$result_one_row)){
                         $one_row_result = "EC Fail";
                     }
-                    
                     //echo "<select class='resultbox' name='result[".$selectid."]' id='result[".$selectid."]' onchange='printResult(".$rowid.",".$selectid.",".$number.",".$unit_id.",".$tc_num.");'>";
-                    
                     echo "<select class='resultbox' name='result[".$selectid."]' id='result[".$selectid."]'>";
                     $check_result_drop = mysqli_query($con, "SELECT Result FROM dropbox_result");
                     while ($row_result_drop = mysqli_fetch_array($check_result_drop,MYSQLI_NUM)) {
