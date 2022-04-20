@@ -22,7 +22,7 @@ else{
     echo "<p style='color:#cc2229;font-size:30px;text-align:center'>请在New Test页面写入初始内容</p>";
     echo "<meta http-equiv='refresh' content='2; url=index.php'>";
 }
-echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
+echo '<script type="text/javascript" src="./js/js_matrix.js"></script>'
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +79,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     for($i=0; $i<$number; $i++){
                         $ii=$i+1;
                         echo "<td>";
-                        echo "<select class='test_order' name='test_order[]' id='test_order1$ii' onchange='testchange(1,$ii)'>";
+                        echo "<select class='test_order'name='test_order[]' id='test_order1$ii' onchange='testchange(1,$ii)'>";
                         echo "<option>请选择</option>";
                         $check = mysqli_query($con, "SELECT Testorder FROM dropbox_test_order");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
@@ -90,7 +90,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     }
                     ?>
                     <td width="6%">
-                        <input class="btn_add" type="button" name="add" value="Add" id="1add" />&nbsp;
+                        <input class="btn_add" type="button" name="1add" value="Add" id="1add" />&nbsp;
                         <input class="btn_del" type="button" name="1del" value="Del" id="1del" />
                     </td>
                 </tr>
@@ -185,6 +185,8 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
             }
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
+            sleep(1);
+            mysqli_query($con,"UPDATE DQA_Test_Main SET Results='' WHERE Units='' ");   //设置空Test Order的结果为空
             mysqli_close($con);
             $url = "index.php";
             $message = urlencode("数据保存完成 :)");

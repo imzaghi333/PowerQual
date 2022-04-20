@@ -345,6 +345,8 @@ date_default_timezone_set("PRC");
                             mysqli_query($con,$sql_add);
                         }
                     }
+                    sleep(1);
+                    mysqli_query($con,"UPDATE DQA_Test_Main SET Results='' WHERE Units='' ");   //设置空Test Order的结果为空
                     mysqli_close($con);
                     $url = "index.php";
                     $message = urlencode("数据保存完成 :)");
@@ -355,10 +357,11 @@ date_default_timezone_set("PRC");
             <!-- 兄弟當你看到這個這段話的時候也就意味著你接盤了我的爛代碼 -->
         <?php
         }
-        
+        //Export data
         else if($_GET['dowhat'] == 'export' || $_POST['dowhat'] == 'exportdo'){
         ?>
             <p class="info">Export Data to Excel&nbsp;&nbsp;<span class="icon"><img src="./images/logo_excel.svg" height="30" /></span></p>
+            <!--
             <div>
                 <div id="preloder"><div class="loader"></div></div>
                 <form name="export_excel" id="export_excel" method="POST" action="./comm/Out_Excel.php">
@@ -379,8 +382,69 @@ date_default_timezone_set("PRC");
                 <p> 2.如果選擇時間範圍，導出這一時間段數據</p>
                 <p> 3.如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
             </div>
+            -->
+            <form id="form12" name="form12" method="POST" action="">
+                <table align="center" class="form7">
+                    <tr>
+                        <td width="20%">Product: </td>
+                        <td width="80%">
+                            <select name="product1">
+                                <option value="">Select Product</option>
+                                <?php
+                                $check = mysqli_query($con, "SELECT DISTINCT(Products) FROM DQA_Test_Main ORDER BY Products ASC ");
+                                while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                    echo "<option value=" ."'$row[0]'" . ">" . $row[0] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Stage: </td>
+                        <td>
+                            <select name="stage1">
+                                    <option value="NPI">NPI</option>
+                                    <option Value="Sus">Sus</option>
+                                    <option Value="Others">其他</option>
+                                </select>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Verification Type</td>
+                        <td>
+                            <select name="vt1">                                    
+                                <option value="ORT">ORT</option>
+                                <option Value="QTP">QTP</option>
+                                <option Value="ENG (in spec)">ENG (in spec)</option>
+                                <option Value="Others">其他</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SKU</td>
+                        <td>
+                            <?php
+                            echo "<select name='sku1'>";
+                            $check = mysqli_query($con, "SELECT SKUS FROM dropbox_sku");
+                            while ($row = mysqli_fetch_array($check)) {
+                                echo "<option value='{$row["SKUS"]}'>{$row['SKUS']}</option>";
+                            }
+                            echo "</select>";
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <button class="btn_query" type="submit">查 詢&nbsp;&nbsp;&nbsp;<span class="icon">L</span></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn_reset" type="reset">清&nbsp;&nbsp;空</button>
+                        </td>
+                        <input type="hidden" name="query_export" value="query_export_do" />
+                    </tr>
+                </table>
+            </form>
         <?php
-        }
+        }    //Export data end
         else if($_GET['dowhat'] == 'upload' || $_POST['dowhat'] == 'uploaddo'){
         ?>
             <p class="info">DropBox Menu Upload <img src="./images/logo_excel.svg" height="20" /></p>

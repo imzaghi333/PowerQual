@@ -210,7 +210,7 @@ else{
                         $row_result = mysqli_fetch_array($check_result,MYSQLI_NUM);
                         //----------- added on 2021-12-29 for fail informations -----------
                         $unit_id = $row_result[1];    //一个测试记录的ID
-                        $result = $row_result[0];     //一个测试记录的ID结构
+                        $result_record = $row_result[0];     //一个测试记录的ID结构
                         echo "<input style='width:20px;display:none;' type='text' name='subject1[".$selectid."]' id='subject1[".$selectid."]' value='".$row_result[2]."'>";       //Defect Mode(Symptom)
                         echo "<input style='width:20px;display:none;' type='text' name='subject2[".$selectid."]' id='subject2[".$selectid."]' value='".$row_result[3]."'>";       //Defect Mode(Symptom+Finding)
                         echo "<input style='width:20px;display:none;' type='text' name='subject3[".$selectid."]' id='subject3[".$selectid."]' value='".$row_result[4]."'>";       //RCCA
@@ -229,7 +229,7 @@ else{
                         echo "<input style='width:20px;display:none;' type='text' name='subject16[".$selectid."]' id='subject16[".$selectid."]' value='".$row_result[18]."'>";    //ORTMFGDate
                         echo "<input style='width:20px;display:none;' type='text' name='subject17[".$selectid."]' id='subject17[".$selectid."]' value='".$row_result[19]."'>";    //ReportedDate
                         
-                        echo "<input style='width:50px;display:none;' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result'>";     //Set default result is TBD
+                        echo "<input style='width:50px;' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
                         echo "<input style='width:20px;' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
 		                echo "<input type='text' style='width:25px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
