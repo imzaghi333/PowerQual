@@ -22,7 +22,7 @@ else{
     echo "<p style='color:#cc2229;font-size:30px;text-align:center'>请在New Test页面写入初始内容</p>";
     echo "<meta http-equiv='refresh' content='2; url=index.php'>";
 }
-echo '<script type="text/javascript" src="./js/js_matrix.js"></script>'
+echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
 ?>
 
 <!DOCTYPE html>
@@ -160,9 +160,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>'
                 for($j=0; $j<$len2; $j++){
                     $tmp2[$j][$i] = $tmp1[$i][$j];    //转置后安装unit1,2,3...顺序排列
                 }
-            }
-            echo "<pre>";
-            
+            }          
 
             $len3 = count($tmp2); 
             $len4 = count($tmp2[0]);
@@ -185,8 +183,6 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>'
             }
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
-            sleep(1);
-            mysqli_query($con,"UPDATE DQA_Test_Main SET Results='' WHERE Units='' ");   //设置空Test Order的结果为空
             mysqli_close($con);
             $url = "index.php";
             $message = urlencode("数据保存完成 :)");
