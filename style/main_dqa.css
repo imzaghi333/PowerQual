@@ -1,8 +1,8 @@
 @charset "utf-8";
 
 @font-face {
-    font-family: Helvetica;
-    src: url(Helvetica/Helvetica);
+    font-family: "Helvetica.ttf";
+    src: url(Helvetica/Helvetica.ttf);
 }
 @font-face {
     font-family: web-symbol;
@@ -18,7 +18,7 @@ body{
     margin: 0px; 
     padding: 0px; 
     font-size: 14px;
-    font-family: Helvetica;
+    font-family: "Helvetica.tft";
     background-image: url(../images/background.jpg);
     background-size: cover;
 }
@@ -294,7 +294,7 @@ textarea{background: transparent;}
     float: left;
     font-weight: bold;
     font-style: italic;
-    font-family: Helvetica; 
+    font-family: "Helvetica.ttf"; 
     margin-top: 10px;
     margin-left: 10px;
 }
@@ -351,7 +351,7 @@ textarea{background: transparent;}
     color: #ff5722;
     font-size: 24px;
     text-align: center;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
 .container .right .form1 {
     width: 80%;
@@ -359,7 +359,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #393d49;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
 .container .right .form1 tr,td {padding: 4px 4px;}
 .container .right .form1 select,input {
@@ -397,7 +397,7 @@ textarea{background: transparent;}
     width: 100%;
     border-collapse:collapse;
     font-size: 12px;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     white-space: nowrap;
 }
 .container .right .my_table tbody tr:hover{ /* 鼠标到某一行背景变黄色 */
@@ -432,7 +432,7 @@ textarea{background: transparent;}
 }
 .container .right .my_table a:hover{color: #ff0029;text-decoration: none;}
 .container .right .query_desc{
-    font-family:Helvetica;
+    font-family:"Helvetica.ttf";
     font-size: 14px;
     color: #00698f;
     text-align: center;
@@ -477,7 +477,7 @@ textarea{background: transparent;}
     width: 70%;
     border-collapse:collapse;
     font-size: 12px;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
 .container .right .my_del_table td{border: 1px solid #ccc;}
 .container .right .my_del_table th{
@@ -489,7 +489,7 @@ textarea{background: transparent;}
 }
 .container .fail_info{
     float: right;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     margin-right: 30px;
     color: #fff;
     background-color: #ff5722;
@@ -502,7 +502,7 @@ textarea{background: transparent;}
 .container .scan_sn{
     border-collapse: collapse;
     font-size: 12px;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     white-space: nowrap
 }
 .container .scan_sn th{
@@ -527,7 +527,7 @@ textarea{background: transparent;}
     margin-bottom: 15px;
 }
 .content h1{
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     font-size: 20px;
     color: #00698f;
     text-align: center;
@@ -624,6 +624,15 @@ textarea{background: transparent;}
 .content .customers .add_info{
     font-size: 12px;
     background-color: #e6d999;
+}
+.content .customers .all_pass{
+    font-size: 12px;
+    background-color: #0eb83a;
+    color: #fff;
+}
+.content .customers .result_txt{
+    font-size: 12px;
+    width: 50px;
 }
 
 .content .txtarea {
@@ -725,22 +734,21 @@ textarea{background: transparent;}
 }
 .content .txt_sn{
     font-size: 14px;
-    font-family: JetBrainsMono-Regular;
+    font-family: "JetBrainsMono-Regular.woff2";
     color: #00592d;
 }
 .content .sn_template_link{
     text-decoration: none;
     color: #002ea6;
     font-size: 14px;
-    font-family: JetBrainsMono-Regular;
+    font-family: "JetBrainsMono-Regular.woff2";
 }
 .content .sn_template_link:hover{
     text-decoration: none;
     color: #cc2229;
     font-size: 16px;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
-
 
 /* ------- loading animation ------- */
 #preloder{
@@ -810,7 +818,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #393d49;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
 .container .right .form7 tr,td {
     padding: 4px 4px;
@@ -860,19 +868,19 @@ textarea{background: transparent;}
     height: 631px;
     color: #fff;
     font-size: 16px;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     background: url(../images/cc1.jpg) no-repeat;
     background-size: cover;
 }
 .dropbox .txt_info{
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     font-size: 30px;
     text-align: center;
     color: #cb364a;
     margin-top: 15px;
 }
 .dropbox .xqq{
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     font-size: 14px;
     color: #00698f;
     margin-left: 5px;
@@ -903,7 +911,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #355386;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     margin-left: 80px;
 }
 .container .right .form4 select{
@@ -931,7 +939,7 @@ textarea{background: transparent;}
     color: #ff5722;
     font-size: 24px;
     text-align: center;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
 }
 .fail .form_fail {
     width: 70%;
@@ -939,7 +947,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #355386;
-    font-family: Helvetica;
+    font-family: "Helvetica.ttf";
     margin-left: 80px;
 }
 .fail .form_fail select{
@@ -964,7 +972,7 @@ textarea{background: transparent;}
 .unit_table{
     border-collapse:collapse;
     font-size: 14px;
-    font-family: JetBrainsMono-Regular;
+    font-family: "JetBrainsMono-Regular.woff2";
     white-space: nowrap;
 }
 .unit_table tbody td:hover{

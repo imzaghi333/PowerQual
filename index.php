@@ -30,8 +30,8 @@ date_default_timezone_set("PRC");
 <div class="container">
     <div class="left">
         <div class="action">
-            <div><a href="index.php">Query......&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="edit-icon"></span><span class="p_right">&#10148</span></a></div>
-            <div><a href="index.php?dowhat=start">Matrix Creating&nbsp;&nbsp;<span class="tablet-icon"></span><span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
@@ -175,7 +175,7 @@ date_default_timezone_set("PRC");
                 <div id="preloder"><div class="loader"></div></div>
                 <p class="note">
                     Upload Test Matrix(請務必使用本站提供的Template), Dowload Template here: 
-                    <a style="text-decoration: none; color:#cc2229;" href="./images/MatrixTemplate.xlsx">Template Download <span class="download-icon"></span></a>
+                    <a style="text-decoration: none; color:#cc2229;" href="./images/MatrixTemplate.xls">Template Download <span class="download-icon"></span></a>
                 </p>
                 <form id="form15" name="form15" action="" method="POST" enctype="multipart/form-data">
                     <input name="matrix_file" id="matrix_file" type="file" style="width: 400px;background-color:#731717;color:#e6d999;margin-left:130px;" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,9 +195,11 @@ date_default_timezone_set("PRC");
                     if(!is_dir($uploadPath)){
                         mkdir($uploadPath);
                     }
+                    chmod($uploadPath, 0777);
                     $basename = date("Ymd").$fileInfo["name"];    //上次成功后的文件名字(日期+原文件名)
                     $dest = $uploadPath.'/'.$basename;            //上傳文件路徑
                     if(move_uploaded_file($fileInfo['tmp_name'], $dest)){
+                        chmod($dest,0777);
                         echo "<p style='color:#355386; text-align:left; font-size:14px;'>導入Test Matrix：{$fileInfo['name']}</p>";
                     }
                     else{
@@ -209,10 +211,12 @@ date_default_timezone_set("PRC");
                     //讀取Excel内容
                     require_once "Classes/PHPExcel.php";
                     require_once "Classes/PHPExcel/IOFactory.php";
-                    header("Content-Type:text/html;charset=utf8");
-                    header("Access-Control-Allow-Origin: *");      //解决跨域
-                    header("Access-Control-Allow-Methods:GET");    //响应类型
-                    header("Access-Control-Allow-Headers: *");
+                    require_once "Classes/PHPExcel/Reader/Excel5.php"; 
+                    require_once "Classes/PHPExcel/Reader/Excel2007.php";
+                    
+                    //header("Access-Control-Allow-Origin: *");      //解决跨域
+                    //header("Access-Control-Allow-Methods:GET");    //响应类型
+                    //header("Access-Control-Allow-Headers: *");
                     set_time_limit(0);
                     error_reporting(0);
 
@@ -348,7 +352,8 @@ date_default_timezone_set("PRC");
                     mysqli_close($con);
                     $url = "index.php";
                     $message = urlencode("数据保存完成 :)");
-                    header("location:success.php?url=$url&message=$message");
+                    //header("location:success.php?url=$url&message=$message");
+                    echo "<script>window.location.href='success.php?url=$url&message=$message'</script>";
                     //删除上传的Excel
                     sleep(1);
                     $arr_name = scandir("./upload");
@@ -428,7 +433,7 @@ date_default_timezone_set("PRC");
                     </table>
                 </form>
                 <div class="note">
-                    <p> 模板下载：<a href="images/Template.xlsx">Template (点击下载)</a></p>
+                    <p> 模板下载：<a href="images/Template.xls">Template (点击下载)</a></p>
                     <p> 1. 下载模板填写需要上传的数据，只需要填写最新的数据</p>
                     <p> 2. 日期必须存储为年月日格式,如1949-10-01样式</p>
                     <p> 3. 不要出现换行符(\n), 制表符(\t)，单引号(')等特殊字符,它们会引起数据丢失</p>

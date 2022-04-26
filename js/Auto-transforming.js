@@ -45,7 +45,7 @@ window.onload = function(){
     for(var j=0; j<arr_tc.length; j++){
         tc += "<option>"+arr_tc[j]+"</option>";
     }
-
+    /*
     var ss = "";    //用于保存test status的字符串
     var arr_status = Array();
     var status = document.getElementById("status");
@@ -56,7 +56,8 @@ window.onload = function(){
     for(var j=0; j<arr_status.length; j++){
         ss += "<option>"+arr_status[j]+"</option>";
     }
-    
+    */
+    /*
     var res = ""    //用于保存option test result的字符串
     var arr_result = Array();
     var test_result = document.getElementById("result["+number+"]");
@@ -67,7 +68,7 @@ window.onload = function(){
     for(var j=0; j<arr_result.length; j++){
         res += "<option>"+arr_result[j]+"</option>";
     }
-
+    */
     // ----------------- 中国人民解放军 ---------------------------
     counts=parseInt(counts)+4;
     total_rows = getRows()-1;    //新增行之后
@@ -226,4 +227,25 @@ function getRows(){
     }
     var message = "Total Row Count: " + totalRowCount;
     return totalRowCount;
+}
+
+// One key for pass
+function oneRowAllPass(rowid,number){
+    var row_no = rowid;          //行號,從0開始計數
+    var cell_length = number+4;  //單元格數量,从0开始计数
+    var oTab = document.getElementById("customers");    //Test Matrix Table
+    var oTbody = oTab.tBodies[0];    //表格不含標題欄部分
+    var reg1 = RegExp(/value=""/);   //匹配tes order為空的單元格,不改變默認的TBD
+    var reg2 = RegExp(/TBD/);        //匹配有tes order單元格,改變其結果為Pass
+
+    //Test order從第五列開始
+    for(var i=4; i<cell_length; i++){
+        var s = oTbody.rows[row_no].cells[i].innerHTML;    //獲取原來單元格的html内容
+        var m = "";
+        if(!s.match(reg1)){
+            m = s.replace(reg2,"Pass");    //有test order字符串的TBD改成Pass
+            oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
+        }
+    }
+    layer.msg("Row "+(row_no+1)+" is set all pass",{icon: 6});
 }

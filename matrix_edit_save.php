@@ -286,6 +286,7 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
             $sql_add.= "'$group','$test_item','$start','$end','$result','$remark','$timedt','$counter','$df1','$df2','$rcca','$test_status',";
             $sql_add.= "'$issue_status','$category','$pic','$jira','$spr','$temp','$drop_cycles','$drops','$drop_side','$hit','$check_point','$published','$mfg_date','$report_date',";
             $sql_add.= "'$request','$title','$condition','$fail_symptom','$fa')";
+            //echo $counter."===>".$sql_add;
             mysqli_query($con,$sql_add);
         }
     }

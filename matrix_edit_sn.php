@@ -55,7 +55,7 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./style/main_dqa.css">
     <link rel="shortcut icon" href="./images/favior.ico">
-    <script type="text/javascript" src="./js/js_edit_matrix_inner.js"></script>
+    <!--<script type="text/javascript" src="./js/js_edit_matrix_inner.js"></script>-->
     <title>Raw Data of Matrix for <?php echo $tester." - ".$product; ?></title>
 </head>
 <body>
@@ -156,7 +156,7 @@ else{
     <div>
     <p class="txt_sn">
         Upload Serial NO.(請務必使用本站提供的Template), Dowload Template: 
-        <a class="sn_template_link" href="./images/SNTemplate.xlsx">Template Download <span class="download-icon"></span></a>
+        <a class="sn_template_link" href="./images/SNTemplate.xls">Template Download <span class="download-icon"></span></a>
     </p>
     <form id="form10" name="form10" action="" method="POST" enctype="multipart/form-data">
         <input name="sn_file" id="sn_file" type="file" style="width: 500px;background-color:#731717;color:#e6d999;" required />&nbsp;&nbsp;
@@ -305,9 +305,11 @@ if(isset($_POST["sn_upload"]) && $_POST["sn_upload"]=="sn_upload_do"){
     if(!is_dir($uploadPath)){
         mkdir($uploadPath);
     }
+    chmod($uploadPath, 0777);
     $basename = date("Ymd").$fileInfo["name"];    //上次成功后的文件名字(日期+原文件名)
     $dest = $uploadPath.'/'.$basename;            //上傳文件路徑
     if(move_uploaded_file($fileInfo['tmp_name'], $dest)){
+        chmod($dest,0777);
         echo "<p style='color:#355386; text-align:left; font-size:14px;'>您上傳的文件：<a href='{$dest}'>{$fileInfo['name']}</a></p>";
         //echo "<img src='images/xiao.jpg' width='200'><br>";
     }
@@ -320,10 +322,12 @@ if(isset($_POST["sn_upload"]) && $_POST["sn_upload"]=="sn_upload_do"){
     //讀取Excel内容
     require_once "Classes/PHPExcel.php";
     require_once "Classes/PHPExcel/IOFactory.php";
-    header("Content-Type:text/html;charset=utf8");
-    header("Access-Control-Allow-Origin: *");      //解决跨域
-    header("Access-Control-Allow-Methods:GET");    //响应类型
-    header("Access-Control-Allow-Headers: *");
+    require_once "Classes/PHPExcel/Reader/Excel5.php"; 
+    require_once "Classes/PHPExcel/Reader/Excel2007.php"; 
+
+    //header("Access-Control-Allow-Origin: *");      //解决跨域
+    //header("Access-Control-Allow-Methods:GET");    //响应类型
+    //header("Access-Control-Allow-Headers: *");
     set_time_limit(0);
     error_reporting(0);
 
@@ -374,7 +378,8 @@ if(isset($_POST["sn_upload"]) && $_POST["sn_upload"]=="sn_upload_do"){
     $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
 
     $message = urlencode("数据保存完成 :)");
-    header("location:success.php?url=$url&message=$message");
+    //header("location:success.php?url=$url&message=$message");
+    echo "<script>window.location.href='success.php?url=$url&message=$message'</script>";
     //删除上传的Excel
     sleep(1);
     $arr_name = scandir("./upload");

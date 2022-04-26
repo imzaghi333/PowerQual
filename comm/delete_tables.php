@@ -38,6 +38,7 @@ date_default_timezone_set("PRC");
                         <option value="Testcondition">Test Condition Menu</option>
                         <option value="LAB">LAB&Site Menu</option>
                         <option value="Order">Test Order(A,B,C...)</option>
+                        <option value="FialInfo">Fail Info Table</option>
                     </select>
                 </td>
             </tr>
@@ -214,6 +215,17 @@ date_default_timezone_set("PRC");
             $result = mysqli_query($con,$sql);
             if($result){
                 echo "<h1 style='color:#ffb800;'>Test order table is deleted :)</h1>";
+            }
+            else{
+                echo "<h1 style='color:#a94442;'>Fail :(</h1>";
+            }
+            break;
+        //FialInfo table
+        case 'FialInfo':
+            $sql = "DROP TABLE fail_infomation";
+            $result = mysqli_query($con,$sql);
+            if($result){
+                echo "<h1 style='color:#ffb800;'>Fail Info table is deleted :)</h1>";
             }
             else{
                 echo "<h1 style='color:#a94442;'>Fail :(</h1>";

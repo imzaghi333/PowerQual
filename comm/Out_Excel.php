@@ -13,8 +13,8 @@ $today = date("Y-m-d");
 mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");    //导出Excel更新当前日期 [added on 2021-11-11]
 
 $current_date = date("Ymd");    //作为Excel文件名的一部分
-$type = "Excel2007";    //输出xlsx扩展名, Excel5输出xls扩展名
-$filename = "QTP Raw Data record format_V4_".$current_date.".xlsx";
+$type = "Excel5";    //输出xlsx扩展名, Excel5输出xls扩展名
+$filename = "QTP Raw Data record format_V4_".$current_date.".xls";
 
 //导出Excel更新当前日期Issue opened duration [added on 2021-11-11]
 mysqli_query($con, "UPDATE DQA_Test_Main SET IssueDuration='NA' WHERE Results='Pass' ");
@@ -93,7 +93,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                 $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
             }
         }
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel2007");
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
         //$objWriter->save("Demo.xlsx");    //保存文件到服务器当前目录
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载到本地目录
@@ -175,7 +175,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                 $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
             }
         }
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel2007");
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
         //$objWriter->save("Demo.xlsx");    //保存文件
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载文件

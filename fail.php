@@ -16,13 +16,13 @@ $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
 for($i=$number; $i>0; $i--){
     $cell_id = $select_id-$i+1;
-    //echo "第".$row_no."行每个单元格编号: ".$cell_id."<br>";
+    echo "第".$row_no."行每个单元格编号: ".$cell_id."<br>";
     array_push($cells,$cell_id);
 }
 
 for($i=($number-1); $i>=0; $i--){
     $tmp_id = $currentid-$rows*$i;
-    //echo "第".$row_no."行每个单元格测试ID: ".$tmp_id."<br>";
+    echo "第".$row_no."行每个单元格测试ID: ".$tmp_id."<br>";
     array_push($record_ids,$tmp_id);
 }
 ?>

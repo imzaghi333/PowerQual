@@ -97,3 +97,9 @@ function returnvalue20(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
     window.opener.document.getElementById("rcca["+row_no+"]").value+=val+"\n";
 }
+
+// ----------- added on 2022-04-20 -----------
+function allPass(){
+    var aBtn = document.getElementById("all_pass");
+    alert(aBtn);
+}

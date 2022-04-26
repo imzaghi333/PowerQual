@@ -56,7 +56,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 <tr>
                     <td width="5%">
                         <?php
-                        echo "<select name='group[]' id='group'>";
+                        echo "<select name='group[]' id='group' onchange='getGroup();'>";
                         $check = mysqli_query($con, "SELECT Groups FROM dropbox_group");
                         while ($row = mysqli_fetch_array($check)) {
                             $v1 = $row["Groups"];
@@ -67,6 +67,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     </td>
                     <td width="10%">
                         <?php
+                        $gp = $_POST["gp"];
                         echo "<select name='test_item[]' class='selbox' id='test_item'>";
                         $check = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {

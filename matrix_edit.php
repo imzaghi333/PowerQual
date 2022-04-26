@@ -11,14 +11,11 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $tester   = urldecode($_GET["user"]);
     $starting = urldecode($_GET["starting"]);
     
-    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,點擊Input SN可填入SN, 點擊Wistron Logo返回首頁</p>";
-    
     $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ";
     $check = mysqli_query($con,$sql_query);
-
     //得到某一次测试的记录数量
     $counts = mysqli_num_rows($check);
-
+    
     //----------- Stage,verification type,products,year,month -----------
     $user_info = mysqli_data_seek($check,0);               //每次测试这一部分内容相同(New Test页面),只要读取其中一行即可
     $user_one_row = mysqli_fetch_array($check,MYSQLI_BOTH);//一个关联素组:0->RecordID, 1->Stages,2->VT,3->Products,4->SKUS....
@@ -37,12 +34,14 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     //echo $stage."--".$vt."--".$pr_name."--".$sku."--".$nn."--".$yy."--".$phases."--".$testlab."--".$mfgsite."--".$tester."--".$timedt."--".$title;
 
     //獲取某一次測試的機台數量
-    $qty_query = mysqli_query($con, "SELECT COUNT(DISTINCT(Unitsno)) FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ");
-    $qty_info = mysqli_fetch_array($qty_query,MYSQLI_NUM);
-    $number = $qty_info[0];
-    if($counts){
-        $matrix_rows = $counts/$number;
-    }
+    //$qty_query = mysqli_query($con,"SELECT COUNT(DISTINCT Unitsno) FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ");
+    //$qty_info = mysqli_fetch_array($qty_query,MYSQLI_NUM);
+    //$number = $qty_info[0];
+    $sql_unique_tc = "SELECT DISTINCT Testitems FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting'";
+    $tc_array = mysqli_query($con,$sql_unique_tc);
+    $testitem_num = mysqli_num_rows($tc_array);
+    $number = $counts/$testitem_num;
+    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,測試機數量: ".$number." ,測試項數量: ".$testitem_num." ,點擊Input SN可填入SN, 點擊Wistron Logo返回首頁</p>";
 }
 else{
     echo "<p style='color:#cc2229;font-size:30px;text-align:center'>未查詢任何條件,兩秒后返回首頁</p>";
@@ -76,6 +75,7 @@ else{
             $start = urlencode($starting);
             $ss = $user_name."|".$$product_name."|".$start;
             ?>
+            <thead>
             <tr>
                 <th rowspan="2">Reque<br>-sted</th>
                 <th rowspan="2">Group</th>
@@ -88,7 +88,8 @@ else{
                 <th colspan="2">Test Schedule</th>
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Test Result</th>
-                <th rowspan="2">For Result<br>Add Info</th>
+                <th rowspan="2">Info for<br>failure</th>
+                <th rowspan="2">One key<br>all pass</th>
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
@@ -98,16 +99,12 @@ else{
                 <?php
                 for($i=0; $i<$number; $i++){
                     echo "<th>".($i+1)."</th>";
-                    $unit_no = $i+1; 
-                    $sql_sn = mysqli_query($con,"SELECT DISTINCT(SN) FROM DQA_Test_Main WHERE Products='$product' AND Timedt='$timedt' AND Unitsno='$unit_no' ");
-                    $sn_info = mysqli_fetch_array($sql_sn,MYSQLI_NUM);
-                    $unit_sn = $sn_info[0];
-                    echo "<input type='text' name='sn[]' value='$unit_sn' style='width:100px;display:none;' />&nbsp;&nbsp;";
                 }
-                
                 ?>
                 <th>Start</th><th>Finish</th>
             </tr>
+            </thead>
+            <tbody>
             <!-- ----------- Matrix begin here ----------- -->
             <?php
             $groups = array();
@@ -209,8 +206,9 @@ else{
                         $check_result = mysqli_query($con, $sql_result);
                         $row_result = mysqli_fetch_array($check_result,MYSQLI_NUM);
                         //----------- added on 2021-12-29 for fail informations -----------
-                        $unit_id = $row_result[1];    //一个测试记录的ID
-                        $result_record = $row_result[0];     //一个测试记录的ID结构
+                        $unit_id = $row_result[1];      //一个测试记录的ID
+                        $result_record = $row_result[0];//一个测试记录的ID結果
+                        /*
                         echo "<input style='width:20px;display:none;' type='text' name='subject1[".$selectid."]' id='subject1[".$selectid."]' value='".$row_result[2]."'>";       //Defect Mode(Symptom)
                         echo "<input style='width:20px;display:none;' type='text' name='subject2[".$selectid."]' id='subject2[".$selectid."]' value='".$row_result[3]."'>";       //Defect Mode(Symptom+Finding)
                         echo "<input style='width:20px;display:none;' type='text' name='subject3[".$selectid."]' id='subject3[".$selectid."]' value='".$row_result[4]."'>";       //RCCA
@@ -228,13 +226,13 @@ else{
                         echo "<input style='width:20px;display:none;' type='text' name='subject15[".$selectid."]' id='subject15[".$selectid."]' value='".$row_result[17]."'>";    //IssuePublished
                         echo "<input style='width:20px;display:none;' type='text' name='subject16[".$selectid."]' id='subject16[".$selectid."]' value='".$row_result[18]."'>";    //ORTMFGDate
                         echo "<input style='width:20px;display:none;' type='text' name='subject17[".$selectid."]' id='subject17[".$selectid."]' value='".$row_result[19]."'>";    //ReportedDate
-                        
-                        echo "<input style='width:50px;' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
+                        */
+                        echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
                         echo "<input style='width:20px;' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
-		                echo "<input type='text' style='width:25px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-		                //echo "<input type='text' style='width:20px;display:none;' name='uint_no[]' value="."'$info[2]'"." readonly />";   //Unit no: 1,2,3.......
-                        //echo "cell: ".$selectid;
+		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
+		                //echo "<input type='text' style='width:20px;' name='uint_no[]' value="."'$info[2]'"." readonly />";   //Unit no: 1,2,3.......
+                        echo "cell: ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution
@@ -264,9 +262,9 @@ else{
                                 $status = "In progress";
                             }
                         }
-                        if($results_array[$bb]!="TBD"){
-                            $status = "Complete";
-                        }
+                    }
+                    if(!in_array("TBD",$results_array)){
+                        $status = "Complete";
                     }
                     echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
                     ?>
@@ -276,6 +274,7 @@ else{
                     <?php
                     //rowid是表格行编号,selectid是单元格编号,number是机台数量,unit_id是RecordID,$tc_num是总行数,TMD参数越传越多
                     //echo "cell:".$selectid;
+                    /*
                     $one_row_result = "";
                     for($k=0; $k<$len_result_one_row;$k++){
                         //echo $result_one_row[$k];
@@ -309,11 +308,38 @@ else{
                         }
                     }
                     echo "</select>";
-                    
+                    */
+                    $row_result = "TBD";
+                    $num1 = 0;
+                    for($k=0; $k<$len_results;$k++){
+                        //echo $result_one_row[$k];                   
+                        if($results_array[$k]=="Pass"){
+                            $num1++;
+                            if($num1 == $len_results){
+                                $row_result = "Pass";
+                            }
+                        }
+                        else if(in_array("EC Fail",$results_array)){
+                            $row_result = "EC Fail";
+                        }
+                        else if(in_array("Fail",$results_array)){
+                            $row_result = "Fail";
+                        }
+                        else if(in_array("Known Fail (Open)",$results_array)){
+                            $row_result = "Known Fail (Open)";
+                        }
+                        else if(in_array("Known Fail (Close)",$results_array)){
+                            $row_result = "Known Fail (Close)";
+                        }
+                    }
+                    echo "<input style='width:110px;' name='result' type='text' value='$row_result' readonly />";
                     ?>
                 </td>
                 <td>
                     <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>                  
+                </td>
+                <td>
+                    <input type="button" class="all_pass" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Pass" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'>                  
                 </td>
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>
@@ -327,6 +353,7 @@ else{
             $rowid = $rowid+1;
             }
             ?>
+            </tbody>
         </table>
         <!-- #################### 又是一道分割线 ############################### -->
         <div class="save_record">

@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set("Asia/Shanghai");
+date_default_timezone_set("PRC");
 require_once "../js/conf.php";
 mysqli_query($con,"set names utf8");
 ?>
@@ -38,6 +38,7 @@ mysqli_query($con,"set names utf8");
                             <option value="Testcondition">Test Condition Menu</option>
                             <option value="LAB">LAB&Site Menu</option>
                             <option value="Order">Test Order(A,B,C...)</option>
+                            <option value="FialInfo">Fail Info Table</option>
                         </select>
                     </td>
                 </tr>
@@ -248,7 +249,9 @@ mysqli_query($con,"set names utf8");
                 break;
             //14.Main_Record
             //2022-01-10新增了Title, Requests, Terminal三个字段
+            //2022-04-21 Fai information单独用一张表
             case 'Main_Record':
+                //SQL for create test records
                 $sql = "CREATE TABLE DQA_Test_Main(
                     RecordID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     Stages VARCHAR(10) DEFAULT NULL,
@@ -301,9 +304,46 @@ mysqli_query($con,"set names utf8");
                     FAA TEXT DEFAULT NULL
                 )";
                 $result = mysqli_query($con,$sql);
-                
                 if($result){
                     echo "<h1 style='color:#337ab7;'>Test Records table created successfully :)</h1>";
+                }
+                else{
+                    echo "<h1 style='color:#a94442;'>Fail :(</h1>";
+                }
+                break;
+            
+            //15 Fail contents table
+            case "FialInfo":
+                $sql = "CREATE TABLE fail_infomation(
+                    FID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    Products VARCHAR(20) DEFAULT NULL,
+                    Testitems VARCHAR(500) DEFAULT NULL,
+                    Defectmode1 TEXT DEFAULT NULL,    #Symptom
+                    Defectmode2 TEXT DEFAULT NULL,    #Symptom+Findings
+                    RCCA TEXT DEFAULT NULL,
+                    Issuestatus VARCHAR(15) DEFAULT NULL,
+                    Category VARCHAR(20) DEFAULT NULL,
+                    PIC VARCHAR(20) DEFAULT NULL,
+                    JIRANO VARCHAR(15) DEFAULT NULL,
+                    SPR VARCHAR(15) DEFAULT NULL,
+                    Temp VARCHAR(10) DEFAULT NULL,
+                    Dropcycles VARCHAR(3) DEFAULT NULL,
+                    Drops VARCHAR(3) DEFAULT NULL,
+                    Dropside VARCHAR(20) DEFAULT NULL,
+                    Hit VARCHAR(4) DEFAULT NULL,
+                    NextCheckpointDate VARCHAR(30) DEFAULT NULL,
+                    IssuePublished VARCHAR(30) DEFAULT NULL,
+                    ORTMFGDate VARCHAR(30) DEFAULT NULL,
+                    ReportedDate VARCHAR(20) DEFAULT NULL,
+                    IssueDuration VARCHAR(10) DEFAULT NULL,
+                    Today VARCHAR(15) DEFAULT NULL,
+                    Timedt VARCHAR(30) DEFAULT NULL,
+                    Unitsno VARCHAR(3) DEFAULT NULL
+                )";
+                $result = mysqli_query($con,$sql);
+                
+                if($result){
+                    echo "<h1 style='color:#337ab7;'>Fail Info table created successfully :)</h1>";
                 }
                 else{
                     echo "<h1 style='color:#a94442;'>Fail :(</h1>";
