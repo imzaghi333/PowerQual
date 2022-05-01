@@ -8,7 +8,20 @@ script2.type = "text/javascript";
 script2.src = "js/layui/layui.js"; 
 document.getElementsByTagName("head")[0].appendChild(script2);
 
-window.onload = function(){
+function addLoadEvent(func){
+    var oldonload = window.onload;
+    if(typeof window.onload != "function"){
+        window.onload = func;
+    }
+    else{
+        window.onload = function(){
+            oldonload();
+            func();
+        }
+    }
+}
+
+function addRow(){
     var units_qty = document.getElementById("units_qty");
     var number = units_qty.value;    //added on 2022-02-08,获取测试机数量
     var counts = units_qty.value;    //获取测试机数量,用于添加测试项控制循环
@@ -56,8 +69,7 @@ window.onload = function(){
     for(var j=0; j<arr_status.length; j++){
         ss += "<option>"+arr_status[j]+"</option>";
     }
-    */
-    /*
+
     var res = ""    //用于保存option test result的字符串
     var arr_result = Array();
     var test_result = document.getElementById("result["+number+"]");
@@ -69,7 +81,6 @@ window.onload = function(){
         res += "<option>"+arr_result[j]+"</option>";
     }
     */
-    // ----------------- 中国人民解放军 ---------------------------
     counts=parseInt(counts)+4;
     total_rows = getRows()-1;    //新增行之后
     var couts = 0;
@@ -92,19 +103,18 @@ window.onload = function(){
         var cell1 = row.insertCell(1);
         var cell2 = row.insertCell(2);
         var cell3 = row.insertCell(3);
-        //var cell4 = row.insertCell(3);
-        //alert("rowid="+rowid);
+
         rowid -= 2;    //编号可以从0开始
         cell0.innerHTML = '<input name="requests[]" id="requests" type="text" value="Yes" />';
         cell1.innerHTML = '<select name="group[]" id="group" class="gp">'+gg+'</select>';
         cell2.innerHTML = '<select name="test_item[]" id="test_item" class="selbox">'+tt+'</select>';
-        //cell3.innerHTML = '<input name="terminal[]" id="terminal" />';
         cell3.innerHTML = '<select name="conditions[]" id="conditions" class="selbox">'+tc+'</select>';
         
         for(i=4; i<counts;i++){
             var test_item = row.insertCell(i); 
             rowCount=rowCount+1;
             // ----------------- hidden area -------------------
+            /*
             test_item.innerHTML='<input type="text" style="width:20px;display:none;" name="subject1['+rowCount+']" id="subject1['+rowCount+']" value="">';
             test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject2['+rowCount+']" id="subject2['+rowCount+']" value="">';
             test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject3['+rowCount+']" id="subject3['+rowCount+']" value="">';
@@ -122,9 +132,10 @@ window.onload = function(){
             test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject16['+rowCount+']" id="subject15['+rowCount+']" value="">';
             test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject16['+rowCount+']" id="subject16['+rowCount+']" value="">';
             test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject17['+rowCount+']" id="subject17['+rowCount+']" value="">';
-            //Default result is Pass
-            test_item.innerHTML+='<input type="text" style="width:20px;display:none;" name="subject18['+rowCount+']" id="subject18['+rowCount+']" value="Pass">';
-            test_item.innerHTML+='<input name="test_order[]" id="test_order" type="text" style="width:20px;" />';
+            */
+            //Default result is TBD
+            test_item.innerHTML+='<input type="text" style="width:50px;display:none;" name="subject18['+rowCount+']" id="subject18['+rowCount+']" value="TBD">';
+            //test_item.innerHTML+='<input name="test_order[]" id="test_order" type="text" style="width:23px;" />';
             //test_item.innerHTML+='cell:'+rowCount;    //打印编号而已
         }
         var cell_start = row.insertCell(counts);
@@ -171,6 +182,26 @@ window.onload = function(){
     });//document ready
 }
 
+function checkTemp(){
+    var temps = document.getElementsByClassName("temp_txt");
+    //var results = document.getElementsByClassName("result_txt");
+    var orders = document.getElementsByClassName("order_txt");
+
+    for(var i=0; i<temps.length; i++){
+        if(temps[i].value=="Hot"){
+            orders[i].style.color = "#cc2229";
+        }
+        if(temps[i].value=="Room"){
+            orders[i].style.color = "#0aa344";
+        }
+        if(temps[i].value=="Cold"){
+            orders[i].style.color = "#1565c0";
+        }
+    }
+}
+addLoadEvent(addRow);
+addLoadEvent(checkTemp);
+
 // 通过样式名获取元素
 function getClass(c){
     return document.getElementsByClassName(c)
@@ -187,7 +218,7 @@ function printResult(rowid,selectid,count,currentid,rows){
     if(txt.match(reg)){
         window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=500, width=850, top=100, left=100");
     }*/
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=500, width=850, top=100, left=100");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=500, width=850, top=100, left=100");
 }
 
 //JS中fail调用fail.php
@@ -210,7 +241,6 @@ function CountRows() {
     var rows = table.getElementsByTagName("tr")
     for (var i = 0; i < rows.length; i++) {
         if (rows[i].getElementsByTagName("td").length > 0) {
-            //alert(rows[i].getElementsByTagName("td").length);
             rowCount=rowCount+rows[i].getElementsByTagName("td").length;
         }
     }
@@ -229,14 +259,13 @@ function getRows(){
     return totalRowCount;
 }
 
-// One key for pass
 function oneRowAllPass(rowid,number){
     var row_no = rowid;          //行號,從0開始計數
     var cell_length = number+4;  //單元格數量,从0开始计数
     var oTab = document.getElementById("customers");    //Test Matrix Table
     var oTbody = oTab.tBodies[0];    //表格不含標題欄部分
-    var reg1 = RegExp(/value=""/);   //匹配tes order為空的單元格,不改變默認的TBD
-    var reg2 = RegExp(/TBD/);        //匹配有tes order單元格,改變其結果為Pass
+    var reg1 = RegExp(/value=""/i);  //匹配tes order為空的單元格,不改變默認的TBD
+    var reg2 = RegExp(/TBD/i);       //匹配有tes order單元格,改變其結果為Pass
 
     //Test order從第五列開始
     for(var i=4; i<cell_length; i++){
@@ -247,5 +276,5 @@ function oneRowAllPass(rowid,number){
             oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
         }
     }
-    layer.msg("Row "+(row_no+1)+" is set all pass",{icon: 6});
+    layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
 }

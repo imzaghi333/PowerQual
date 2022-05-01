@@ -3,18 +3,23 @@ script1.type = "text/javascript";
 script1.src = "js/jquery-3.1.1.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
-var script2 = document.createElement("script"); 
-script2.type = "text/javascript"; 
-script2.src = "js/layui/layui.js"; 
-document.getElementsByTagName("head")[0].appendChild(script2);
-/*
-window.onload = function(){
-    function returnvalue(selectid,val){
-        window.opener.document.getElementById("subject["+selectid+"]").value=val;
-        window.close(this);
+function addLoadEvent(func){
+    var oldonload = window.onload;
+    if(typeof window.onload != "function"){
+        window.onload = func;
     }
-}*/
+    else{
+        window.onload = function(){
+            oldonload();
+            func();
+        }
+    }
+}
+
+
 // ----------- added on 2022-1-3 -----------
+// ----------- 2022-04-27 注释掉以下部分 -----
+/*
 // 1.Defect Mode(Symptom)
 function returnvalue1(selectid,val){
     window.opener.document.getElementById("subject1["+selectid+"]").value=val;
@@ -47,10 +52,12 @@ function returnvalue7(selectid,val){
 function returnvalue8(selectid,val){
     window.opener.document.getElementById("subject8["+selectid+"]").value=val;
 }
+*/
 // 9.TEMP
 function returnvalue9(selectid,val){
     window.opener.document.getElementById("subject9["+selectid+"]").value=val;
 }
+/*
 // 10.Dropcycles
 function returnvalue10(selectid,val){
     window.opener.document.getElementById("subject10["+selectid+"]").value=val;
@@ -83,6 +90,7 @@ function returnvalue16(selectid,val){
 function returnvalue17(selectid,val){
     window.opener.document.getElementById("subject17["+selectid+"]").value=val;
 }
+*/
 // 18.change default result
 function returnvalue18(selectid,val){
     window.opener.document.getElementById("subject18["+selectid+"]").value=val;
@@ -90,16 +98,13 @@ function returnvalue18(selectid,val){
 // added on 2022-02-17
 // 19.Fail symptom
 function returnvalue19(row_no,val){
-    window.opener.document.getElementById("fail["+row_no+"]").value+=val+"\n";
+    //alert("Row:"+row_no+" ,value:"+val);
+    var row = row_no-1;
+    window.opener.document.getElementById("fail["+row+"]").value+=val+"\n";
 }
 // 20.RCCA
 function returnvalue20(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
-    window.opener.document.getElementById("rcca["+row_no+"]").value+=val+"\n";
-}
-
-// ----------- added on 2022-04-20 -----------
-function allPass(){
-    var aBtn = document.getElementById("all_pass");
-    alert(aBtn);
+    var row = row_no-1;
+    window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
 }

@@ -276,29 +276,29 @@ mysqli_query($con,"set names utf8");
                     Results VARCHAR(20) DEFAULT 'TBD',
                     Issuestatus VARCHAR(15) DEFAULT NULL,
                     Category VARCHAR(20) DEFAULT NULL,
-                    PIC VARCHAR(20) DEFAULT NULL,
-                    JIRANO VARCHAR(15) DEFAULT NULL,
-                    SPR VARCHAR(15) DEFAULT NULL,
-                    Temp VARCHAR(10) DEFAULT NULL,
+                    PIC VARCHAR(10) DEFAULT NULL,
+                    JIRANO VARCHAR(10) DEFAULT NULL,
+                    SPR VARCHAR(10) DEFAULT NULL,
+                    Temp VARCHAR(5) DEFAULT '-',
                     Dropcycles VARCHAR(3) DEFAULT NULL,
                     Drops VARCHAR(3) DEFAULT NULL,
-                    Dropside VARCHAR(20) DEFAULT NULL,
+                    Dropside VARCHAR(5) DEFAULT NULL,
                     Hit VARCHAR(4) DEFAULT NULL,
                     Boot VARCHAR(4) DEFAULT 'NO',
-                    Testlab VARCHAR(10) DEFAULT NULL,
-                    Mfgsite VARCHAR(10) DEFAULT NULL,
-                    Testername VARCHAR(20) DEFAULT NULL,
-                    NextCheckpointDate VARCHAR(30) DEFAULT NULL,
-                    IssuePublished VARCHAR(30) DEFAULT NULL,
-                    ORTMFGDate VARCHAR(30) DEFAULT NULL,
-                    ReportedDate VARCHAR(20) DEFAULT NULL,
-                    IssueDuration VARCHAR(10) DEFAULT NULL,
+                    Testlab VARCHAR(5) DEFAULT NULL,
+                    Mfgsite VARCHAR(5) DEFAULT NULL,
+                    Testername VARCHAR(15) DEFAULT NULL,
+                    NextCheckpointDate VARCHAR(15) DEFAULT NULL,
+                    IssuePublished VARCHAR(5) DEFAULT NULL,
+                    ORTMFGDate VARCHAR(15) DEFAULT NULL,
+                    ReportedDate VARCHAR(15) DEFAULT NULL,
+                    IssueDuration VARCHAR(3) DEFAULT NULL,
                     Today VARCHAR(15) DEFAULT NULL,
                     Remarks VARCHAR(500) DEFAULT NULL,
                     Timedt VARCHAR(30) DEFAULT NULL,
                     Failinfo TEXT DEFAULT NULL,          #Fail symptom
                     Unitsno VARCHAR(3) DEFAULT NULL,    #Unit1 Unit2 Unit3....
-                    Titles VARCHAR(300) DEFAULT NULL,
+                    Titles VARCHAR(100) DEFAULT NULL,
                     Requests VARCHAR(3) DEFAULT 'Yes',
                     Terminal VARCHAR(50) DEFAULT NULL,   #With / Without Terminal
                     FAA TEXT DEFAULT NULL
@@ -316,29 +316,30 @@ mysqli_query($con,"set names utf8");
             case "FialInfo":
                 $sql = "CREATE TABLE fail_infomation(
                     FID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    Products VARCHAR(20) DEFAULT NULL,
-                    Testitems VARCHAR(500) DEFAULT NULL,
                     Defectmode1 TEXT DEFAULT NULL,    #Symptom
                     Defectmode2 TEXT DEFAULT NULL,    #Symptom+Findings
                     RCCA TEXT DEFAULT NULL,
                     Issuestatus VARCHAR(15) DEFAULT NULL,
-                    Category VARCHAR(20) DEFAULT NULL,
-                    PIC VARCHAR(20) DEFAULT NULL,
-                    JIRANO VARCHAR(15) DEFAULT NULL,
-                    SPR VARCHAR(15) DEFAULT NULL,
-                    Temp VARCHAR(10) DEFAULT NULL,
+                    Category VARCHAR(10) DEFAULT NULL,
+                    PIC VARCHAR(10) DEFAULT NULL,
+                    JIRANO VARCHAR(10) DEFAULT NULL,
+                    SPR VARCHAR(10) DEFAULT NULL,
+                    Temp VARCHAR(5) DEFAULT NULL,
                     Dropcycles VARCHAR(3) DEFAULT NULL,
                     Drops VARCHAR(3) DEFAULT NULL,
                     Dropside VARCHAR(20) DEFAULT NULL,
                     Hit VARCHAR(4) DEFAULT NULL,
-                    NextCheckpointDate VARCHAR(30) DEFAULT NULL,
-                    IssuePublished VARCHAR(30) DEFAULT NULL,
-                    ORTMFGDate VARCHAR(30) DEFAULT NULL,
-                    ReportedDate VARCHAR(20) DEFAULT NULL,
-                    IssueDuration VARCHAR(10) DEFAULT NULL,
+                    NextCheckpointDate VARCHAR(15) DEFAULT NULL,
+                    IssuePublished VARCHAR(5) DEFAULT NULL,
+                    ORTMFGDate VARCHAR(15) DEFAULT NULL,
+                    ReportedDate VARCHAR(15) DEFAULT NULL,
+                    IssueDuration VARCHAR(5) DEFAULT NULL,
                     Today VARCHAR(15) DEFAULT NULL,
-                    Timedt VARCHAR(30) DEFAULT NULL,
-                    Unitsno VARCHAR(3) DEFAULT NULL
+                    Unitsno VARCHAR(3) DEFAULT NULL,
+                    TestID BIGINT DEFAULT NULL,#和DQA_Test_Main RecordID關聯
+                    RowID VARCHAR(3) DEFAULT NULL,#行编号
+                    CellID VARCHAR(3) DEFAULT NULL,#单元格编号
+                    Results VARCHAR(20) DEFAULT 'TBD'
                 )";
                 $result = mysqli_query($con,$sql);
                 

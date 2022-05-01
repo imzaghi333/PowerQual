@@ -203,35 +203,36 @@ else{
                         $sql_result = "SELECT Results,RecordID,Defectmode1,Defectmode2,RCCA,Results,Issuestatus,Category,PIC,JIRANO,SPR,";
                         $sql_result.= "Temp,Dropcycles,Drops,Dropside,Hit,NextCheckpointDate,IssuePublished,ORTMFGDate,ReportedDate,Unitsno,FAA FROM DQA_Test_Main ";
                         $sql_result.="WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Unitsno='$no' And Testitems='$tc_txt'";
+                        
                         $check_result = mysqli_query($con, $sql_result);
                         $row_result = mysqli_fetch_array($check_result,MYSQLI_NUM);
                         //----------- added on 2021-12-29 for fail informations -----------
                         $unit_id = $row_result[1];      //一个测试记录的ID
                         $result_record = $row_result[0];//一个测试记录的ID結果
-                        /*
-                        echo "<input style='width:20px;display:none;' type='text' name='subject1[".$selectid."]' id='subject1[".$selectid."]' value='".$row_result[2]."'>";       //Defect Mode(Symptom)
-                        echo "<input style='width:20px;display:none;' type='text' name='subject2[".$selectid."]' id='subject2[".$selectid."]' value='".$row_result[3]."'>";       //Defect Mode(Symptom+Finding)
-                        echo "<input style='width:20px;display:none;' type='text' name='subject3[".$selectid."]' id='subject3[".$selectid."]' value='".$row_result[4]."'>";       //RCCA
-                        echo "<input style='width:20px;display:none;' type='text' name='subject4[".$selectid."]' id='subject4[".$selectid."]' value='".$row_result[6]."'>";       //Issuestatus
-                        echo "<input style='width:20px;display:none;' type='text' name='subject5[".$selectid."]' id='subject5[".$selectid."]' value='".$row_result[7]."'>";       //Category
-                        echo "<input style='width:20px;display:none;' type='text' name='subject6[".$selectid."]' id='subject6[".$selectid."]' value='".$row_result[8]."'>";       //PIC
-                        echo "<input style='width:20px;display:none;' type='text' name='subject7[".$selectid."]' id='subject7[".$selectid."]' value='".$row_result[9]."'>";       //JIRANO
-                        echo "<input style='width:20px;display:none;' type='text' name='subject8[".$selectid."]' id='subject8[".$selectid."]' value='".$row_result[10]."'>";      //SPR
-                        echo "<input style='width:20px;display:none;' type='text' name='subject9[".$selectid."]' id='subject9[".$selectid."]' value='".$row_result[11]."'>";      //TEMP
-                        echo "<input style='width:20px;display:none;' type='text' name='subject10[".$selectid."]' id='subject10[".$selectid."]' value='".$row_result[12]."'>";    //Dropcycles
-                        echo "<input style='width:20px;display:none;' type='text' name='subject11[".$selectid."]' id='subject11[".$selectid."]' value='".$row_result[13]."'>";    //Drops
-                        echo "<input style='width:20px;display:none;' type='text' name='subject12[".$selectid."]' id='subject12[".$selectid."]' value='".$row_result[14]."'>";    //Dropside
-                        echo "<input style='width:20px;display:none;' type='text' name='subject13[".$selectid."]' id='subject13[".$selectid."]' value='".$row_result[15]."'>";    //Hit
-                        echo "<input style='width:20px;display:none;' type='text' name='subject14[".$selectid."]' id='subject14[".$selectid."]' value='".$row_result[16]."'>";    //NextCheckpointDate
-                        echo "<input style='width:20px;display:none;' type='text' name='subject15[".$selectid."]' id='subject15[".$selectid."]' value='".$row_result[17]."'>";    //IssuePublished
-                        echo "<input style='width:20px;display:none;' type='text' name='subject16[".$selectid."]' id='subject16[".$selectid."]' value='".$row_result[18]."'>";    //ORTMFGDate
-                        echo "<input style='width:20px;display:none;' type='text' name='subject17[".$selectid."]' id='subject17[".$selectid."]' value='".$row_result[19]."'>";    //ReportedDate
-                        */
+                        
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject1[".$selectid."]' id='subject1[".$selectid."]' value='".$row_result[2]."'>";       //Defect Mode(Symptom)
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject2[".$selectid."]' id='subject2[".$selectid."]' value='".$row_result[3]."'>";       //Defect Mode(Symptom+Finding)
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject3[".$selectid."]' id='subject3[".$selectid."]' value='".$row_result[4]."'>";       //RCCA
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject4[".$selectid."]' id='subject4[".$selectid."]' value='".$row_result[6]."'>";       //Issuestatus
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject5[".$selectid."]' id='subject5[".$selectid."]' value='".$row_result[7]."'>";       //Category
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject6[".$selectid."]' id='subject6[".$selectid."]' value='".$row_result[8]."'>";       //PIC
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject7[".$selectid."]' id='subject7[".$selectid."]' value='".$row_result[9]."'>";       //JIRANO
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject8[".$selectid."]' id='subject8[".$selectid."]' value='".$row_result[10]."'>";      //SPR
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject9[".$selectid."]' id='subject9[".$selectid."]' value='".$row_result[11]."'>";      //TEMP
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject10[".$selectid."]' id='subject10[".$selectid."]' value='".$row_result[12]."'>";    //Dropcycles
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject11[".$selectid."]' id='subject11[".$selectid."]' value='".$row_result[13]."'>";    //Drops
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject12[".$selectid."]' id='subject12[".$selectid."]' value='".$row_result[14]."'>";    //Dropside
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject13[".$selectid."]' id='subject13[".$selectid."]' value='".$row_result[15]."'>";    //Hit
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject14[".$selectid."]' id='subject14[".$selectid."]' value='".$row_result[16]."'>";    //NextCheckpointDate
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject15[".$selectid."]' id='subject15[".$selectid."]' value='".$row_result[17]."'>";    //IssuePublished
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject16[".$selectid."]' id='subject16[".$selectid."]' value='".$row_result[18]."'>";    //ORTMFGDate
+                        //echo "<input style='width:20px;display:none;' type='text' name='subject17[".$selectid."]' id='subject17[".$selectid."]' value='".$row_result[19]."'>";    //ReportedDate
+                        echo "<input class='temp_txt' type='text' name='subject9[".$selectid."]' id='subject9[".$selectid."]' value='".$row_result[11]."'>";//TEMP
+
                         echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
-                        echo "<input style='width:20px;' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
+                        echo "<input class='order_txt' type='text' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
 		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-		                //echo "<input type='text' style='width:20px;' name='uint_no[]' value="."'$info[2]'"." readonly />";   //Unit no: 1,2,3.......
                         echo "cell: ".$selectid;
                     }
                     echo "</td>";

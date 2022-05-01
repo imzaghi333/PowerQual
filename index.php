@@ -18,7 +18,7 @@ date_default_timezone_set("PRC");
 <body>
 <div class="header">
     <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
-    <div class="title"><a href="javascript:layer.msg('推荐使用Chrome或MS Edge浏览器 ^(*￣(oo)￣)^',{icon:6});">DQA Power Qual<br>Matrix auto transforming</a></div>
+    <div class="title"><a>DQA Power Qual</a></div>
     <div class="search_menu">
         <form name='search' action='./searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
             <li><button class='search_btn' type='submit' name='search_btn'><span class="icon">L</span>&nbsp;&nbsp;&nbsp;搜索</button></li>
@@ -100,7 +100,7 @@ date_default_timezone_set("PRC");
                                 ?>
                             </td>
                         </tr>
-                        <tr><td>Year/Month <font size="3" color="#be0f2d">*</font></td><td><input name="ym" type="month" /></td></tr>
+                        <tr><td>Year/Month <font size="3" color="#be0f2d">*</font></td><td><input name="ym" type="month" placeholder="1949-10" /></td></tr>
                         <tr>
                             <td>Phase</td>
                             <td>
@@ -1035,11 +1035,12 @@ date_default_timezone_set("PRC");
             }
             ?>
             <div class="note">
-                <p>1. Query any item. Tester, Product or start time</p>
+                <p>1. Query any item. Tester, Product or start time.</p>
+                <p>2. Recommond Google Chrome, Microsoft Edge.</p>
                 <p>
                     <?php
                     $days = date("z")+1;
-                    echo "2. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
+                    echo "3. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
                     ?>
                 </p>
             </div>
