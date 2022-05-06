@@ -30,7 +30,7 @@ date_default_timezone_set("PRC");
 <div class="container">
     <div class="left">
         <div class="action">
-            <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php">Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="edit-icon"></span><span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
@@ -75,7 +75,7 @@ date_default_timezone_set("PRC");
                             </td>
                         </tr>
                         <tr>
-                            <td>Product</td>
+                            <td>Product &nbsp;&nbsp;<span class="tablet-icon"></span></td>
                             <td>
                                 <?php
                                 echo "<select name='product'>";
@@ -1036,13 +1036,14 @@ date_default_timezone_set("PRC");
             ?>
             <div class="note">
                 <p>1. Query any item. Tester, Product or start time.</p>
-                <p>2. Recommond Google Chrome, Microsoft Edge.</p>
+                <p>2. Recommond Google Chrome <img src="./images/chrome.jpg" width="15" /> or Microsoft Edge <img src="./images/Edge.jpg" width="15" /></p>
                 <p>
                     <?php
                     $days = date("z")+1;
                     echo "3. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
                     ?>
                 </p>
+                <p>4. Think over before deleting a test matrix.</p>
             </div>
             </div>
         </div>

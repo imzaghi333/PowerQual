@@ -179,24 +179,6 @@ function checkForm7(){
         layer.msg("總得選個查詢條件吧!~~~",{icon: 5});
         return false;
     }
-    /*
-    else if(tester.value!="" && product.value!=""){
-        layer.msg("选一个条件就可以了!~~~",{icon: 5});
-        return false;
-    }
-    else if(tester.value!="" && tt.value!=""){
-        layer.msg("选一个条件就可以了!~~~",{icon: 5});
-        return false;
-    }
-    else if(product.value!="" && tt.value!=""){
-        layer.msg("选一个条件就可以了!~~~",{icon: 5});
-        return false;
-    }
-    else if(tester.value!="" && product.value!="" && tt.value!=""){
-        layer.msg("选一个条件就可以了!~~~",{icon: 5});
-        return false;
-    }
-    */
     else{
         return true;
     }
@@ -222,8 +204,8 @@ function printResult(value){
 
 function confirmDel(id){
     if(window.confirm("您確定刪除嗎？")){
-		location.href="./comm/delete.php?id="+id
-	}
+        location.href="./comm/delete.php?id="+id
+    }
 }
 
 function deleteMatrix(username,product,starting){

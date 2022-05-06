@@ -108,3 +108,12 @@ function returnvalue20(row_no,val){
     var row = row_no-1;
     window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
 }
+
+//added on 2022-05-05 for delete a failure
+function delOneFailure(){
+    if(window.confirm("您確定刪除嗎？")){
+        var del_select = document.getElementById("del_fail");
+        var del_val = del_select.value;
+        window.location.href="./comm/delete.php?failure_id="+del_val;
+    }
+}

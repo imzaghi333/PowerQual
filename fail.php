@@ -15,13 +15,13 @@ $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
 for($i=$number; $i>0; $i--){
     $cell_id = $select_id-$i+1;
-    echo "第".$row_no."行每个单元格编号: ".$cell_id."<br>";
+    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
     array_push($cells,$cell_id);
 }
 
 for($i=($number-1); $i>=0; $i--){
     $tmp_id = $currentid-$rows*$i;
-    echo "第".$row_no."行每个单元格测试ID: ".$tmp_id."<br>";
+    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
     array_push($record_ids,$tmp_id);
 }
 ?>
@@ -80,13 +80,43 @@ if(isset($_GET["count"])){
 else if(isset( $_GET["cell"])){
     $select_id = $_GET["cell"];     //一个单元格编号
     $current_id = $_GET["id"];      //一个测试记录ID
-    $clicked_unit = $_GET["unit"];  //选择的手机编号
+    $clicked_unit = substr($_GET["unit"],4);  //选择的手机编号,'unit'字符被舍弃，只保留数字
     $row_id = $_GET["rowid"]+1;     //行編號
-    echo "<p class='txt_for_check'>Adding new failure info below</p>";
-    echo "您選中了".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
+    echo "您選中了Unit".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
+    $sql_query = "SELECT FID,TestID,RowID,CellID,Unitsno,Results FROM fail_infomation WHERE TestID='$current_id' and RowID='$row_id' and CellID='$select_id' and Unitsno='$clicked_unit' ";
+    //echo $sql_query;
+    $check = mysqli_query($con,$sql_query);
+    $row_nums = mysqli_num_rows($check);
+    if($row_nums){
+        echo "<span class='txt_for_check'>Check the added failure here.</span>";
+        echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
+        for($i=0; $i<$row_nums; $i++){
+            echo "<th>Record ".($i+1)."</th>";
+        }
+        echo "<th>返回</th>";
+        echo "<th>Delete</th>";
+        echo "<tr>";
+        for($loop=0; $loop<$row_nums; $loop++){
+            mysqli_data_seek($check,$loop);
+            $info = mysqli_fetch_array($check,MYSQLI_BOTH);
+            echo "<td><a href='fail_edit.php?id=$info[0]&unit=$info[4]' >".$info[5]."</a></td>";
+        }
+        echo '<td><input type="button" style="width:50px; background-color:#697323; color:#fff;" onclick="history.go(-1);" value="Back" /></td>';
+        echo "<td>";
+        echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();' >";
+        echo "<option value=''>請選擇</option>";
+        for($loop=0; $loop<$row_nums; $loop++){
+            mysqli_data_seek($check,$loop);
+            $info = mysqli_fetch_array($check,MYSQLI_BOTH);
+            echo "<option value='$info[0]'>Record".($loop+1)."</option>";
+        }
+        echo "</select></td>";
+        echo "</tr>";
+        echo "</table>";
+    }
 ?>
 <div class="fail">
-    <p class="info_title">Add Failure Information</p>
+    <p class="info_title">Add New Failure Information</p>
     <form id="fain_info" name="fain_info" method="POST" action="">
         <table align="center" class="form_fail">
             <tbody>
@@ -109,7 +139,7 @@ else if(isset( $_GET["cell"])){
                 <td>
                 <?php
                 echo "<select name='df1'>";
-                echo "<option value=''>请选择</option>";
+                echo "<option value=''>請選擇</option>";
                 $opts = mysqli_query($con, "SELECT DefectMode FROM dropbox_df1");
                 while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                     echo "<option value="."'$info[0]'".">".$info[0]."</option>";
@@ -123,7 +153,7 @@ else if(isset( $_GET["cell"])){
                 <td>
                 <?php
                 echo "<select name='df2'>";
-                echo "<option value=''>请选择</option>";
+                echo "<option value=''>請選擇</option>";
                 $opts = mysqli_query($con, "SELECT DefectMode FROM dropbox_df2");
                 while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                     echo "<option value="."'$info[0]'".">".$info[0]."</option>";
@@ -141,7 +171,7 @@ else if(isset( $_GET["cell"])){
                 <td>
                     <?php
                     echo "<select name='issue_status'>";
-                    echo "<option value=''>请选择</option>";
+                    echo "<option value=''>請選擇</option>";
                     $opts = mysqli_query($con, "SELECT ISSUE_Status FROM dropbox_issue_status");
                     while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                         echo "<option value="."'$info[0]'".">".$info[0]."</option>";
@@ -154,7 +184,7 @@ else if(isset( $_GET["cell"])){
                 <td>Category</td>
                 <td>
                 <select name="category">
-                    <option value="">请选择</option>
+                    <option value="">請選擇</option>
                     <option value="Component">Component</option>
                     <option value="Design">Design</option>
                     <option value="Process">Process</option>
@@ -168,7 +198,7 @@ else if(isset( $_GET["cell"])){
                 <td>TEMP<font color="#cc2229" size="1">*</font></td>
                 <td>
                     <select name="temp">
-                        <option value="">请选择</option>
+                        <option value="">請選擇</option>
                         <option value="Cold">Cold</option>
                         <option value="Hot">Hot</option>
                         <option value="Room">Room</option>
@@ -182,7 +212,7 @@ else if(isset( $_GET["cell"])){
                 <td>
                     <?php
                     echo "<select name='drop_side'>";
-                    echo "<option value=''>请选择</option>";
+                    echo "<option value=''>請選擇</option>";
                     $opts = mysqli_query($con, "SELECT Dropside FROM dropbox_dropside");
                     while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                         echo "<option value="."'$info[0]'".">".$info[0]."</option>";
@@ -197,7 +227,7 @@ else if(isset( $_GET["cell"])){
                 <td>Issue Published</td>
                 <td>
                     <select name="publish">
-                        <option value="">请选择</option>
+                        <option value="">請選擇</option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>
@@ -246,7 +276,7 @@ else if(isset( $_GET["cell"])){
         // ----- import hidden text ------
         $cell_no = $_POST["cell_no"];
         $test_id = $_POST["test_id"];
-        $unit_no = substr($_POST["unit_no"],4);
+        $unit_no = $_POST["unit_no"];
         $row_no = $_POST["row_no"];
 
         if($rcca){
@@ -308,20 +338,7 @@ else if(isset( $_GET["cell"])){
 </div>
 <?php
 }
-else{
-    $select_id = $_GET["cell"];     //一个单元格编号
-    $current_id = $_GET["id"];      //一个测试记录ID
-    $clicked_unit = $_GET["unit"];  //选择的手机
-    $row_id = $_GET["rowid"]+1;     //行編號
-    $unit_id = substr($clicked_unit,4);//手机编号
-    //select FID,Temp,Results,Unitsno,TestID,RowID,CellID from fail_infomation where Unitsno=3 and TestID=90 and RowID=2 and CellID=8
-    echo "<p class='txt_for_check'>更新或修改".$unit_no."的failure info</p>";
-    $sql_check = "SELECT * FROM fail_infomation WHERE Unitsno='$unit_id' and TestID='$current_id' and RowID='$row_id' and CellID='$select_id' ";
-    $check = mysqli_query($con,$sql_check);
-    $rows = mysqli_fetch_array($check,MYSQLI_BOTH);
-}
 ?>
 
 </body>
-
 </html>

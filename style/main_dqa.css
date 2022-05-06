@@ -1,13 +1,11 @@
-/* *********************************************************
-層曡樣式表，由老錢我完成O(∩_∩)O
-CSS不難,只是比較煩人.但是如果你想做的很酷炫那就真的很難了!~~~~
-************************************************************ */
+/* css-叠样式表 (Cascading Style Sheets) 老钱我编写 */
 
 @charset "utf-8";
+
 @font-face {
-    /*不是Helvetica字体,只是目录名叫Helvetica而已 - 華中師範大學*/
-    font-family: "ccnu.woff";
-    src: url(Helvetica/ccnu.woff);
+    /*不是Helvetica字体,只是目录名叫Helvetica而已 - 華東師範大學*/
+    font-family: "ecnu.otf";
+    src: url(Helvetica/ecnu.otf);
 }
 @font-face {
     font-family: web-symbol;
@@ -18,13 +16,10 @@ CSS不難,只是比較煩人.但是如果你想做的很酷炫那就真的很難
     font-family: "JetBrainsMono-Regular.woff2";
     src: url(Helvetica/JetBrainsMono-Regular.woff2);
 }
-
-/* ------ 全局HTML标签样式设置 ------- */
 body{
-    margin: 0px; 
-    padding: 0px; 
+    margin: 0px; padding: 0px;
     font-size: 14px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     background-image: url(../images/background.jpg);
     background-size: cover;
 }
@@ -32,10 +27,11 @@ ul,li,a,ol,img{margin: 0;padding: 0;}
 ul,li,ol{list-style:none;}
 img{border:0;}
 textarea{background: transparent;}
-/* ------ END ------- */
-
 .clear{clear:both;}
-.icon{font-size:14px;font-family:"web-symbol";}
+.icon{
+    font-size:14px;
+    font-family:"web-symbol";    /*特殊符號*/
+}
 .container{ width: 1200px;margin: 0 auto; }
 .btn_download {
     color: #fff;
@@ -157,10 +153,10 @@ textarea{background: transparent;}
     transform: rotate(-45deg);
 }
 .tablet-icon {
-    color: #00698f;
+    color: #333;
     position: absolute;
     margin-left: 2px;
-    margin-top: 10px;
+    margin-top: 0;
     width: 15px;
     height: 14px;
     border-radius: 2px;
@@ -187,37 +183,6 @@ textarea{background: transparent;}
     height: 1px;
     color: white;
     background-color: currentColor;
-}
-.link-icon {
-    color: #00698f;
-    position: absolute;
-    margin-left: 8px;
-    margin-top: 10px;
-    width: 7px;
-    height: 1px;
-    background-color: currentColor;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-.link-icon:before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -7px;
-    width: 8px;
-    height: 5px;
-    border-radius: 2px;
-    border: solid 1px currentColor;
-}
-.link-icon:after {
-    content: '';
-    position: absolute;
-    top: -3px;
-    right: -7px;
-    width: 8px;
-    height: 5px;
-    border-radius: 2px;
-    border: solid 1px currentColor;
 }
 .trash-icon {
     color: #00688f;
@@ -300,7 +265,7 @@ textarea{background: transparent;}
     float: left;
     font-weight: bold;
     font-style: italic;
-    font-family: "ccnu.woff"; 
+    font-family: "ecnu.otf"; 
     margin-top: 10px;
     margin-left: 10px;
 }
@@ -338,6 +303,7 @@ textarea{background: transparent;}
 
 /* ----- index left css ---------*/
 .container .left{width: 200px;height: 800px;float: left;}
+
 .container .left .action div{
     width: 180px;
     height: 45px;
@@ -353,11 +319,12 @@ textarea{background: transparent;}
 
 /* -----------index right css ----------*/
 .container .right{width:1000px;float: right;}
+
 .container .right .info{
     color: #ff5722;
     font-size: 24px;
     text-align: center;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 .container .right .form1 {
     width: 80%;
@@ -365,7 +332,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #393d49;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 .container .right .form1 tr,td {padding: 4px 4px;}
 .container .right .form1 select,input {
@@ -403,7 +370,7 @@ textarea{background: transparent;}
     width: 100%;
     border-collapse:collapse;
     font-size: 12px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     white-space: nowrap;
 }
 .container .right .my_table tbody tr:hover{ /* 鼠标到某一行背景变黄色 */
@@ -438,7 +405,7 @@ textarea{background: transparent;}
 }
 .container .right .my_table a:hover{color: #ff0029;text-decoration: none;}
 .container .right .query_desc{
-    font-family:"ccnu.woff";
+    font-family:"ecnu.otf";
     font-size: 14px;
     color: #00698f;
     text-align: center;
@@ -483,7 +450,7 @@ textarea{background: transparent;}
     width: 70%;
     border-collapse:collapse;
     font-size: 12px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 .container .right .my_del_table td{border: 1px solid #ccc;}
 .container .right .my_del_table th{
@@ -495,7 +462,7 @@ textarea{background: transparent;}
 }
 .container .fail_info{
     float: right;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     margin-right: 30px;
     color: #fff;
     background-color: #ff5722;
@@ -508,7 +475,7 @@ textarea{background: transparent;}
 .container .scan_sn{
     border-collapse: collapse;
     font-size: 12px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     white-space: nowrap
 }
 .container .scan_sn th{
@@ -533,7 +500,7 @@ textarea{background: transparent;}
     margin-bottom: 15px;
 }
 .content h1{
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     font-size: 20px;
     color: #00698f;
     text-align: center;
@@ -763,7 +730,7 @@ textarea{background: transparent;}
     text-decoration: none;
     color: #cc2229;
     font-size: 16px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 
 /* ------- loading animation ------- */
@@ -834,7 +801,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #393d49;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 .container .right .form7 tr,td {
     padding: 4px 4px;
@@ -884,19 +851,19 @@ textarea{background: transparent;}
     height: 631px;
     color: #fff;
     font-size: 16px;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     background: url(../images/cc1.jpg) no-repeat;
     background-size: cover;
 }
 .dropbox .txt_info{
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     font-size: 30px;
     text-align: center;
     color: #cb364a;
     margin-top: 15px;
 }
 .dropbox .xqq{
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     font-size: 14px;
     color: #00698f;
     margin-left: 5px;
@@ -927,7 +894,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #355386;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     margin-left: 80px;
 }
 .container .right .form4 select{
@@ -955,7 +922,7 @@ textarea{background: transparent;}
     color: #ff5722;
     font-size: 24px;
     text-align: center;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
 }
 .fail .form_fail {
     width: 70%;
@@ -963,7 +930,7 @@ textarea{background: transparent;}
     font-size: 14px;
     font-weight: bold;
     color: #355386;
-    font-family: "ccnu.woff";
+    font-family: "ecnu.otf";
     margin-left: 80px;
 }
 .fail .form_fail select{
@@ -995,16 +962,21 @@ textarea{background: transparent;}
     background-color: #5fb878;
     color:#1565c0;
 }
-.unit_table td {border: 1px solid #333;}
+.unit_table td {border: 1px dotted #333;}
 .unit_table th {
     font-size:12px;
     text-align:center;
     background-color:#333;
     color:#fff;
-    border: 1px solid #333;
+    border: 1px dotted #333;
 }
 .unit_table a{text-decoration: none;color: #1565c0;}
 .unit_table a:hover{text-decoration: none;color: #b92b27;}
+.unit_table .del_fail{
+    padding: 5px;
+    border: 1px solid #f1f1f1;
+    border-radius: 4px;
+}
 
 /* textare设为全局应用*/
 .text-adaption{

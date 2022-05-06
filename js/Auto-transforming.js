@@ -218,7 +218,7 @@ function printResult(rowid,selectid,count,currentid,rows){
     if(txt.match(reg)){
         window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=500, width=850, top=100, left=100");
     }*/
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=500, width=850, top=100, left=100");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100");
 }
 
 //JS中fail调用fail.php
@@ -231,7 +231,7 @@ function printMatrixResult(rowid,selectid,count,currentid,rows){
     if(txt.match(reg)){
         window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=500, width=850, top=100, left=100");
     }*/
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=500, width=850, top=100, left=100");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=800, width=950, top=100, left=100");
 }
 
 //获取表格的单元格数量
