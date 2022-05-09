@@ -16,7 +16,6 @@ function addLoadEvent(func){
     }
 }
 
-
 // ----------- added on 2022-1-3 -----------
 // ----------- 2022-04-27 注释掉以下部分 -----
 /*
@@ -109,7 +108,10 @@ function returnvalue20(row_no,val){
     window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
 }
 
-//added on 2022-05-05 for delete a failure
+/**
+ * added on 2022-05-05 for deleting a failure record
+ * 刪除一個failure記錄,數據保留在數據庫,但不知頁面上顯示,PHP文件裏設置Unitsno=NULL即可
+ */
 function delOneFailure(){
     if(window.confirm("您確定刪除嗎？")){
         var del_select = document.getElementById("del_fail");

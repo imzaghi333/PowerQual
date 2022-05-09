@@ -9,7 +9,7 @@ $select_id = $_GET["cellid"];          //一行最后一个单元格编号
 $number    = $_GET["count"];          //测试机数量
 $currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
 $rows      = $_GET["rows"];           //测试总行数 
-//echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
+echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
 $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
@@ -51,7 +51,6 @@ if(isset($_GET["count"])){
         ?>
     </tr>
     </thead>
-    <!-- tbody部分 -->
     <tbody>
     <tr>
         <?php
@@ -72,7 +71,6 @@ if(isset($_GET["count"])){
         ?>
     </tr>
     </tbody>
-    <!-- tbody部分結束 -->
 </table>
 <!-- Link 部分結束 -->
 <?php
@@ -83,10 +81,17 @@ else if(isset( $_GET["cell"])){
     $clicked_unit = substr($_GET["unit"],4);  //选择的手机编号,'unit'字符被舍弃，只保留数字
     $row_id = $_GET["rowid"]+1;     //行編號
     echo "您選中了Unit".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
+
+    /**
+     * 獲取到已添加的failure,可以對其進行查看、編輯、刪除
+     */
     $sql_query = "SELECT FID,TestID,RowID,CellID,Unitsno,Results FROM fail_infomation WHERE TestID='$current_id' and RowID='$row_id' and CellID='$select_id' and Unitsno='$clicked_unit' ";
-    //echo $sql_query;
     $check = mysqli_query($con,$sql_query);
-    $row_nums = mysqli_num_rows($check);
+    $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
+
+    /**
+     * 如果該測試機沒有任何測試fail記錄,這段將不會運行
+     */
     if($row_nums){
         echo "<span class='txt_for_check'>Check the added failure here.</span>";
         echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
@@ -101,9 +106,9 @@ else if(isset( $_GET["cell"])){
             $info = mysqli_fetch_array($check,MYSQLI_BOTH);
             echo "<td><a href='fail_edit.php?id=$info[0]&unit=$info[4]' >".$info[5]."</a></td>";
         }
-        echo '<td><input type="button" style="width:50px; background-color:#697323; color:#fff;" onclick="history.go(-1);" value="Back" /></td>';
+        echo '<td><input type="button" style="width:50px; background-color:#697323; color:#fff;" onclick="history.go(-1);" value="Back" /></td>';//返回上一頁
         echo "<td>";
-        echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();' >";
+        echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();' >";//刪除不要的記錄,采用select方式
         echo "<option value=''>請選擇</option>";
         for($loop=0; $loop<$row_nums; $loop++){
             mysqli_data_seek($check,$loop);
@@ -115,6 +120,7 @@ else if(isset( $_GET["cell"])){
         echo "</table>";
     }
 ?>
+<!-- 默認是添加新的failure information -->
 <div class="fail">
     <p class="info_title">Add New Failure Information</p>
     <form id="fain_info" name="fain_info" method="POST" action="">
@@ -336,6 +342,7 @@ else if(isset( $_GET["cell"])){
     }
     ?>
 </div>
+<!-- add new failure info end here -->
 <?php
 }
 ?>

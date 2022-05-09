@@ -16,6 +16,7 @@ date_default_timezone_set("PRC");
     <title>Power Query</title>
 </head>
 <body>
+<!-- header部分 -->
 <div class="header">
     <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
     <div class="title"><a>DQA Power Qual</a></div>
@@ -27,7 +28,9 @@ date_default_timezone_set("PRC");
         </form>
     </div>
 </div>
+<!-- header部分結束 -->
 <div class="container">
+    <!-- 左邊菜單欄 -->
     <div class="left">
         <div class="action">
             <div><a href="index.php">Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="edit-icon"></span><span class="p_right">&#10148</span></a></div>
@@ -41,6 +44,7 @@ date_default_timezone_set("PRC");
             <div><?php echo "Your IP: ".$_SERVER ['REMOTE_ADDR']; ?></div>
         </div>
     </div>
+    <!-- 左邊菜單欄結束 -->
     <div class="right">
         <?php
         if($_GET['dowhat'] == 'start' || $_POST['dowhat'] == 'startdo'){
@@ -615,6 +619,9 @@ date_default_timezone_set("PRC");
         </div>
         <?php
         }
+        /**
+         * 查看一條測試記錄, 你可以在這裏編輯一條測試記錄
+         */
         else if($_GET['dowhat'] == 'data' || $_POST['dowhat'] == 'datado'){
         ?>
         <div>
@@ -733,8 +740,10 @@ date_default_timezone_set("PRC");
         </div>
         <?php
         }
+        /**
+         * 默認查詢Test Matrix, 2021-11-11添加, 可以選擇一個條件查詢, 也可以多條件查詢
+         */
         else{
-        //2021-11-15
         ?>
         <div>
             <p class="info">Auto Transforming Begins Here ... <img src="./images/getting_started.svg" height="25" />
@@ -772,7 +781,6 @@ date_default_timezone_set("PRC");
                         </td>
                     </tr>
                     <tr><td>開始日期: </td><td><input name="starting" type="date" /></td></tr>
-                    <!--<tr><td>結束日期:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="3" color="#be0f2d">*</font></td><td><input name="ending" type="date" /></td></tr>-->
                     <tr>
                         <td colspan="2" align="center">
                             <button class="btn_query" type="submit">查 詢&nbsp;&nbsp;&nbsp;<span class="icon">L</span></button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -783,9 +791,10 @@ date_default_timezone_set("PRC");
                 </table>
             </form>
             <?php
-            // added on 2022-01-10 for DQA request
-            // 查詢條件是否可擇一來進行篩選
-            // 篩選後的清單可用展開方式供選擇
+            /**
+             * added on 2022-01-10 for DQA request
+             * 查詢條件是否可擇一來進行篩選, 也可以多條件篩選, 篩選後的清單可用展開方式供選擇
+             */
             if(isset($_POST["query"]) && $_POST["query"]=="query_do"){
                 $user = $_POST["tester"];     //1.選取的測試人名
                 $nickname = $_POST["product"];//2.選取的product
@@ -1052,12 +1061,15 @@ date_default_timezone_set("PRC");
         mysqli_close($con);
         ?>
     </div>
+    <!-- 清除浮動 -->
     <div class="clear"></div>
-    
 </div>
+
+<!-- 底部 footer -->
 <div class="footer">
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
     <img class="logo_white" src="./images/logo-small_white.svg" height="40" alt="Wistronits">
 </div>
+
 </body>
 </html>

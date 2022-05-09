@@ -1,4 +1,8 @@
 <?php
+/**
+ * Wistron mail: Felix_Qian@Wistron.com 
+ * GitHub: https://github.com/imzaghi333
+ */
 require_once("./js/conf.php");
 mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
@@ -9,9 +13,16 @@ if(isset($_GET["id"])){
     $unit_not = $_GET["unit"];
     $check = mysqli_query($con, "SELECT * FROM fail_infomation WHERE FID='$fail_id' ");  //query one fail item
     $row = mysqli_fetch_array($check,MYSQLI_BOTH);
+
+    //從另一張表獲取Test item,Product
     $record_id = $row[21];
-    $oneRowRecord = mysqli_query($con,"SELECT Testitems FROM DQA_Test_Main WHERE RecordID='$record_id' ");//get test item
-    $test_item = mysqli_fetch_array($oneRowRecord,MYSQLI_BOTH)[0];
+    $test_item = "";
+    $product_name = "";
+    $oneRowRecord = mysqli_query($con,"SELECT Testitems,Products FROM DQA_Test_Main WHERE RecordID='$record_id' ");//get test item
+    while($info = mysqli_fetch_array($oneRowRecord,MYSQLI_BOTH)){
+        $test_item = $info[0];
+        $product_name = $info[1];
+    }
 }
 ?>
 
@@ -23,11 +34,12 @@ if(isset($_GET["id"])){
     <link rel="stylesheet" type="text/css" href="style/main_dqa.css">
     <script type="text/javascript" src="./js/failinfo.js"></script>
     <link rel="shortcut icon" href="./images/favior.ico">
-    <title>View Failure Info</title>
+    <title>View <?php echo $product_name; ?> Failure Info</title>
 </head>
 <body>
+<p class="txt_for_check"><?php echo "Product: ".$product_name." ,Test Item: ".$test_item; ?></p>
 <div class="fail">
-    <p class="info_title">Viewing Unit<?php echo $unit_not."'s ".$test_item;  ?> Failure Information <span class="icon">f</span></p>
+    <p class="info_title">Viewing Unit<?php echo $unit_not."'s ";  ?> Failure Information <span class="icon">f</span></p>
     <!-- ----- Existed failure is here :) ----- -->
     <form id="fail_edit" name="fail_edit" method="POST" action="">
         <table align="center" class="form_fail">

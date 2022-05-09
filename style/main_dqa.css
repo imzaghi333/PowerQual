@@ -1,4 +1,6 @@
-/* css-叠样式表 (Cascading Style Sheets) 老钱我编写 */
+/** 
+* css-叠样式表 (Cascading Style Sheets) 老钱我编写 
+*/
 
 @charset "utf-8";
 
@@ -8,6 +10,7 @@
     src: url(Helvetica/ecnu.otf);
 }
 @font-face {
+    /* 特殊符號, 比如用戶圖標 f圖標.....*/
     font-family: web-symbol;
     src: url(Helvetica/websymbols.ttf)
 }
@@ -27,12 +30,13 @@ ul,li,a,ol,img{margin: 0;padding: 0;}
 ul,li,ol{list-style:none;}
 img{border:0;}
 textarea{background: transparent;}
-.clear{clear:both;}
+.clear{clear:both;}/*清除浮動*/
 .icon{
     font-size:14px;
     font-family:"web-symbol";    /*特殊符號*/
 }
 .container{ width: 1200px;margin: 0 auto; }
+/*Button和符號CSS*/
 .btn_download {
     color: #fff;
     background-color: #00592d;
@@ -74,7 +78,7 @@ textarea{background: transparent;}
 }
 .btn_query{
     color: #fff;
-    background-color: #1e9fef;
+    /*background-color: #1e9fef;*/
     border-color: #1e9fef;
     cursor: pointer;
     font-size: 14px;
@@ -82,6 +86,9 @@ textarea{background: transparent;}
     height: 30px; 
     width: 100px;
     text-align: center;
+    background: #0052D4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6FB1FC, #4364F7, #0052D4);
+    background: linear-gradient(to right, #6FB1FC, #4364F7, #0052D4);
 }
 .btn_reset{
     color: #fff;
@@ -352,7 +359,7 @@ textarea{background: transparent;}
     font-size:200%
 }
 .container .right .note{
-    color: #424c50;
+    color: #0083b0;
     font: 12px;
     text-align:left;
     text-indent: 2rem;

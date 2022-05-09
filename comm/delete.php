@@ -38,13 +38,12 @@ if(isset($_GET["username"])&&isset($_GET["product"])&&isset($_GET["starting"])){
 }
 
 /**
- * 刪除一個failure,數據保留在數據庫,但不知頁面上顯示,設置Unitsno=''即可
+ * 刪除一個failure記錄,數據保留在數據庫,但不知頁面上顯示,設置Unitsno=NULL即可
  */
 if(isset($_GET["failure_id"])){
     $del_fail_id = $_GET["failure_id"];
-    $sql_del_failure = "UPDATE fail_infomation SET Unitsno='' WHERE FID='$del_fail_id' ";
+    $sql_del_failure = "UPDATE fail_infomation SET Unitsno=NULL WHERE FID='$del_fail_id' ";
     if(mysqli_query($con,$sql_del_failure)){
-        //echo "<script>window.alert('Deleted');</script>";
         echo "<script>window.close();</script>";
     }
     mysqli_close($con);
