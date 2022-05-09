@@ -613,6 +613,7 @@ textarea{background: transparent;}
 .content .customers .result_txt{
     font-size: 12px;
     width: 40px;
+    display: none;
 }
 .content .customers .order_txt{
     font-size: 12px;
