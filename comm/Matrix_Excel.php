@@ -1,9 +1,7 @@
 <?php
-/*
-下载文件到客户端电脑的默认下载目录
-Windows  : C:\Users\username\Downloads
-Linux&Mac: ~/Desktop/Downloads
-*/
+/**
+ * Downlod current test matrx to your PC Download directory
+ */
 function browser_excel($type,$filename){
     if($type=='Excel5'){
         header('Content-Type: application/vnd.ms-excel');    //告诉浏览器将要输出xls文件
@@ -16,9 +14,9 @@ function browser_excel($type,$filename){
 }
 
 require_once("../js/conf.php");
-require_once("./functions.php");
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
+
 mysqli_query($con,"set names utf8");
 date_default_timezone_set("PRC");
 header("Content-Type:text/html;charset=utf-8");
@@ -37,7 +35,7 @@ $counts = $qty+4;    //test order从第五列开始,A-D列内容固定,Start day
 $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ";
 
 $objPHPExcel = new PHPExcel();
-$objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Data")->setDescription("Document generated via PHPExcel");
+$objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Data")->setDescription("Document generated via PHPExcel1.8.2");
 $objPHPExcel->setActiveSheetIndex(0);
 $objSheet = $objPHPExcel->getActiveSheet();
 $objSheet->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);    //设置文本居中
@@ -137,9 +135,23 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
     //Test order A,B,C......
     for($ii=0; $ii<$qty; $ii++){
         $no = $ii+1;    //Unit NO.(1,2,3,.....n)
-        $check = mysqli_query($con,"SELECT Units,RecordID,Unitsno FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Unitsno='$no' And `Groups`='$gp_txt' And Testitems='$tc_txt' ");
+        $check = mysqli_query($con,"SELECT Units,RecordID,Unitsno,Temp FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Unitsno='$no' And `Groups`='$gp_txt' And Testitems='$tc_txt' ");
         while($info=mysqli_fetch_array($check,MYSQLI_BOTH)){
             $cell_no = PHPExcel_Cell::stringFromColumnIndex($ii+4);    //从第五列开始
+            $temp = $info[3];    //Cold，Hot or Room
+            //Cold就設置order為藍色
+            if($temp=="Cold"){
+                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("1565c0");
+            }
+            //Room就設置order為綠色
+            if($temp=="Room"){
+                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("0aa344");
+            }
+            //Hot就設置order為紅色
+            if($temp=="Hot"){
+                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("cc2229");
+            }
+            //Test order写入Excel
             $objSheet->setCellValue($cell_no.$row_no,$info[0]);
         }
     }//end for
