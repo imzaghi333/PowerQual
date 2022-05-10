@@ -4,8 +4,6 @@ mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
 date_default_timezone_set("PRC");
 
-$my_ip = $_SERVER ['REMOTE_ADDR'];
-
 if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $product  = urldecode($_GET["product"]);
     $tester   = urldecode($_GET["user"]);
@@ -230,10 +228,10 @@ else{
                         echo "<input class='temp_txt' type='text' name='subject9[".$selectid."]' id='subject9[".$selectid."]' value='".$row_result[11]."'>";//TEMP
 
                         echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
-                        echo "<input class='order_txt' type='text' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
+                        echo "<input class='order_txt' type='text' name='test_order[]' id='test_order[".$selectid."]' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
-		                echo "<input type='text' style='width:30px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-                        //echo "cell: ".$selectid;
+		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
+                        echo "cell: ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution

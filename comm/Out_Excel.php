@@ -1,7 +1,7 @@
 <?php
 //下载文件到客户端电脑的下载目录
 require_once("../js/conf.php");
-//require_once("./functions.php");
+require_once("./functions.php");
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
 

@@ -16,6 +16,33 @@ function addLoadEvent(func){
     }
 }
 
+/**
+ * info裏可以給unit添加Hot,cold, room
+ */
+function setTemperature(cell){
+    var sel_id = "temp"+cell;
+    var temp_id = "subject9["+(cell-1)+"]";
+    var order_id = "test_order["+(cell-1)+"]";
+    //alert("選擇框ID: "+sel_id+", 溫度文本框ID: "+temp_id+" ,test order ID: "+order_id);
+    var selbox = document.getElementById(sel_id);
+    var selbox_val = selbox.value
+    window.opener.document.getElementById(temp_id).value=selbox_val;
+    switch (selbox_val) {
+        case "Hot":
+            window.opener.document.getElementById(order_id).style.color="#cc2229";
+            break;
+        case "Cold":
+            window.opener.document.getElementById(order_id).style.color="#1565c0";
+            break
+        case "Room":
+            window.opener.document.getElementById(order_id).style.color="#0aa344";
+            break
+    
+        default:
+            break;
+    }
+}
+
 // ----------- added on 2022-1-3 -----------
 // ----------- 2022-04-27 注释掉以下部分 -----
 /*

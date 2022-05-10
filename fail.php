@@ -1,29 +1,29 @@
 <?php
-require_once("./js/conf.php");
-mysqli_query($con,"set names utf8");
-header("Content-Type:text/html;charset=UTF-8");
-date_default_timezone_set("PRC");
+    require_once("./js/conf.php");
+    mysqli_query($con,"set names utf8");
+    header("Content-Type:text/html;charset=UTF-8");
+    date_default_timezone_set("PRC");
 
-$row_no    = $_GET["rowid"];           //选了fail那一行的编号
-$select_id = $_GET["cellid"];          //一行最后一个单元格编号
-$number    = $_GET["count"];          //测试机数量
-$currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
-$rows      = $_GET["rows"];           //测试总行数 
-echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
+    $row_no    = $_GET["rowid"];           //选了fail那一行的编号
+    $select_id = $_GET["cellid"];          //一行最后一个单元格编号
+    $number    = $_GET["count"];          //测试机数量
+    $currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
+    $rows      = $_GET["rows"];           //测试总行数 
+    echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
-$cells = array();        //一行的每个单元格编号
-$record_ids = array();   //一行的每个测试记录的RecordID
-for($i=$number; $i>0; $i--){
-    $cell_id = $select_id-$i+1;
-    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
-    array_push($cells,$cell_id);
-}
+    $cells = array();        //一行的每个单元格编号
+    $record_ids = array();   //一行的每个测试记录的RecordID
+    for($i=$number; $i>0; $i--){
+        $cell_id = $select_id-$i+1;
+        echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
+        array_push($cells,$cell_id);
+    }
 
-for($i=($number-1); $i>=0; $i--){
-    $tmp_id = $currentid-$rows*$i;
-    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
-    array_push($record_ids,$tmp_id);
-}
+    for($i=($number-1); $i>=0; $i--){
+        $tmp_id = $currentid-$rows*$i;
+        echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
+        array_push($record_ids,$tmp_id);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +66,30 @@ if(isset($_GET["count"])){
             }else{
                 $ll = "Link";
             }
-            echo "<td><a href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit=$unit_name'>".$ll."</a></td>";
+            echo "<td><a style='font-weight: bold;' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit=$unit_name'>".$ll."</a></td>";
+        }
+        ?>
+    </tr>
+    <tr>
+        <?php
+        for($i=0; $i<$number; $i++){
+            $cell = $cells[$i];
+            $id = $record_ids[$i];
+            $sql_order = mysqli_query($con,"SELECT Units FROM DQA_Test_Main WHERE RecordID='$id'");
+            $order = mysqli_fetch_array($sql_order,MYSQLI_NUM)[0];
+            $unit_name = "Unit".($i+1);
+            $ll = "";
+            if($order=="" || $order==" "){
+            $ll = ""; 
+            }else{
+                $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell);'>";
+                $ll.= "<option value=''>Temp</option>";
+                $ll.= "<option value='Hot'>Hot</option>";
+                $ll.= "<option value='Cold'>Cold</option>";
+                $ll.= "<option value='Room'>Room</option>";
+                $ll.= "</select>";
+            }
+            echo "<td>".$ll."</td>";
         }
         ?>
     </tr>
@@ -330,8 +353,8 @@ else if(isset( $_GET["cell"])){
         //echo "<script type='text/javascript'>returnvalue17(".($select_id-1).",'".$report_date."')</script>";
         echo "<script type='text/javascript'>returnvalue18(".($select_id-1).",'".$tt_result."')</script>";
         // ----------- MD --------------
-        echo "<script type='text/javascript'>returnvalue19(".$row_no.",'".$clicked_unit.":".$fail_symptom."')</script>";
-        echo "<script type='text/javascript'>returnvalue20(".$row_no.",'".$clicked_unit.":".$rcca_txt."')</script>";
+        echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";
+        echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";
 
         $sql_add = "INSERT INTO fail_infomation(Defectmode1,Defectmode2,RCCA,Issuestatus,Category,PIC,JIRANO,SPR,Temp,Dropcycles,Drops,Dropside,HIT,NextCheckpointDate,IssuePublished,ORTMFGDate,ReportedDate,Unitsno,TestID,RowID,CellID,Results) ";
         $sql_add.= "VALUES('$df1','$df2','$rcca_txt','$issue_status','$category','$pic','$jira','$spr','$temp','$drop_cycle','$drops','$drop_side','$hit_tumble','$checkpoint','$publish','$mfg_date','$report_date','$unit_no','$test_id','$row_no','$cell_no','$tt_result')";
