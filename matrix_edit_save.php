@@ -35,6 +35,11 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
     $arr_fa       = $_POST["rcca"];          //FA
     $arr_remark   = $_POST["remarks"];       //备注，不清楚DQA想写什么玩意
     $arr_result   = $_POST["subject18"];     //default is PASS
+
+    //urlencode
+    $get_test_name = urlencode($tester);
+    $get_product_name = urlencode($pr_name);
+    $get_start_day = urlencode($timedt);
       
     //有相同Test item结束
     if(count($arr_test)!=count(array_unique($arr_test))){
@@ -291,8 +296,12 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
         }
     }
     mysqli_close($con);
-    $url = "index.php";
+    //$url = "index.php";
+    $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
     $message = urlencode("数据保存完成 :)");
     header("location:success.php?url=$url&message=$message");
+}
+else{
+    echo "您没有选择Test Matrix";
 }
 ?>

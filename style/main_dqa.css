@@ -1,6 +1,7 @@
-/** 
-* css-層叠样式表 (Cascading Style Sheets) main_dqa.css
+/** *********************************************************
+* css-層叠样式表 (Cascading Style Sheets); 文件名: main_dqa.css
 * Felix Qian 2Q2L20 felix_qian@wistron.com
+* CSS做到這個效果不難，但是想做得很酷炫就有些難度了 :)
 */
 
 @charset "utf-8";
@@ -608,11 +609,6 @@ textarea{background: transparent;}
     font-size: 12px;
     background-color: #e6d999;
 }
-.content .customers .all_pass{
-    font-size: 12px;
-    background-color: #0eb83a;
-    color: #fff;
-}
 .content .customers .result_txt{
     font-size: 12px;
     width: 40px;
@@ -703,7 +699,7 @@ textarea{background: transparent;}
 
 /* ====== add sn =======*/
 .content .input_sn {
-    width: 80%;
+    width: 60%;
     border-collapse:collapse;
     font-size: 12px;
     color: #393d49;
@@ -967,11 +963,10 @@ textarea{background: transparent;}
     font-family: "JetBrainsMono-Regular.woff2";
     white-space: nowrap;
 }
-.unit_table tbody td:hover{
-    background-color: #5fb878;
-    color:#1565c0;
+.unit_table td {
+    border: 1px dotted #333; 
+    text-align: center;
 }
-.unit_table td {border: 1px dotted #333;}
 .unit_table th {
     font-size:12px;
     text-align:center;
@@ -979,12 +974,29 @@ textarea{background: transparent;}
     color:#fff;
     border: 1px dotted #333;
 }
-.unit_table a{text-decoration: none;color: #1565c0;}
-.unit_table a:hover{text-decoration: none;color: #b92b27;}
+.unit_table a{
+    text-decoration: none;
+    color: #1565c0;
+}
+.unit_table a:hover{
+    text-decoration: none;
+    color: #b92b27;
+    font-weight: bold;
+    font-style: italic;
+}
 .unit_table .del_fail{
     padding: 5px;
     border: 1px solid #f1f1f1;
     border-radius: 4px;
+}
+.unit_table .all_pass{
+    padding: 3px;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: #008793;
+    color: #f1f1f1;
+    border: none;
+    width: 40px;
 }
 
 /* textare设为全局应用*/
@@ -1004,7 +1016,7 @@ textarea{background: transparent;}
     background: transparent;
 }
 .txt_for_check{
-    font-size:14px;
+    font-size:16px;
     color:#faa626;
     background-color: #003355;
 }

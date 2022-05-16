@@ -24,6 +24,7 @@
         echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
         array_push($record_ids,$tmp_id);
     }
+    echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已 ***********";
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +32,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style/main_dqa.css">
+    <link rel="stylesheet" type="text/css" href="./style/main_dqa.css">
     <script type="text/javascript" src="./js/failinfo.js"></script>
     <link rel="shortcut icon" href="./images/favior.ico">
     <title>Failure Info</title>
@@ -41,6 +42,7 @@
 <?php
 if(isset($_GET["count"])){
 ?>
+<p class="txt_for_check">點擊Link添加failure; 溫度下拉框可以為測試機設置溫度為Hot, Cold, Room</p>
 <table id="unit_table" class="unit_table" border="1" cellpadding="3" cellspacing="3">
     <thead>
     <tr>
@@ -49,6 +51,7 @@ if(isset($_GET["count"])){
             echo "<th>Unit# ".($i+1)."</th>";
         }
         ?>
+        <th>ALL Pass</th>
     </tr>
     </thead>
     <tbody>
@@ -69,9 +72,12 @@ if(isset($_GET["count"])){
             echo "<td><a style='font-weight: bold;' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit=$unit_name'>".$ll."</a></td>";
         }
         ?>
+        <!-- One row all pass via pressing -->
+        <td><input class="all_pass" type="button" name="PP<?php echo ($row_no+1); ?>" id="PP<?php echo ($row_no+1); ?>" value="Set" onclick="oneRowAllPass(<?php echo $row_no+1; ?>,<?php echo $number; ?>);" /></td>
     </tr>
     <tr>
         <?php
+        //設置溫度
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -83,7 +89,7 @@ if(isset($_GET["count"])){
             $ll = ""; 
             }else{
                 $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell);'>";
-                $ll.= "<option value=''>Temp</option>";
+                $ll.= "<option value=''>溫度</option>";
                 $ll.= "<option value='Hot'>Hot</option>";
                 $ll.= "<option value='Cold'>Cold</option>";
                 $ll.= "<option value='Room'>Room</option>";
@@ -95,6 +101,53 @@ if(isset($_GET["count"])){
     </tr>
     </tbody>
 </table>
+<hr>
+<?php
+/**
+* 显示failure的机台 
+*/
+if(isset($_GET["rowid"])){
+    $row_bh = $row_no+1;
+    for($loop=0; $loop<$number; $loop++){
+        //echo $record_ids[$loop]." ===> Cell: ".$cells[$loop]."<br>";
+        $test_id = $record_ids[$loop];
+        $cell_id = $cells[$loop];
+        $unit_no = $loop+1;
+        $sql_query = "SELECT FID FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell_id' and Unitsno='$unit_no' ";
+        //echo $sql_query."<br>";
+
+        $check = mysqli_query($con,$sql_query);
+        $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
+        if($row_nums>0){
+            echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
+            echo "<tr>";
+            $sql_query0 = "SELECT Unitsno FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell_id' and Unitsno='$unit_no'";
+            $check0 = mysqli_query($con,$sql_query0);
+
+            $sql_query1 = "SELECT FID,TestID,RowID,CellID,Unitsno,Results FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell_id' and Unitsno='$unit_no'";
+            $check1 = mysqli_query($con,$sql_query1);
+
+            $unit_bh = mysqli_fetch_array($check0,MYSQLI_NUM)[0];
+
+            echo "<th width='50'>Unit# $unit_bh</th>";
+            while($info = mysqli_fetch_array($check1,MYSQLI_BOTH)){
+                echo "<td width='120'><a href='fail_edit.php?id=$info[0]&unit=$info[4]' >".$info[5]."</a></td>";
+            }
+            echo "<td width='120'>";
+            echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();'>";
+            echo "<option value=''>選擇删除记录</option>";
+            for($i=0; $i<$row_nums; $i++){
+                mysqli_data_seek($check1,$i);
+                $info = mysqli_fetch_array($check1,MYSQLI_BOTH);
+                echo "<option value='$info[0]'>".$info[5]."</option>";
+            }
+            echo "</select>";
+            echo "</td>";
+            echo "<tr></table>";
+        }
+    }
+}
+?>
 <!-- Link 部分結束 -->
 <?php
 }
@@ -108,13 +161,15 @@ else if(isset( $_GET["cell"])){
     /**
      * 獲取到已添加的failure,可以對其進行查看、編輯、刪除
      */
+    /*
     $sql_query = "SELECT FID,TestID,RowID,CellID,Unitsno,Results FROM fail_infomation WHERE TestID='$current_id' and RowID='$row_id' and CellID='$select_id' and Unitsno='$clicked_unit' ";
     $check = mysqli_query($con,$sql_query);
-    $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
-
+    $row_nums = mysqli_num_rows($check);
+    */
     /**
      * 如果該測試機沒有任何測試fail記錄,這段將不會運行
      */
+    /*
     if($row_nums){
         echo "<span class='txt_for_check'>Check the added failure here.</span>";
         echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
@@ -142,6 +197,7 @@ else if(isset( $_GET["cell"])){
         echo "</tr>";
         echo "</table>";
     }
+    */
 ?>
 <!-- 默認是添加新的failure information -->
 <div class="fail">
@@ -226,7 +282,7 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td>TEMP<font color="#cc2229" size="1">*</font></td>
                 <td>
-                    <select name="temp">
+                    <select name="temp" id="temp">
                         <option value="">請選擇</option>
                         <option value="Cold">Cold</option>
                         <option value="Hot">Hot</option>

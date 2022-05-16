@@ -31,12 +31,13 @@ $today = date("Ymd");
 $type = "Excel5";    //输出xlsx扩展名, Excel5输出xls扩展名
 $filename = $product."_".$phase."_".$vt."_test_status_".$today.".xls";
 //2022-03-28移除了Terminal列
-$counts = $qty+4;    //test order从第五列开始,A-D列内容固定,Start day开始的位置和机台数量有关
+$counts = $qty+4;//test order从第五列开始,A-D列内容固定,Start day开始的位置和机台数量有关
 $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ";
 
+//新建一个Excel对象
 $objPHPExcel = new PHPExcel();
-$objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Data")->setDescription("Document generated via PHPExcel1.8.2");
-$objPHPExcel->setActiveSheetIndex(0);
+$objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Matrix")->setDescription("Document generated via PHPExcel1.8.2");
+$objPHPExcel->setActiveSheetIndex(0);//第一张sheet
 $objSheet = $objPHPExcel->getActiveSheet();
 $objSheet->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);    //设置文本居中
 $objSheet->getDefaultStyle()->getFont()->setName("Calibri")->setSize("11");    //设置默认字体及大小
@@ -56,7 +57,8 @@ $objSheet->mergeCells("B1:B2")->setCellValue("B1","Group");
 $objSheet->mergeCells("C1:C2")->setCellValue("C1","Test Item");
 $objSheet->mergeCells("D1:D2")->setCellValue("D1","Test conditions");
 
-//将列的数字序号转成字母:PHPExcel_Cell::stringFromColumnIndex($i);从0开始 将列字母转成数字: PHPExcel_Cell::columnIndexFromString('AA');
+//将列的数字序号转成字母:PHPExcel_Cell::stringFromColumnIndex($i);从0开始 
+//将列字母转成数字: PHPExcel_Cell::columnIndexFromString('AA');
 for($i=4; $i<$counts; $i++){
     $cellName = PHPExcel_Cell::stringFromColumnIndex($i);
     $cellName1 = $cellName."1:".$cellName."2";
@@ -98,7 +100,7 @@ while($tc_row = mysqli_fetch_array($tc,MYSQLI_BOTH)[0]){
     array_push($test_items,$tc_row);
 }//获取某次测试的test item
 
-$tc_num = count($test_items);    //行数
+$tc_num = count($test_items);    //表格行数
 for($j=0; $j<$tc_num; $j++){
     $tc_txt = $test_items[$j];
     $sql_one_gp = "SELECT DISTINCT `Groups` FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Testitems='$tc_txt' ";
@@ -116,15 +118,8 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
     $sql_one_row .="FROM DQA_Test_Main WHERE Testitems='$tc_txt' AND Testername='$tester' AND Products='$product' AND Timedt='$starting' ";
     $row_one_check = mysqli_query($con,$sql_one_row);
     $row = mysqli_fetch_array($row_one_check,MYSQLI_BOTH);
+
     //获取一行的测试结果
-    /*
-    $result_one_row = array();
-    $sql_one_row_result = "SELECT Results,RecordID FROM DQA_Test_Main WHERE Testitems='$tc_txt' AND Testername='$tester' AND Products='$product' AND Timedt='$starting'";
-    $one_row_result_check = mysqli_query($con, $sql_one_row_result);
-    while($one_row_result = mysqli_fetch_array($one_row_result_check,MYSQLI_BOTH)){
-        array_push($result_one_row,$one_row_result[0]);
-    }
-    $len_result_one_row = count($result_one_row);*/
     $sql_each_result = "SELECT Results from DQA_Test_Main WHERE Testitems='$tc_txt' AND Products='$product' AND Testername='$tester' AND Timedt='$starting' AND Units!='' ";
     $results_array = array();
 
@@ -132,6 +127,7 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
     $objSheet->setCellValue("A".$row_no,$row["Requests"])->getStyle("A".$row_no)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("ccffcc");
     $objSheet->setCellValue("B".$row_no,$row["Groups"])->setCellValue("C".$row_no,$row["Testitems"])->setCellValue("D".$row_no,$row["Testcondition"]);
     $objSheet->getStyle("C".$row_no.":"."D".$row_no)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER)->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);    //设置C,D,E三列文本左对齐
+    
     //Test order A,B,C......
     for($ii=0; $ii<$qty; $ii++){
         $no = $ii+1;    //Unit NO.(1,2,3,.....n)
@@ -139,17 +135,21 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
         while($info=mysqli_fetch_array($check,MYSQLI_BOTH)){
             $cell_no = PHPExcel_Cell::stringFromColumnIndex($ii+4);    //从第五列开始
             $temp = $info[3];    //Cold，Hot or Room
-            //Cold就設置order為藍色
-            if($temp=="Cold"){
-                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("1565c0");
-            }
-            //Room就設置order為綠色
-            if($temp=="Room"){
-                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("0aa344");
-            }
-            //Hot就設置order為紅色
-            if($temp=="Hot"){
-                $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("cc2229");
+
+            //Cold就設置order為藍色,Room就設置order為綠色,Hot就設置order為紅色
+            switch ($temp) {
+                case 'Cold':
+                    $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("1565c0");
+                    break;
+                case 'Room':
+                    $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("0aa344");
+                    break;
+                case 'Hot':
+                    $objSheet->getStyle($cell_no.$row_no)->getFont()->getColor()->setRGB("cc2229");
+                    break;
+                
+                default:
+                    break;
             }
             //Test order写入Excel
             $objSheet->setCellValue($cell_no.$row_no,$info[0]);
@@ -184,7 +184,9 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
     }
     $objSheet->setCellValue($status_col.$row_no,$status);
 
-    //Result
+    /**
+     * 20220511 TBD>EC fail> fail> Known fail(open)> Known fail(closed) MD不早说,老子又得改还几个文件
+     */
     /*
     $one_row_result = "";
     for($k=0; $k<$len_result_one_row;$k++){
@@ -214,6 +216,9 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
                 $row_result = "Pass";
             }
         }
+        else if(in_array("TBD",$results_array)){
+            $row_result = "TBD";
+        }
         else if(in_array("EC Fail",$results_array)){
             $row_result = "EC Fail";
         }
@@ -233,9 +238,10 @@ for($row_no=3; $row_no<$total_rows; $row_no++){
     $objSheet->setCellValue($fail_col.$row_no,$row["Failinfo"])->setCellValue($fa_col.$row_no,$row["FAA"])->setCellValue($remark_col.$row_no,$row["Remarks"]);
 }
 $objSheet->getStyle("A3:".$remark_col.($total_rows-1))->applyFromArray($styleThinBlackBorderOutline);//数据部门添加边框
-// ----------- 获取数据写至Excel结束 -----------
 
-//下载文件到电脑下载目录
+/**
+ * 下载文件到电脑下载目录
+ */
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
 browser_excel($type,$filename);
 $objWriter->save("php://output");   //下载文件

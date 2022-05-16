@@ -324,7 +324,7 @@ mysqli_query($con,"set names utf8");
                     PIC VARCHAR(10) DEFAULT NULL,
                     JIRANO VARCHAR(10) DEFAULT NULL,
                     SPR VARCHAR(10) DEFAULT NULL,
-                    Temp VARCHAR(5) DEFAULT NULL,
+                    Temp VARCHAR(5) DEFAULT '-',
                     Dropcycles VARCHAR(3) DEFAULT NULL,
                     Drops VARCHAR(3) DEFAULT NULL,
                     Dropside VARCHAR(20) DEFAULT NULL,

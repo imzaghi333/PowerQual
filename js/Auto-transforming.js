@@ -8,6 +8,10 @@ script2.type = "text/javascript";
 script2.src = "js/layui/layui.js"; 
 document.getElementsByTagName("head")[0].appendChild(script2);
 
+/**
+ * 替换window.onload()
+ * @param {*} func onload的函数名
+ */
 function addLoadEvent(func){
     var oldonload = window.onload;
     if(typeof window.onload != "function"){
@@ -182,30 +186,34 @@ function addRow(){
     });//document ready
 }
 
+/**
+ * 根据温度设置test order颜色
+ */
 function checkTemp(){
     var temps = document.getElementsByClassName("temp_txt");
-    //var results = document.getElementsByClassName("result_txt");
     var orders = document.getElementsByClassName("order_txt");
 
     for(var i=0; i<temps.length; i++){
-        if(temps[i].value=="Hot"){
-            orders[i].style.color = "#cc2229";
-        }
-        if(temps[i].value=="Room"){
-            orders[i].style.color = "#0aa344";
-        }
-        if(temps[i].value=="Cold"){
-            orders[i].style.color = "#1565c0";
+        temp_val = temps[i].value;
+        switch (temp_val) {
+            case "Hot":
+                orders[i].style.color = "#cc2229";
+                break;
+            case "Room":
+                orders[i].style.color = "#0aa344";
+                break;
+            case "Cold":
+                orders[i].style.color = "#1565c0";
+                break;
+        
+            default:
+                break;
         }
     }
 }
+
 addLoadEvent(addRow);
 addLoadEvent(checkTemp);
-
-// 通过样式名获取元素
-function getClass(c){
-    return document.getElementsByClassName(c)
-}
 
 //rowid是表格行编号,selectid是单元格编号,count是机台数量,current是RecordID,rows是总行数
 function printResult(rowid,selectid,count,currentid,rows){
@@ -234,7 +242,9 @@ function printMatrixResult(rowid,selectid,count,currentid,rows){
     window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=800, width=950, top=100, left=100");
 }
 
-//获取表格的单元格数量
+/**
+ * 获取表格的单元格数量
+ */
 function CountRows() {
     var rowCount = 0;
     var table = document.getElementById("customers");
@@ -247,7 +257,9 @@ function CountRows() {
     return rowCount;
 }
 
-//获取表格的行数
+/**
+ * 获取表格的行数
+ */
 function getRows(){
     var totalRowCount = 0;
     var table = document.getElementById("customers");
@@ -259,6 +271,10 @@ function getRows(){
     return totalRowCount;
 }
 
+/**
+* @param {*} rowid button所在的行号
+* @param {*} number 测试机数量
+*/
 function oneRowAllPass(rowid,number){
     var row_no = rowid;          //行號,從0開始計數
     var cell_length = number+4;  //單元格數量,从0开始计数

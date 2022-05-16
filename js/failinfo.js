@@ -3,6 +3,11 @@ script1.type = "text/javascript";
 script1.src = "js/jquery-3.1.1.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
+var script2 = document.createElement("script"); 
+script2.type = "text/javascript"; 
+script2.src = "js/layui/layui.js"; 
+document.getElementsByTagName("head")[0].appendChild(script2);
+
 function addLoadEvent(func){
     var oldonload = window.onload;
     if(typeof window.onload != "function"){
@@ -23,6 +28,7 @@ function setTemperature(cell){
     var sel_id = "temp"+cell;
     var temp_id = "subject9["+(cell-1)+"]";
     var order_id = "test_order["+(cell-1)+"]";
+
     //alert("選擇框ID: "+sel_id+", 溫度文本框ID: "+temp_id+" ,test order ID: "+order_id);
     var selbox = document.getElementById(sel_id);
     var selbox_val = selbox.value
@@ -144,5 +150,36 @@ function delOneFailure(){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;
         window.location.href="./comm/delete.php?failure_id="+del_val;
+    }
+}
+
+/**
+ * press button for a row tests set to pass
+ * @param {*} rowid button所在的行号
+ * @param {*} number 测试机数量
+*/
+function oneRowAllPass(rowid,number){
+    var row_no = rowid-1;          //行號,從0開始計數
+    var cell_length = number+4;  //單元格數量,从0开始计数
+
+    var reg1 = RegExp(/value=""/i);  //匹配tes order為空的單元格,不改變默認的TBD
+    var reg2 = RegExp(/TBD/i);       //匹配有tes order單元格,改變其結果為Pass
+    
+    //父窗口edit_matrix.php处于开启状态才可以设置一键全pass
+    if(window.opener && !window.opener.closed){
+        var oTab = window.opener.document.getElementById("customers");
+        var oTbody = oTab.tBodies[0];    //表格不含標題欄部分
+        for(var i=4; i<cell_length; i++){
+            var s = oTbody.rows[row_no].cells[i].innerHTML;    //獲取原來單元格的html内容
+            var m = "";
+            if(!s.match(reg1)){
+                m = s.replace(reg2,"Pass");    //有test order字符串的TBD改成Pass
+                oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
+            }
+        }
+        layer.msg("第"+rowid+"行全部設置為Pass U•ェ•*U",{icon: 6});
+    }
+    else{
+        layer.msg("你关闭了Edit Matrix页面",{icon:5});
     }
 }

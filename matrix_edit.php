@@ -62,7 +62,7 @@ else{
 <div class="content">
     <h1>
         <span style="float: left;margin-left:20px;"><a href="index.php"><img src="./images/logo-small.svg" height="40" alt="Wistron"></a></span>
-        <?php echo $title." ~ ".$tester." ~ ".$product; ?> - Test Matrix Auto-transforming
+        <?php echo $title." ".$tester." ".$product; ?> - Test Matrix Auto-transforming
     </h1>
     <div id="preloder"><div class="loader"></div></div>
     <form form id="form8" name="form8" action="./matrix_edit_save.php" method="POST">
@@ -91,7 +91,7 @@ else{
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
-                <th rowspan="2">Add&Delete</th>
+                <!--<th rowspan="2">Add&Delete</th>-->
             </tr>
             <tr>
                 <?php
@@ -236,9 +236,12 @@ else{
                     echo "</td>";
                 }//end of Unit Distribution
                 ?>
+
+                <!-- 填写开始日期和结束日期 -->
                 <td><input type='date' name='starting[]' id='starting' value="<?php echo $row["Startday"]; ?>" /></td>
                 <td><input type='date' name='ending[]' id='ending' value="<?php echo $row["Endday"]; ?>" /></td>
-                <!-- ------- Status select box------- -->
+                
+                <!-- Test status更加测试结果自动写入 -->
                 <td>
                     <?php
                     $results_array = array();
@@ -268,7 +271,9 @@ else{
                     echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
                     ?>
                 </td>
-                <!-- -------Result select box ------- -->
+
+                <!-- Result根据测试结果自动写入 -->
+                <!-- 20220511 TBD>EC fail> fail> Known fail(open)> Known fail(closed) MD不早说,老子又得改还几个文件 -->
                 <td>
                     <?php
                     //rowid是表格行编号,selectid是单元格编号,number是机台数量,unit_id是RecordID,$tc_num是总行数,TMD参数越传越多
@@ -318,6 +323,9 @@ else{
                                 $row_result = "Pass";
                             }
                         }
+                        else if(in_array("TBD",$results_array)){
+                            $row_result = "TBD";
+                        }
                         else if(in_array("EC Fail",$results_array)){
                             $row_result = "EC Fail";
                         }
@@ -334,19 +342,21 @@ else{
                     echo "<input style='width:110px;' name='result' type='text' value='$row_result' readonly />";
                     ?>
                 </td>
-                <td>
-                    <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>                  
-                </td>
-                <td>
-                    <input type="button" class="all_pass" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Pass" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'>                  
-                </td>
+                <!-- Add additional informaton for failure -->
+                <td><input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'></td>
+                <!-- Pressing set button and current line are all set to PASS -->
+                <td><input type="button" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'></td>
+                <!-- Fail symptom, RCCA, Remark -->
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>
                 <td><textarea name="remarks[<?php echo $rowid; ?>]" id="remarks[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Remarks"]; ?></textarea></td>
+                
+                <!-- DQA需求不明一直在变，这项功能先暂停，老子没工夫陪他们玩
                 <td>
                     <input class="btn_add" type="button" name="add" value="Add" id="add" />&nbsp;
                     <input class="btn_del" type="button" name="del" value="Del" id="del"/>
                 </td>
+                -->
             </tr>
             <?php 
             $rowid = $rowid+1;
@@ -354,7 +364,7 @@ else{
             ?>
             </tbody>
         </table>
-        <!-- #################### 又是一道分割线 ############################### -->
+        <!-- submit&hidden area from created matrix -->
         <div class="save_record">
             <input class="subit" type="submit" name="sub" value="Save" />
             &nbsp;&nbsp;<input class="back" type="button" value="Back" onClick="history.go(-1);">
@@ -377,6 +387,7 @@ else{
         </div>
     </form>
 </div>
+
 <!-- Add button to export matrix to excel begins here -->
 <div>
     <form name="export" method="POST" action="./comm/Matrix_Excel.php">

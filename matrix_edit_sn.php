@@ -62,7 +62,7 @@ else{
 <div class="content">
     <h1>
         <span style="float: left;margin-left:20px;"><a href="index.php"><img src="./images/logo-small.svg" height="40" alt="Wistron"></a></span>
-        <?php echo $tester." ~ ".$product; ?> - Add units serial NO
+        <?php echo $tester." ".$product; ?> - Add units serial NO
     </h1>
     
     <div id="preloder"><div class="loader"></div><!-- loading animation added on 2022-01-06 --></div>
@@ -153,7 +153,7 @@ else{
     </form>
     </div>
     <!--- 批量上传SN -->
-    <div>
+    <div style="margin-left: 330px;">
     <p class="txt_sn">
         Upload Serial NO.(請務必使用本站提供的Template), Dowload Template: 
         <a class="sn_template_link" href="./images/SNTemplate.xls">Template Download <span class="download-icon"></span></a>
@@ -232,6 +232,9 @@ else{
 </div>
 
 <?php
+/**
+ * 手动刷入SN 
+ */
 if(isset($_POST["matrix_edit_sn"]) && $_POST["matrix_edit_sn"]=="matrix_edit_sn_do" ){
     $arr_sn = $_POST["sn"];//机台SN
     $unit_number = $_POST["uint_no"];//测试机编号unit1,unit2...
@@ -393,6 +396,7 @@ if(isset($_POST["sn_upload"]) && $_POST["sn_upload"]=="sn_upload_do"){
 }
 // ------- End here of uploading excel ----------
 ?>
+
 <div>&nbsp;&nbsp;&nbsp;&nbsp;<img src="./images/bear.svg" height="200" /></div>
 <div class="footer">
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
