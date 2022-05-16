@@ -87,11 +87,11 @@ else{
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Test Result</th>
                 <th rowspan="2">Info for<br>failure</th>
-                <th rowspan="2">One key<br>all pass</th>
+                <!-- <th rowspan="2">One key<br>all pass</th> -->
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
-                <!--<th rowspan="2">Add&Delete</th>-->
+                <!-- <th rowspan="2">Add&Delete</th> -->
             </tr>
             <tr>
                 <?php
@@ -344,8 +344,11 @@ else{
                 </td>
                 <!-- Add additional informaton for failure -->
                 <td><input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'></td>
+                
+                <!-- Remove all pass in this page as DAQ request. Holy shit~~~ -->
                 <!-- Pressing set button and current line are all set to PASS -->
-                <td><input type="button" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'></td>
+                <!-- <td><input type="button" name="PP<?php //echo $rowid; ?>" id="PP<?php //echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php //echo $rowid; ?>,<?php //echo $number; ?>);'></td> -->
+                
                 <!-- Fail symptom, RCCA, Remark -->
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>

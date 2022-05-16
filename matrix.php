@@ -169,6 +169,10 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
             $timedt = date("Y-m-d H:i:s");
             $counter = 0;        //作为测试机编号 1,2,3.......N
 
+            $get_test_name = urlencode($tester);
+            $get_product_name = urlencode($product);
+            $get_start_day = urlencode($timedt);
+
             for($i=0; $i<$len3; $i++){
                 $counter++;
                 for($j=0; $j<$len4; $j++){
@@ -182,10 +186,12 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     mysqli_query($con,$sql_add);
                 }
             }
+            sleep(1);
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
             mysqli_close($con);
-            $url = "index.php";
+            //$url = "index.php";
+            $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
             $message = urlencode("数据保存完成 :)");
             header("location:success.php?url=$url&message=$message");
         }

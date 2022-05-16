@@ -175,7 +175,9 @@ date_default_timezone_set("PRC");
                 </form>
             </div>
             <hr>
+            <!-- upload .xlx test matrix begins -->
             <div>
+                <!-- save data animation -->
                 <div id="preloder"><div class="loader"></div></div>
                 <p class="note">
                     Upload Test Matrix(請務必使用本站提供的Template), Dowload Template here: 
@@ -340,6 +342,11 @@ date_default_timezone_set("PRC");
                     $len4 = count($tmp2[0]);
                     $timedt = date("Y-m-d H:i:s");
                     $counter = 0;        //作为测试机编号 1,2,3.......N
+
+                    $get_test_name = urlencode($tester);
+                    $get_product_name = urlencode($product);
+                    $get_start_day = urlencode($timedt);
+
                     for($i=0; $i<$len3; $i++){
                         $counter++;
                         for($j=0; $j<$len4; $j++){
@@ -353,8 +360,10 @@ date_default_timezone_set("PRC");
                             mysqli_query($con,$sql_add);
                         }
                     }
+                    sleep(1);
                     mysqli_close($con);
-                    $url = "index.php";
+                    //$url = "index.php";
+                    $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
                     $message = urlencode("数据保存完成 :)");
                     //header("location:success.php?url=$url&message=$message");
                     echo "<script>window.location.href='success.php?url=$url&message=$message'</script>";
@@ -371,7 +380,7 @@ date_default_timezone_set("PRC");
                 }//end of uploading test matrix
                 ?>
             </div>
-            <!-- 兄弟當你看到這個這段話的時候也就意味著你接盤了我的爛代碼 O(∩_∩)O -->
+            <!-- Upload test matrix file end -->
         <?php
         }
         /**
