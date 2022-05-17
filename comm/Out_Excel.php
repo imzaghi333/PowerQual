@@ -1,7 +1,7 @@
 <?php
 //下载文件到客户端电脑的下载目录
 require_once("../js/conf.php");
-require_once("./functions.php");
+//require_once("./functions.php");
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
 
@@ -176,7 +176,6 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             }
         }
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
-        //$objWriter->save("Demo.xlsx");    //保存文件
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载文件
     }

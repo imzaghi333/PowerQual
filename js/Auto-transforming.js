@@ -212,9 +212,6 @@ function checkTemp(){
     }
 }
 
-addLoadEvent(addRow);
-addLoadEvent(checkTemp);
-
 //rowid是表格行编号,selectid是单元格编号,count是机台数量,current是RecordID,rows是总行数
 function printResult(rowid,selectid,count,currentid,rows){
     //alert("参数列表，表格行编号: "+rowid+", 单元格编号: "+selectid+", 机台数量: "+count+", RecordID: "+currentid+", 总行数: "+rows);
@@ -294,3 +291,6 @@ function oneRowAllPass(rowid,number){
     }
     layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
 }
+
+addLoadEvent(addRow);
+addLoadEvent(checkTemp);

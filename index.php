@@ -47,6 +47,9 @@ date_default_timezone_set("PRC");
     <!-- 左邊菜單欄結束 -->
     <div class="right">
         <?php
+        /**
+         * Create test matrx; 1. Manually fill the form; 2. via upload .xls file, use the attached template
+         */
         if($_GET['dowhat'] == 'start' || $_POST['dowhat'] == 'startdo'){
         ?>
             <p class="info">Add New Power Qual Task</p>
@@ -388,114 +391,26 @@ date_default_timezone_set("PRC");
          */
         else if($_GET['dowhat'] == 'export' || $_POST['dowhat'] == 'exportdo'){
         ?>
-            <p class="info">Export Raw Data&nbsp;&nbsp;<span class="icon"><img src="./images/logo_excel.svg" height="30" /></span></p>
+            <p class="info">Export Raw Data to Excel&nbsp;&nbsp;<span class="icon"><img src="./images/logo_excel.svg" height="30" /></span></p>
             <div id="preloder"><div class="loader"></div></div>
             <!-- -->
-            <form name="export_excel" id="export_excel" method="POST" action="">
-                <table align="center" class="form7" width="70%">
-                    <tbody>
+            <form name="export_excel" id="export_excel" method="POST" action="./comm/Out_Excel.php">
+                <table align="center" width="70%" cellpadding="5" border="0">
                     <tr>
-                        <td width="20%">Product ( <span class="icon">R</span> )&nbsp;&nbsp;<span class="tablet-icon"></span></td>
-                        <td width="80%">
-                            <select name="products" required>
-                                <option value="">Select Product</option>
-                                <?php
-                                $check = mysqli_query($con, "SELECT DISTINCT(Products) FROM DQA_Test_Main ORDER BY Products ASC ");
-                                while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
-                                    echo "<option value=" ."'$row[0]'" . ">" . $row[0] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Stage</td>
                         <td>
-                            <select name="stages">
-                                <option value="">Select Stage</option>
-                                <option value="NPI">NPI</option>
-                                <option Value="Sus">Sus</option>
-                                <option Value="Others">其他</option>
-                            </select>
+                            From: <input style="width: 150px;" name="from" type="date" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            to: <input style="width: 150px;" name="to" type="date" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn_download" type="submit" onclick="layer.msg('加载数据中,请耐心等待...',{icon:6,time:20000})">Export</button>
+                            <input name="to_excel" type="hidden" value="to_excel_do" />
                         </td>
                     </tr>
-                    <tr>
-                        <td>Verification Type</td>
-                        <td>
-                            <select name="vts">
-                                <option value="">Select Verification Type</option>                                    
-                                <option value="ORT">ORT</option>
-                                <option Value="QTP">QTP</option>
-                                <option Value="ENG (in spec)">ENG (in spec)</option>
-                                <option Value="Others">其他</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>SKU</td>
-                        <td>
-                            <?php
-                            echo "<select name='skus'>";
-                            echo "<option value=''>Select SKU</option>";
-                            $check = mysqli_query($con, "SELECT SKUS FROM dropbox_sku");
-                            while ($row = mysqli_fetch_array($check)) {
-                                echo "<option value='{$row["SKUS"]}'>{$row['SKUS']}</option>";
-                            }
-                            echo "</select>";
-                            ?>
-                        </td>
-                    </tr>
-                    <!-- --- d點擊查詢生成選擇的列表 --- -->
-                    <tr>
-                        <td colspan="2" align="center">
-                            <button class="btn_query" type="submit">確定&nbsp;&nbsp;&nbsp;<span class="icon">L</span></button>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button class="btn_reset" type="reset">清&nbsp;&nbsp;空</button>
-                        </td>
-                        <input type="hidden" name="export_rawData" value="export_rawData_do" />
-                    </tr>
-                    </tbody>
                 </table>
             </form>
-
-            <?php
-            /**
-             * 擇一條件選擇
-             */
-            if(isset($_POST["export_rawData"]) && $_POST["export_rawData"]="export_rawData_do"){
-                $products = $_POST["products"];//1.選取的product name
-                $stages = $_POST["stages"];    //2.NPI, SUS......
-                $vts = $_POST["vts"];          //3.ORT, QTP......
-                $skus = $_POST["skus"];        //4.WWAN, WLAN......
-                if($products && $stages=="" && $vts=="" && $skus==""){
-                    $ccc = 0;
-                    $sql_product = "SELECT DISTINCT Stages,VT,Products,SKUS,Phases,Testername,Timedt FROM DQA_Test_Main WHERE Products ='$products' ORDER BY Timedt DESC";
-                    $rr_product = mysqli_query($con,$sql_product);
-                    echo "<p class='query_desc'>您查询了由Wistron生产的".$products."</p>";
-                    echo "<table border='1' rules='all' class='query_table'>";
-                    echo "<tr><th width='4%'>NO.</th><th>Stage</th><th>VT</th><th>Product</th><th>SKU</th><th>Tester</th><th>Date</th><th>To Excel</th></tr>";
-                    while($row=mysqli_fetch_array($rr_product,MYSQLI_BOTH)){
-                        $ccc++;
-                        $product = $row['Products'];
-                        $tester = $row['Testername'];
-                        $starting = $row['Timedt'];
-                        $product_name = urlencode($product);
-                    ?>
-                    <tr align="center">
-                        <td><?php echo $ccc; ?></td>
-                        <td><?php echo $row['Stages']; ?></td>
-                        <td><?php echo $row['VT']; ?></td>
-                        <td><?php echo $product ?></td>
-                        <td><?php echo $row['SKUS']; ?></td>
-                        <td><?php echo $tester ?></td>
-                        <td><?php echo substr($starting,0,10); ?></td>
-                        <td><a href="./comm/RawData_Excel.php?product=<?php echo $products ?>">Export</a></td>
-                    </tr>
-                    <?php
-                    }
-                    echo "</table>";
-                }
-            }
-            ?>
+            <div class="note">
+                <p> 1. 如果未選擇時間段，導出所有數據到電腦的下載目錄</p>
+                <p> 2. 如果選擇時間範圍，導出這一時間段數據</p>
+                <p> 3. 如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
+            </div>
         <?php
         }
         //Export Raw Data end here
@@ -550,6 +465,9 @@ date_default_timezone_set("PRC");
             </div>
         <?php    
         }
+        /**
+         * 编辑, 删除, 新增 dropbox
+         */
         else if($_GET['dowhat'] == 'edit' || $_POST['dowhat'] == 'editdo'){
         ?>
         <div>
@@ -685,7 +603,7 @@ date_default_timezone_set("PRC");
             }
             ?>
             <br>
-            <p class="info">Edit or Delete Dropbox Option</p>
+            <p class="info">Edit or Delete Dropbox Menu</p>
             <form name="del_dropbox" action="./Edit/edit_dropbox_option.php" method="POST" onsubmit="return checkDelDropbox()">
                 <table align="center" width="70%" cellpadding="5" border="0">
                     <tr>
