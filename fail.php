@@ -1,30 +1,45 @@
 <?php
-    require_once("./js/conf.php");
-    mysqli_query($con,"set names utf8");
-    header("Content-Type:text/html;charset=UTF-8");
-    date_default_timezone_set("PRC");
+/*
+          __   _,--="=--,_   __
+         /  \."    .-.    "./  \
+        /  ,/  _   : :   _  \/` \
+        \  `| /o\  :_:  /o\ |\__/
+         `-'| :="~` _ `~"=: |
+            \`     (_)     `/ jgs
+     .-"-.   \      |      /   .-"-.
+.---{     }--|  /,.-'-.,\  |--{     }---.
+ )  (_)_)_)  \_/`~-===-~`\_/  (_(_(_)  (
+(  春风十里扬州路卷上珠帘总不如         )
+ )                                     (
+'---------------------------------------'
+*/
 
-    $row_no    = $_GET["rowid"];           //选了fail那一行的编号
-    $select_id = $_GET["cellid"];          //一行最后一个单元格编号
-    $number    = $_GET["count"];          //测试机数量
-    $currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
-    $rows      = $_GET["rows"];           //测试总行数 
-    echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
+require_once("./js/conf.php");
+mysqli_query($con,"set names utf8");
+header("Content-Type:text/html;charset=UTF-8");
+date_default_timezone_set("PRC");
 
-    $cells = array();        //一行的每个单元格编号
-    $record_ids = array();   //一行的每个测试记录的RecordID
-    for($i=$number; $i>0; $i--){
-        $cell_id = $select_id-$i+1;
-        echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
-        array_push($cells,$cell_id);
-    }
+$row_no    = $_GET["rowid"];           //选了fail那一行的编号
+$select_id = $_GET["cellid"];          //一行最后一个单元格编号
+$number    = $_GET["count"];          //测试机数量
+$currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
+$rows      = $_GET["rows"];           //测试总行数 
+echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
-    for($i=($number-1); $i>=0; $i--){
-        $tmp_id = $currentid-$rows*$i;
-        echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
-        array_push($record_ids,$tmp_id);
-    }
-    echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已 ***********";
+$cells = array();        //一行的每个单元格编号
+$record_ids = array();   //一行的每个测试记录的RecordID
+for($i=$number; $i>0; $i--){
+    $cell_id = $select_id-$i+1;
+    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
+    array_push($cells,$cell_id);
+}
+
+for($i=($number-1); $i>=0; $i--){
+    $tmp_id = $currentid-$rows*$i;
+    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
+    array_push($record_ids,$tmp_id);
+}
+echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已 ***********<br>";
 ?>
 
 <!DOCTYPE html>
@@ -398,7 +413,7 @@ else if(isset( $_GET["cell"])){
         //echo "<script type='text/javascript'>returnvalue6(".($select_id-1).",'".$pic."')</script>";             //PIC
         //echo "<script type='text/javascript'>returnvalue7(".($select_id-1).",'".$jira."')</script>";            //JIRA
         //echo "<script type='text/javascript'>returnvalue8(".($select_id-1).",'".$spr."')</script>";             //SPR NO
-        echo "<script type='text/javascript'>returnvalue9(".($select_id-1).",'".$temp."')</script>";           //TEMP
+        //echo "<script type='text/javascript'>returnvalue9(".($select_id-1).",'".$temp."')</script>";           //TEMP
         //echo "<script type='text/javascript'>returnvalue10(".($select_id-1).",'".$drop_cycle."')</script>";
         //echo "<script type='text/javascript'>returnvalue11(".($select_id-1).",'".$drops."')</script>";
         //echo "<script type='text/javascript'>returnvalue12(".($select_id-1).",'".$drop_side."')</script>";
@@ -408,9 +423,8 @@ else if(isset( $_GET["cell"])){
         //echo "<script type='text/javascript'>returnvalue16(".($select_id-1).",'".$mfg_date."')</script>";        //ORT MFG Date
         //echo "<script type='text/javascript'>returnvalue17(".($select_id-1).",'".$report_date."')</script>";
         echo "<script type='text/javascript'>returnvalue18(".($select_id-1).",'".$tt_result."')</script>";
-        // ----------- MD --------------
-        echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";
-        echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";
+        echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";//Fail symptom
+        echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";//RCCA
 
         $sql_add = "INSERT INTO fail_infomation(Defectmode1,Defectmode2,RCCA,Issuestatus,Category,PIC,JIRANO,SPR,Temp,Dropcycles,Drops,Dropside,HIT,NextCheckpointDate,IssuePublished,ORTMFGDate,ReportedDate,Unitsno,TestID,RowID,CellID,Results) ";
         $sql_add.= "VALUES('$df1','$df2','$rcca_txt','$issue_status','$category','$pic','$jira','$spr','$temp','$drop_cycle','$drops','$drop_side','$hit_tumble','$checkpoint','$publish','$mfg_date','$report_date','$unit_no','$test_id','$row_no','$cell_no','$tt_result')";

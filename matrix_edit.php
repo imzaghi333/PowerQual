@@ -1,4 +1,18 @@
 <?php
+/*
+ ____________
+< 尼玛坑爹啊 >
+ ------------
+ 
+        .--.
+       |o_o |
+       |:_/ |
+      //   \ \
+     (|     | )
+    /'\_   _/`\
+    \___)=(___/
+*/
+
 require_once("./js/conf.php");
 mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
@@ -412,6 +426,8 @@ else{
 </div>
 <!-- Add button to export matrix to excel end -->
 <div>&nbsp;&nbsp;&nbsp;&nbsp;<img src="./images/bear.svg" height="200" /></div>
+
+<!-- Footer div to add a simple note -->
 <div class="footer">
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
     <img class="logo_white" src="./images/logo-small_white.svg" height="40" alt="Wistron">

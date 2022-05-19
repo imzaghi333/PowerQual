@@ -87,7 +87,9 @@ function returnvalue8(selectid,val){
 */
 // 9.TEMP
 function returnvalue9(selectid,val){
-    window.opener.document.getElementById("subject9["+selectid+"]").value=val;
+    if(val.length!=0){
+        window.opener.document.getElementById("subject9["+selectid+"]").value=val;
+    }
 }
 /*
 // 10.Dropcycles
@@ -125,20 +127,26 @@ function returnvalue17(selectid,val){
 */
 // 18.change default result
 function returnvalue18(selectid,val){
-    window.opener.document.getElementById("subject18["+selectid+"]").value=val;
+    if(val.length!=0){
+        window.opener.document.getElementById("subject18["+selectid+"]").value=val;
+    }
 }
 // added on 2022-02-17
 // 19.Fail symptom
 function returnvalue19(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
-    var row = row_no-1;
-    window.opener.document.getElementById("fail["+row+"]").value+=val+"\n";
+    if(val.length!=0){
+        var row = row_no-1;
+        window.opener.document.getElementById("fail["+row+"]").value+=val+"\n";
+    }
 }
 // 20.RCCA
 function returnvalue20(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
-    var row = row_no-1;
-    window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
+    if(val.length!=0){
+        var row = row_no-1;
+        window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
+    }
 }
 
 /**

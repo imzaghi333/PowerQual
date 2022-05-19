@@ -1,34 +1,69 @@
 <?php
-//下载文件到客户端电脑的下载目录
-require_once("../js/conf.php");
-//require_once("./functions.php");
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           佛祖保佑        永无BUG
+
+*/
+
+require_once "../js/conf.php";
+require_once "./functions.php";
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
 
-mysqli_query($con,"set names utf8");
-date_default_timezone_set("Asia/Shanghai");
-header("Content-Type:text/html;charset=utf-8");
-
 $today = date("Y-m-d");
-mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");    //导出Excel更新当前日期 [added on 2021-11-11]
+mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");//更新当前日期
+mysqli_query($con, "UPDATE fail_infomation SET Today='$today'");//更新当前日期
+sleep(1);
 
+// ============ 文件名拼接组成字串 ===========
 $current_date = date("Ymd");    //作为Excel文件名的一部分
 $type = "Excel5";    //输出xlsx扩展名, Excel5输出xls扩展名
-$filename = "QTP Raw Data record format_V4_".$current_date.".xls";
+$filename = "QTP Raw Data record format_V4_".$current_date.".xls";//导出的文件名
 
-//导出Excel更新当前日期Issue opened duration [added on 2021-11-11]
-mysqli_query($con, "UPDATE DQA_Test_Main SET IssueDuration='NA' WHERE Results='Pass' ");
-mysqli_query($con, "UPDATE DQA_Test_Main SET Testdays=DATEDIFF(Endday,Startday)");
-mysqli_query($con, "UPDATE DQA_Test_Main SET IssueDuration=DATEDIFF(NextCheckpointDate,ReportedDate) WHERE (Issuestatus='Closed' AND Issuestatus!='') ");
-mysqli_query($con, "UPDATE DQA_Test_Main SET IssueDuration=DATEDIFF(Today,ReportedDate) WHERE Issuestatus!='Closed' AND Issuestatus!='' ");
+/**
+ * Duration
+ * if result=='pass':
+ *     Duration='NA'
+ * elif issue_status=='close':
+ *     Duration=NextCheckPointDate-ReportedDate
+ * else:
+ *     Duration=Today-ReportedDate
+ */
+mysqli_query($con, "UPDATE DQA_Test_Main SET Testdays=DATEDIFF(Endday,Startday)");    //计算测试完成的时间
+mysqli_query($con, "UPDATE fail_infomation SET IssueDuration=DATEDIFF(NextCheckpointDate,ReportedDate) WHERE Issuestatus='Closed' AND NextCheckpointDate!='' AND ReportedDate!='' ");
+mysqli_query($con, "UPDATE fail_infomation SET IssueDuration=DATEDIFF(Today,ReportedDate) WHERE Issuestatus!='Closed' AND Issuestatus!='' AND ReportedDate!='' ");
+sleep(1);
 
+/**
+ * 导出数据：1.选取了时间段,导出某段时间内数据 2.未选时间段导出数据库中所有数据
+ */
 if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
-    $start = $_POST["from"];
-    $end = $_POST["to"];
+    $start = $_POST["from"];//开始日期
+    $end = $_POST["to"];//结束日期
 
+    //选取了时间段
     if($start && $end){
         //$sql_data = "SELECT * FROM DQA_Test_Main WHERE Timedt>='$start' and Timedt<='$end'";
         $arr_product = getDistinctProductByPeriod($con,$start,$end);
+        array_unshift($arr_product,"Raw All -C");//插入到数组第一个位置即$arr_product[0]
         $NUM = count($arr_product);
         $objPHPExcel = new PHPExcel();    //默认有一个sheet,和实际的Excel默认三个sheet
         $objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Data")->setDescription("Document generated via PHPExcel.");
@@ -43,7 +78,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getDefaultStyle()->getFont()->setName("Calibri")->setSize("12");    //设置默认字体及大小
 
             $objSheet->setTitle($arr_product[$loop]);    //给活动sheet起名
-            $data = getDataByProductAndPeriod($con,$arr_product[$loop],$start,$end);
+            //$data = getDataByProductAndPeriod($con,$arr_product[$loop],$start,$end);
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
                     'allborders' => array( //设置全部边框
@@ -81,16 +116,67 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getColumnDimension('AM')->setWidth(15);
             $objSheet->getColumnDimension('AN')->setWidth(11);
 
-            $row=2;
-            foreach($data as $key=>$val){
-                $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
-                $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
-                $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
-                $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
-                $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
-                $row++;
-                $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+            if($loop==0){
+                $data_all_period = getRawAllCommByPeriod($con,$start,$end);
+                $row=2;
+                foreach($data_all_period as $key=>$val){
+                    switch ($val["Temp"]) {
+                        case '-':
+                            $val["Temp"]='';
+                            break;
+                        case 'Cold':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
+                            break;
+                        case 'Hot':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("cc2229");
+                            break;
+                        case 'Room':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("0aa344");
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
+                    $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
+                    $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
+                    $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
+                    $row++;
+                    $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+                }
+            }
+            else{
+                $data_period = getDataByProductAndPeriod($con,$arr_product[$loop],$start,$end);
+                $row=2;
+                foreach($data_period as $key=>$val){
+                    switch ($val["Temp"]) {
+                        case '-':
+                            $val["Temp"]='';
+                            break;
+                        case 'Cold':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
+                            break;
+                        case 'Hot':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("cc2229");
+                            break;
+                        case 'Room':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("0aa344");
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
+                    $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
+                    $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
+                    $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
+                    $row++;
+                    $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+                }
             }
         }
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
@@ -98,18 +184,11 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载到本地目录
     }
-
+    
+    //默认导出所有数据
     else{
-        /*
-        $sql_data = "SELECT * FROM DQA_Test_Main";
-        $result = mysqli_query($con, $sql_data);
-        $counter = 0;
-        while($row = mysqli_fetch_array($result,MYSQLI_BOTH)){
-            $counter++;
-            echo $counter.". ".$row[3]." ".$row[4]."<br>";
-        }
-        */
         $arr_product = getDistinctProduct($con);
+        array_unshift($arr_product,"Raw All -C");
         $NUM = count($arr_product);
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->getProperties()->setCreator("Felix Qian - 錢暾")->setTitle("Document For Exporting Data")->setDescription("Document generated via PHPExcel");
@@ -124,7 +203,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getDefaultStyle()->getFont()->setName("Calibri")->setSize("12");    //设置默认字体及大小
 
             $objSheet->setTitle($arr_product[$loop]);    //给活动sheet起名
-            $data = getDataByProduct($con,$arr_product[$loop]);
+            //$data = getDataByProduct($con,$arr_product[$loop]);
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
                     'allborders' => array( //设置全部边框
@@ -163,91 +242,76 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getColumnDimension('AM')->setWidth(15);
             $objSheet->getColumnDimension('AN')->setWidth(11);
 
-            $row=2;
-            foreach($data as $key=>$val){
-                $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
-                $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
-                $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
-                $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
-                $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
-                $row++;
-                $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+            if($loop==0){
+                $data_raw_all = getRawAllComm($con);
+                $row=2;
+                foreach($data_raw_all as $key=>$val){
+                    //Temperature的设定
+                    switch ($val["Temp"]) {
+                        case '-':
+                            $val["Temp"]='';
+                            break;
+                        case 'Cold':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
+                            break;
+                        case 'Hot':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("cc2229");
+                            break;
+                        case 'Room':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("0aa344");
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                    
+                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
+                    $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
+                    $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
+                    $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
+                    $row++;
+                    $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+                }
+            }
+            else{
+                $data = getDataByProduct($con,$arr_product[$loop]);
+                $row=2;
+                foreach($data as $key=>$val){
+                    //Temperature的设定
+                    switch ($val["Temp"]) {
+                        case '-':
+                            $val["Temp"]='';
+                            break;
+                        case 'Cold':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
+                            break;
+                        case 'Hot':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("cc2229");
+                            break;
+                        case 'Room':
+                            $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("0aa344");
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                    
+                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
+                    $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
+                    $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
+                    $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
+                    $row++;
+                    $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
+                }
             }
         }
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载文件
     }
-}
-
-// ------------------------------------------------------------------------
-function getData($db,$sql){
-    $resource = mysqli_query($db, $sql);
-    $res = array();
-    while($row=mysqli_fetch_array($resource)){
-        $res[] = $row;
-    }
-    return $res;
-}
-
-//获取Product名为一个数组
-function getDistinctProduct($db){
-    $product_name = array();
-    $check_product = mysqli_query($db, "SELECT DISTINCT(Products) FROM DQA_Test_Main");
-    while($row=mysqli_fetch_array($check_product)){
-        array_push($product_name,$row["Products"]);
-    }
-    return $product_name;
-}
-
-//根据时间段获取Product名为一个数组
-function getDistinctProductByPeriod($db,$start,$end){
-    $product_name = array();
-    $check_product = mysqli_query($db, "SELECT DISTINCT(Products) FROM DQA_Test_Main WHERE (Timedt>='$start' and Timedt<='$end')");
-    while($row=mysqli_fetch_array($check_product)){
-        array_push($product_name,$row["Products"]);
-    }
-    return $product_name;
-}
-
-//根据传入的product查询数据
-function getDataByProduct($db,$product){
-    $sql = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Units!='N/A' ";
-    $res = getData($db,$sql);
-    return $res;
-}
-
-//根据传入的product,時間段查询数据
-function getDataByProductAndPeriod($db,$product,$start,$end){
-    $sql = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND (Timedt>='$start' and Timedt<='$end') AND Units!='N/A' ";
-    $res = getData($db,$sql);
-    return $res;
-}
-
-// 根据传入的测试人名查询数据
-function getDataByTester($db,$name){
-    $sql = "SELECT * FROM DQA_Test_Main WHERE Testername='$name' Units!='N/A' ";
-    $res = getData($db,$sql);
-    return $res;
-}
-
-//added on 2022-02-09 for matrix auto transforming
-//根据传入的product tester date查询某一次的测试记录
-function getDataForMatrixTransform($db,$product,$tester,$starting){
-    $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt LIKE '$starting%' ";
-    $res = getData($db,$sql_query);
-    return $res;
-}
-
-function browser_excel($type,$filename){
-    if($type=='Excel5'){
-        header('Content-Type: application/vnd.ms-excel');    //告诉浏览器将要输出xls文件
-    }
-    else{
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');   //告诉浏览器将要输出xlsx文件
-    }
-    header('Content-Disposition: attachment;filename="'.$filename.'"');    //告诉浏览器将要输出文件的名称
-    header('Cache-Control: max-age=0');    //禁止缓存
 }
 ?>

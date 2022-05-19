@@ -2,24 +2,9 @@
 /**
  * Downlod current test matrx to your PC Download directory
  */
-function browser_excel($type,$filename){
-    if($type=='Excel5'){
-        header('Content-Type: application/vnd.ms-excel');    //告诉浏览器将要输出xls文件
-    }
-    else{
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');   //告诉浏览器将要输出xlsx文件
-    }
-    header('Content-Disposition: attachment;filename="'.$filename.'"');    //告诉浏览器将要输出文件的名称
-    header('Cache-Control: max-age=0');    //禁止缓存
-}
-
 require_once("../js/conf.php");
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
-
-mysqli_query($con,"set names utf8");
-date_default_timezone_set("PRC");
-header("Content-Type:text/html;charset=utf-8");
 
 $product = $_POST["product"];
 $tester = $_POST["tester"];
@@ -245,4 +230,15 @@ $objSheet->getStyle("A3:".$remark_col.($total_rows-1))->applyFromArray($styleThi
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,"Excel5");
 browser_excel($type,$filename);
 $objWriter->save("php://output");   //下载文件
+
+function browser_excel($type,$filename){
+    if($type=='Excel5'){
+        header('Content-Type: application/vnd.ms-excel');    //告诉浏览器将要输出xls文件
+    }
+    else{
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');   //告诉浏览器将要输出xlsx文件
+    }
+    header('Content-Disposition: attachment;filename="'.$filename.'"');    //告诉浏览器将要输出文件的名称
+    header('Cache-Control: max-age=0');    //禁止缓存
+}
 ?>

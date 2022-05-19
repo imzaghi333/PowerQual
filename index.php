@@ -1,10 +1,3 @@
-<?php
-require_once("./js/conf.php");
-header("Content-Type:text/html;charset=UTF-8");
-mysqli_query($con,"set names utf8");
-date_default_timezone_set("PRC");
-?>
-
 <!DOCTYPE html>
 <html lang="zh_cn">
 <head>
@@ -16,6 +9,7 @@ date_default_timezone_set("PRC");
     <title>Power Query</title>
 </head>
 <body>
+<?php require_once("./js/conf.php"); ?>
 <!-- header部分 -->
 <div class="header">
     <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
@@ -33,9 +27,10 @@ date_default_timezone_set("PRC");
     <!-- 左邊菜單欄 -->
     <div class="left">
         <div class="action">
-            <div><a href="index.php">Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="edit-icon"></span><span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php?dowhat=customed">Customed Data<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=edit">DropBox Edit<span class="p_right">&#10148</span></a></div>
@@ -676,7 +671,7 @@ date_default_timezone_set("PRC");
                 </thead>
                 <tbody>
                 <?php
-                $pagesize=30;    //设置每页显示记录數量
+                $pagesize=50;    //设置每页显示记录數量
                 if($total<=$pagesize){
                     $pagecount = 1;
                 }
@@ -1073,6 +1068,7 @@ date_default_timezone_set("PRC");
                     ?>
                 </p>
                 <p>4. Think over before deleting a test matrix.</p>
+                <p>5. If a matrix is deleted, it won't be recovered. <img src="./images/xiao.jpg" width="15" /></p>
             </div>
             </div>
         </div>

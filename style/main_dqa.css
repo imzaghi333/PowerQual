@@ -313,7 +313,7 @@ textarea{background: transparent;}
 }
 
 /* ----- index left css ---------*/
-.container .left{width: 200px;height: 800px;float: left;}
+.container .left{width: 200px;float: left;}
 
 .container .left .action div{
     width: 180px;
