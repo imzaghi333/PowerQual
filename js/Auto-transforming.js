@@ -8,93 +8,10 @@ script2.type = "text/javascript";
 script2.src = "js/layui/layui.js"; 
 document.getElementsByTagName("head")[0].appendChild(script2);
 
-function groupchange(aa)
-{
-    //alert("aa="+aa);
-        //var member_id = this.value;
-        var el = document.getElementById("group"+aa).value;
-        //alert(el.slice(6,7));
-        //alert(el);
-        var check=0;
-        var test_item = document.getElementById("test_item"+aa);
-        var test_item_opt = test_item.options;
-        //$test_item.find("option").hide();
-        //$set=test_item.find('option.'+el.val());
-        //$set.show().first.prop('selectes',true);
-        //var test_item_opt_class = test_item_opt[0].getAttribute('class');
-        // alert(test_item_opt_class);
-        //$("#test_item").empty();
-
-        if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) 
-        {
-           // alert("Browser is Safari");  
-            var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-           // alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-            if(nodesSnapshot.snapshotLength==57)
-            {
-                for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                    var nodeA = nodesSnapshot.snapshotItem(i);
-                    var nodeclass=nodeA.getAttribute('class');
-                    arrayclass.push(nodeclass);
-                }  
-            }
-            var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/div", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-           // alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-            for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                var nodeA = nodesSnapshot.snapshotItem(i);
-                //alert(arrayclass[i]);
-                var elemA = document.createElement('option');
-                elemA.innerHTML = nodeA.innerHTML;
-                nodeA.parentNode.replaceChild(elemA, nodeA);
-            }  
-
-            var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-            //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-            for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                var nodeA = nodesSnapshot.snapshotItem(i);
-                //alert(arrayclass[i]);
-                var elemA = document.createElement('option');
-                elemA.setAttribute("class",arrayclass[i])
-                elemA.innerHTML = nodeA.innerHTML;
-                nodeA.parentNode.replaceChild(elemA, nodeA);
-            }  
-
-            var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option[@class!='"+el.slice(6,7)+"']", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-            //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-            for (var i = 1; i < nodesSnapshot.snapshotLength; i++) {
-                var nodeA = nodesSnapshot.snapshotItem(i);
-                var elemA = document.createElement('div');
-                elemA.innerHTML = nodeA.innerHTML;
-                nodeA.parentNode.replaceChild(elemA, nodeA);
-            }       
-        }
-        
-        for(var i=0; i<test_item_opt.length; i++){
-            
-            //alert("class="+test_item_opt[i].getAttribute('class'));
-            if(test_item_opt[i].getAttribute('class')!=el)
-            {
-                test_item_opt[i].setAttribute("hidden",true);
-            }
-            else
-            {
-                if(check==0)
-                {
-                    document.getElementById("test_item"+aa).options[i].selected="selected"
-                }
-                //alert("nothide");
-                test_item_opt[i].removeAttribute("hidden");
-                check=1;
-            }
-            if(check==0)
-            {
-                document.getElementById("test_item"+aa).options[0].selected="selected"
-
-            }
-        }
-
-}
-
+/**
+ * 替换window.onload()
+ * @param {*} func onload的函数名
+ */
 function addLoadEvent(func){
     var oldonload = window.onload;
     if(typeof window.onload != "function"){
@@ -115,7 +32,7 @@ function addRow(){
 
     var gg = ""    //用于保存option group的字符串
     var arr_group = Array();
-    var group = document.getElementById("group1");
+    var group = document.getElementById("group");
     var group_opt = group.options;    //获得该下拉框所有的option的节点对象
     for(var i=0; i<group_opt.length; i++){
         arr_group.push(group_opt[i].value);
@@ -126,7 +43,7 @@ function addRow(){
    
     var tt = ""    //用于保存option test item的字符串
     var arr_testitem = Array();
-    var test_item = document.getElementById("test_item1");
+    var test_item = document.getElementById("test_item");
     var test_item_opt = test_item.options;
     for(var i=0; i<test_item_opt.length; i++){
         arr_testitem.push(test_item_opt[i].value);
@@ -182,103 +99,6 @@ function addRow(){
         $(':button[name=del]').click(function(){
             $(this).parents('tr').remove();
         })
-
-        $("#group1").on("change", function(){
-            //var member_id = this.value;
-            var el = $(this).find(':selected');
-            //alert(el.val());
-            var check=0;
-            //alert("group1 onchnage");
-            var test_item = document.getElementById("test_item1");
-            var test_item_opt = test_item.options;
-            //$test_item.find("option").hide();
-            //$set=test_item.find('option.'+el.val());
-            //$set.show().first.prop('selectes',true);
-            //var test_item_opt_class = test_item_opt[0].getAttribute('class');
-            
-            //$("#test_item").empty();
-            //test_item_opt.removeAttribute("hidden");
-
-            
-            if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) 
-            {
-               // alert("Browser is Safari");  
-                var nodesSnapshot = document.evaluate("//select[@id='test_item1']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-                if(nodesSnapshot.snapshotLength==57)
-                {
-                    for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                        var nodeA = nodesSnapshot.snapshotItem(i);
-                        var nodeclass=nodeA.getAttribute('class');
-                        arrayclass.push(nodeclass);
-                    }  
-                }
-                var nodesSnapshot = document.evaluate("//select[@id='test_item1']/div", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-                for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                    var nodeA = nodesSnapshot.snapshotItem(i);
-                    //alert(arrayclass[i]);
-                    var elemA = document.createElement('option');
-                    elemA.innerHTML = nodeA.innerHTML;
-                    nodeA.parentNode.replaceChild(elemA, nodeA);
-                }  
-
-                var nodesSnapshot = document.evaluate("//select[@id='test_item1']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-                for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-                    var nodeA = nodesSnapshot.snapshotItem(i);
-                    //alert(arrayclass[i]);
-                    var elemA = document.createElement('option');
-                    elemA.setAttribute("class",arrayclass[i])
-                    elemA.innerHTML = nodeA.innerHTML;
-                    nodeA.parentNode.replaceChild(elemA, nodeA);
-                }  
-
-                var nodesSnapshot = document.evaluate("//select[@id='test_item1']/option[@class!='"+el.val()+"']", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
-                for (var i = 1; i < nodesSnapshot.snapshotLength; i++) {
-                    var nodeA = nodesSnapshot.snapshotItem(i);
-                    var elemA = document.createElement('div');
-                    elemA.innerHTML = nodeA.innerHTML;
-                    nodeA.parentNode.replaceChild(elemA, nodeA);
-                }       
-            }
-            for(var i=0; i<test_item_opt.length; i++){
-                //test_item_opt[i].removeAttribute("hidden");
-                //alert("class="+test_item_opt[i].getAttribute('class'));
-                if(test_item_opt[i].getAttribute('class')!=el.val())
-                {
-                    //alert("hide");
-                    //alert($(this));
-                    test_item_opt[i].setAttribute("hidden",true);
-
-                }
-                else
-                {
-                    if(check==0)
-                    {
-                        document.getElementById("test_item1").options[i].selected="selected"
-                    }
-                    //alert("nothide");
-                    test_item_opt[i].removeAttribute("hidden");
-                    //if( ($(this).parent().is('span')) ) $(this).unwrap();
-                    check=1;
-
-                    
-                }
-
-                if(check==0)
-                {
-                    document.getElementById("test_item1").options[0].selected="selected"
-
-                }
-            }
-            
-
-
-
-
-        });
     })
     function addTr(couts,rowid){
         var table = document.getElementById("customers");
@@ -366,29 +186,30 @@ function addRow(){
     });//document ready
 }
 
+/**
+ * 根据温度设置test order颜色
+ */
 function checkTemp(){
     var temps = document.getElementsByClassName("temp_txt");
-    //var results = document.getElementsByClassName("result_txt");
     var orders = document.getElementsByClassName("order_txt");
 
     for(var i=0; i<temps.length; i++){
-        if(temps[i].value=="Hot"){
-            orders[i].style.color = "#cc2229";
-        }
-        if(temps[i].value=="Room"){
-            orders[i].style.color = "#0aa344";
-        }
-        if(temps[i].value=="Cold"){
-            orders[i].style.color = "#1565c0";
+        temp_val = temps[i].value;
+        switch (temp_val) {
+            case "Hot":
+                orders[i].style.color = "#cc2229";
+                break;
+            case "Room":
+                orders[i].style.color = "#0aa344";
+                break;
+            case "Cold":
+                orders[i].style.color = "#1565c0";
+                break;
+        
+            default:
+                break;
         }
     }
-}
-addLoadEvent(addRow);
-addLoadEvent(checkTemp);
-
-// 通过样式名获取元素
-function getClass(c){
-    return document.getElementsByClassName(c)
 }
 
 //rowid是表格行编号,selectid是单元格编号,count是机台数量,current是RecordID,rows是总行数
@@ -418,7 +239,9 @@ function printMatrixResult(rowid,selectid,count,currentid,rows){
     window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=800, width=950, top=100, left=100");
 }
 
-//获取表格的单元格数量
+/**
+ * 获取表格的单元格数量
+ */
 function CountRows() {
     var rowCount = 0;
     var table = document.getElementById("customers");
@@ -431,7 +254,9 @@ function CountRows() {
     return rowCount;
 }
 
-//获取表格的行数
+/**
+ * 获取表格的行数
+ */
 function getRows(){
     var totalRowCount = 0;
     var table = document.getElementById("customers");
@@ -443,6 +268,10 @@ function getRows(){
     return totalRowCount;
 }
 
+/**
+* @param {*} rowid button所在的行号
+* @param {*} number 测试机数量
+*/
 function oneRowAllPass(rowid,number){
     var row_no = rowid;          //行號,從0開始計數
     var cell_length = number+4;  //單元格數量,从0开始计数
@@ -462,3 +291,6 @@ function oneRowAllPass(rowid,number){
     }
     layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
 }
+
+addLoadEvent(addRow);
+addLoadEvent(checkTemp);

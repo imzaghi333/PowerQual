@@ -1,4 +1,23 @@
 <?php
+/*
+                          (  ) (@@) ( )  (@)  ()    @@    O     @     O     @      O
+                     (@@@)
+                 (    )
+              (@@@@)
+
+            (   )
+         ====        ________                ___________
+     _D _|  |_______/        \__I_I_____===__|_________|
+      |(_)---  |   H\________/ |   |        =|___ ___|      _________________
+      /     |  |   H  |  |     |   |         ||_| |_||     _|                \_____A
+     |      |  |   H  |__--------------------| [___] |   =|                        |
+     | ________|___H__/__|_____/[][]~\_______|       |   -|                        |
+     |/ |   |-----------I_____I [][] []  D   |=======|____|________________________|_
+   __/ =| o |=-O=====O=====O=====O \ ____Y___________|__|__________________________|_
+    |/-=|___|=    ||    ||    ||    |_____/~\___/          |_D__D__D_|  |_D__D__D_|
+     \_/      \__/  \__/  \__/  \__/      \_/               \_/   \_/    \_/   \_/
+*/
+
 require_once("./js/conf.php");
 header("Content-Type:text/html;charset=UTF-8");
 mysqli_query($con,"set names utf8");
@@ -56,7 +75,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 <tr>
                     <td width="5%">
                         <?php
-                        echo "<select name='group[]' id='group1'>";
+                        echo "<select name='group[]' id='group' onchange='getGroup();'>";
                         $check = mysqli_query($con, "SELECT Groups FROM dropbox_group");
                         while ($row = mysqli_fetch_array($check)) {
                             $v1 = $row["Groups"];
@@ -67,12 +86,11 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     </td>
                     <td width="10%">
                         <?php
-                        echo "<select name='test_item[]' class='selbox' id='test_item1'>";
-                        echo "<option value=Select_Item class=select_item>Select_Item</option>";
-
-                        $check = mysqli_query($con, "SELECT Testitem,Grouped FROM dropbox_test_item");                           
+                        $gp = $_POST["gp"];
+                        echo "<select name='test_item[]' class='selbox' id='test_item'>";
+                        $check = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
-                            echo "<option value=" ."'$row[0]'" . "class="."'$row[1]'" . " hidden=true>" . $row[0] . "</option>";
+                            echo "<option value=" ."'$row[0]'" . ">" . $row[0] . "</option>";
                         }
                         echo "</select>";
                         ?>
@@ -170,6 +188,10 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
             $timedt = date("Y-m-d H:i:s");
             $counter = 0;        //作为测试机编号 1,2,3.......N
 
+            $get_test_name = urlencode($tester);
+            $get_product_name = urlencode($product);
+            $get_start_day = urlencode($timedt);
+
             for($i=0; $i<$len3; $i++){
                 $counter++;
                 for($j=0; $j<$len4; $j++){
@@ -183,10 +205,12 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     mysqli_query($con,$sql_add);
                 }
             }
+            sleep(1);
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
             mysqli_close($con);
-            $url = "index.php";
+            //$url = "index.php";
+            $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
             $message = urlencode("数据保存完成 :)");
             header("location:success.php?url=$url&message=$message");
         }

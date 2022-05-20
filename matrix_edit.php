@@ -4,8 +4,6 @@ mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
 date_default_timezone_set("PRC");
 
-$my_ip = $_SERVER ['REMOTE_ADDR'];
-
 if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $product  = urldecode($_GET["product"]);
     $tester   = urldecode($_GET["user"]);
@@ -64,7 +62,7 @@ else{
 <div class="content">
     <h1>
         <span style="float: left;margin-left:20px;"><a href="index.php"><img src="./images/logo-small.svg" height="40" alt="Wistron"></a></span>
-        <?php echo $title." ~ ".$tester." ~ ".$product; ?> - Test Matrix Auto-transforming
+        <?php echo $title." ".$tester." ".$product; ?> - Test Matrix Auto-transforming
     </h1>
     <div id="preloder"><div class="loader"></div></div>
     <form form id="form8" name="form8" action="./matrix_edit_save.php" method="POST">
@@ -89,11 +87,11 @@ else{
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Test Result</th>
                 <th rowspan="2">Info for<br>failure</th>
-                <th rowspan="2">One key<br>all pass</th>
+                <!-- <th rowspan="2">One key<br>all pass</th> -->
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
-                <th rowspan="2">Add&Delete</th>
+                <!-- <th rowspan="2">Add&Delete</th> -->
             </tr>
             <tr>
                 <?php
@@ -146,16 +144,13 @@ else{
             <tr>
                 <td><input name='requests[]' id='requests' type='text' value='<?php echo $row["Requests"] ?>'></td>
                 <td>
-                    <!--select name='group[]' id='group1'-->
+                    <select name='group[]' id='group' class='gp'>
                     <?php
-                    $w++;
                     $gp_txt = $groups[$i];
                     $opts = mysqli_query($con, "SELECT `Groups` FROM dropbox_group");
-                    echo"<select name=group[] id=group"."$w"." onchange=groupchange($w)>";
                     while($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
-
                         if($info[0]==$gp_txt){
-                            echo "<option value="."'$info[0]'"."  selected >".$info[0]."</option>";
+                            echo "<option value="."'$info[0]'"." selected >".$info[0]."</option>";
                         }
                         else{
                             echo "<option value="."'$info[0]'".">".$info[0]."</option>";
@@ -165,35 +160,16 @@ else{
                     </select>
                 </td>
                 <td>
-                    <!--select name='test_item[]' id='test_item1' class='selbox'-->
+                    <select name='test_item[]' id='test_item' class='selbox'>
                     <?php
-                    $q++;;
-                    $gp_txt = $groups[$i];
-                    $opts = mysqli_query($con, "SELECT Testitem,Grouped FROM dropbox_test_item");
-                    echo"<select name=test_item[] id=test_item"."$q"." class=selbox >";
-
+                    $opts = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
                     while($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
-                        echo $gp_txt;
                         if($info[0]==$tc_txt){
-                            echo "<option value="."'$info[0]'"." class="."'$info[1]'" . "selected >".$info[0]."</option>";
-
-
+                            echo "<option value="."'$info[0]'"." selected >".$info[0]."</option>";
                         }
-                        else
-                        {
-
-                            if($info[1]==$gp_txt&&$info[0]!=$tc_txt){
-                                echo "<option value="."'$info[0]'"." class="."'$info[1]'" . " >".$info[0]."</option>";
-                            }
-                            else
-                            {
-                                echo "<option value="."'$info[0]'"." class="."'$info[1]'" . " hidden=true >".$info[0]."</option>";
-    
-                            }
+                        else{
+                            echo "<option value="."'$info[0]'".">".$info[0]."</option>";
                         }
-
-
-
                     }
                     ?>
                     </select>
@@ -252,17 +228,20 @@ else{
                         echo "<input class='temp_txt' type='text' name='subject9[".$selectid."]' id='subject9[".$selectid."]' value='".$row_result[11]."'>";//TEMP
 
                         echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
-                        echo "<input class='order_txt' type='text' name='test_order[]' id='test_order' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
+                        echo "<input class='order_txt' type='text' name='test_order[]' id='test_order[".$selectid."]' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
-		                echo "<input type='text' style='width:30px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-                        //echo "cell: ".$selectid;
+		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
+                        echo "cell: ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution
                 ?>
+
+                <!-- 填写开始日期和结束日期 -->
                 <td><input type='date' name='starting[]' id='starting' value="<?php echo $row["Startday"]; ?>" /></td>
                 <td><input type='date' name='ending[]' id='ending' value="<?php echo $row["Endday"]; ?>" /></td>
-                <!-- ------- Status select box------- -->
+                
+                <!-- Test status更加测试结果自动写入 -->
                 <td>
                     <?php
                     $results_array = array();
@@ -273,7 +252,7 @@ else{
                         array_push($results_array,$info[0]);
                     }
                     $len_results = count($results_array);
-                    $status = "";
+                    $status = "";//一行结果的status
                     $num = 0;
                     for($bb=0; $bb<$len_results; $bb++){
                         if($results_array[$bb]=="TBD"){
@@ -289,10 +268,11 @@ else{
                     if(!in_array("TBD",$results_array)){
                         $status = "Complete";
                     }
-                    echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
+                    echo "<input style='width:70px;' name='status' id='status' type='text' value='$status' readonly />";
                     ?>
                 </td>
-                <!-- -------Result select box ------- -->
+
+                <!-- Result根据测试结果按要求判断显示在页面 -->
                 <td>
                     <?php
                     //rowid是表格行编号,selectid是单元格编号,number是机台数量,unit_id是RecordID,$tc_num是总行数,TMD参数越传越多
@@ -332,7 +312,7 @@ else{
                     }
                     echo "</select>";
                     */
-                    $row_result = "TBD";
+                    $row_result = "TBD";//一行结果TBD>EC Fail>Fail>Known Fail (open)>Known Fail (close)
                     $num1 = 0;
                     for($k=0; $k<$len_results;$k++){
                         //echo $result_one_row[$k];                   
@@ -341,6 +321,9 @@ else{
                             if($num1 == $len_results){
                                 $row_result = "Pass";
                             }
+                        }
+                        else if(in_array("TBD",$results_array)){
+                            $row_result = "TBD";
                         }
                         else if(in_array("EC Fail",$results_array)){
                             $row_result = "EC Fail";
@@ -355,22 +338,27 @@ else{
                             $row_result = "Known Fail (Close)";
                         }
                     }
-                    echo "<input style='width:110px;' name='result' type='text' value='$row_result' readonly />";
+                    echo "<input style='width:110px;' name='result' id='result' type='text' value='$row_result' readonly />";
                     ?>
                 </td>
-                <td>
-                    <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>                  
-                </td>
-                <td>
-                    <input type="button" class="all_pass" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Pass" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'>                  
-                </td>
+                <!-- Add additional informaton for failure -->
+                <td><input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'></td>
+                
+                <!-- Remove all pass in this page as DAQ request. Holy shit~~~ -->
+                <!-- Pressing set button and current line are all set to PASS -->
+                <!-- <td><input type="button" name="PP<?php //echo $rowid; ?>" id="PP<?php //echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php //echo $rowid; ?>,<?php //echo $number; ?>);'></td> -->
+                
+                <!-- Fail symptom, RCCA, Remark -->
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>
                 <td><textarea name="remarks[<?php echo $rowid; ?>]" id="remarks[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Remarks"]; ?></textarea></td>
+                
+                <!-- DQA需求不明一直在变，这项功能先暂停，老子没工夫陪他们玩
                 <td>
                     <input class="btn_add" type="button" name="add" value="Add" id="add" />&nbsp;
                     <input class="btn_del" type="button" name="del" value="Del" id="del"/>
                 </td>
+                -->
             </tr>
             <?php 
             $rowid = $rowid+1;
@@ -378,7 +366,7 @@ else{
             ?>
             </tbody>
         </table>
-        <!-- #################### 又是一道分割线 ############################### -->
+        <!-- submit&hidden area from created matrix -->
         <div class="save_record">
             <input class="subit" type="submit" name="sub" value="Save" />
             &nbsp;&nbsp;<input class="back" type="button" value="Back" onClick="history.go(-1);">
@@ -401,6 +389,7 @@ else{
         </div>
     </form>
 </div>
+
 <!-- Add button to export matrix to excel begins here -->
 <div>
     <form name="export" method="POST" action="./comm/Matrix_Excel.php">
@@ -422,6 +411,8 @@ else{
 </div>
 <!-- Add button to export matrix to excel end -->
 <div>&nbsp;&nbsp;&nbsp;&nbsp;<img src="./images/bear.svg" height="200" /></div>
+
+<!-- Footer div to add a simple note -->
 <div class="footer">
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
     <img class="logo_white" src="./images/logo-small_white.svg" height="40" alt="Wistron">
