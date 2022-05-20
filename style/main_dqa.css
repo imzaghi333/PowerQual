@@ -529,7 +529,7 @@ textarea{background: transparent;}
 }
 .content .customers th{
     font-size: 12px;
-    background-color: #3c763d;
+    background-color: #7c355d;
     color: #fff;
     padding: 3px 3px;
     text-align: center;
@@ -545,6 +545,7 @@ textarea{background: transparent;}
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.content .customers #requests{width: 30px;}
 .content .customers input[type=date]{
     font-size: 10px;
     padding: 3px;

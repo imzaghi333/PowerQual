@@ -1,18 +1,4 @@
 <?php
-/*
- ____________
-< 尼玛坑爹啊 >
- ------------
- 
-        .--.
-       |o_o |
-       |:_/ |
-      //   \ \
-     (|     | )
-    /'\_   _/`\
-    \___)=(___/
-*/
-
 require_once("./js/conf.php");
 mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
@@ -158,7 +144,7 @@ else{
             <tr>
                 <td><input name='requests[]' id='requests' type='text' value='<?php echo $row["Requests"] ?>'></td>
                 <td>
-                    <select name='group[]' id='group'>
+                    <select name='group[]' id='group' class='gp'>
                     <?php
                     $gp_txt = $groups[$i];
                     $opts = mysqli_query($con, "SELECT `Groups` FROM dropbox_group");
@@ -266,7 +252,7 @@ else{
                         array_push($results_array,$info[0]);
                     }
                     $len_results = count($results_array);
-                    $status = "";
+                    $status = "";//一行结果的status
                     $num = 0;
                     for($bb=0; $bb<$len_results; $bb++){
                         if($results_array[$bb]=="TBD"){
@@ -282,12 +268,11 @@ else{
                     if(!in_array("TBD",$results_array)){
                         $status = "Complete";
                     }
-                    echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
+                    echo "<input style='width:70px;' name='status' id='status' type='text' value='$status' readonly />";
                     ?>
                 </td>
 
-                <!-- Result根据测试结果自动写入 -->
-                <!-- 20220511 TBD>EC fail> fail> Known fail(open)> Known fail(closed) MD不早说,老子又得改还几个文件 -->
+                <!-- Result根据测试结果按要求判断显示在页面 -->
                 <td>
                     <?php
                     //rowid是表格行编号,selectid是单元格编号,number是机台数量,unit_id是RecordID,$tc_num是总行数,TMD参数越传越多
@@ -327,7 +312,7 @@ else{
                     }
                     echo "</select>";
                     */
-                    $row_result = "TBD";
+                    $row_result = "TBD";//一行结果TBD>EC Fail>Fail>Known Fail (open)>Known Fail (close)
                     $num1 = 0;
                     for($k=0; $k<$len_results;$k++){
                         //echo $result_one_row[$k];                   
@@ -353,7 +338,7 @@ else{
                             $row_result = "Known Fail (Close)";
                         }
                     }
-                    echo "<input style='width:110px;' name='result' type='text' value='$row_result' readonly />";
+                    echo "<input style='width:110px;' name='result' id='result' type='text' value='$row_result' readonly />";
                     ?>
                 </td>
                 <!-- Add additional informaton for failure -->

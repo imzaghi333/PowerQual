@@ -1,17 +1,25 @@
 <?php
-/*
-          __   _,--="=--,_   __
-         /  \."    .-.    "./  \
-        /  ,/  _   : :   _  \/` \
-        \  `| /o\  :_:  /o\ |\__/
-         `-'| :="~` _ `~"=: |
-            \`     (_)     `/ jgs
-     .-"-.   \      |      /   .-"-.
-.---{     }--|  /,.-'-.,\  |--{     }---.
- )  (_)_)_)  \_/`~-===-~`\_/  (_(_(_)  (
-(  春风十里扬州路卷上珠帘总不如         )
- )                                     (
-'---------------------------------------'
+/**
+ * _ooOoo_
+ * o8888888o
+ * 88" . "88
+ * (| -_- |)
+ *  O\ = /O
+ * ___/`---'\____
+ * .   ' \\| |// `.
+ * / \\||| : |||// \
+ * / _||||| -:- |||||- \
+ * | | \\\ - /// | |
+ * | \_| ''\---/'' | |
+ * \ .-\__ `-` ___/-. /
+ * ___`. .' /--.--\ `. . __
+ * ."" '< `.___\_<|>_/___.' >'"".
+ * | | : `- \`.;`\ _ /`;.`/ - ` : | |
+ * \ \ `-. \_ __\ /__ _/ .-` / /
+ * ======`-.____`-.___\_____/___.-`____.-'======
+ * `=---='
+ *          .............................................
+ *           佛曰：bug泛滥，我已瘫痪！
 */
 
 require_once("./js/conf.php");
@@ -130,6 +138,11 @@ if(isset($_GET["rowid"])){
         $unit_no = $loop+1;
         $sql_query = "SELECT FID FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell_id' and Unitsno='$unit_no' ";
         //echo $sql_query."<br>";
+        $y_rowid    = $_GET["rowid"];           //选了fail那一行的编号
+        $y_cellid = $_GET["cellid"];          //一行最后一个单元格编号
+        $y_count    = $_GET["count"];          //测试机数量
+        $y_currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
+        $y_rows      = $_GET["rows"];           //测试总行数 
 
         $check = mysqli_query($con,$sql_query);
         $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
@@ -146,10 +159,10 @@ if(isset($_GET["rowid"])){
 
             echo "<th width='50'>Unit# $unit_bh</th>";
             while($info = mysqli_fetch_array($check1,MYSQLI_BOTH)){
-                echo "<td width='120'><a href='fail_edit.php?id=$info[0]&unit=$info[4]' >".$info[5]."</a></td>";
+                echo "<td width='120'><a href='fail_edit.php?id=$info[0]&unit=$info[4]&rowid=$y_rowid&cellid=$y_cellid&count=$y_count&currentid=$y_currentid&rows=$y_rows' >".$info[5]."</a></td>";
             }
             echo "<td width='120'>";
-            echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();'>";
+            echo "<select class='del_fail' id='del_fail' onchange='delOneFailure($y_rowid,$y_cellid,$y_count,$y_currentid,$y_rows);'>";
             echo "<option value=''>選擇删除记录</option>";
             for($i=0; $i<$row_nums; $i++){
                 mysqli_data_seek($check1,$i);

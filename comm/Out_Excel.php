@@ -29,8 +29,8 @@ require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
 
 $today = date("Y-m-d");
-mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");//更新当前日期
-mysqli_query($con, "UPDATE fail_infomation SET Today='$today'");//更新当前日期
+mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");//更新当天日期
+mysqli_query($con, "UPDATE fail_infomation SET Today='$today'");//更新当天日期
 sleep(1);
 
 // ============ 文件名拼接组成字串 ===========

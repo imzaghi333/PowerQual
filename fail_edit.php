@@ -1,4 +1,18 @@
 <?php
+/*
+          __   _,--="=--,_   __
+         /  \."    .-.    "./  \
+        /  ,/  _   : :   _  \/` \
+        \  `| /o\  :_:  /o\ |\__/
+         `-'| :="~` _ `~"=: |
+            \`     (_)     `/ jgs
+     .-"-.   \      |      /   .-"-.
+.---{     }--|  /,.-'-.,\  |--{     }---.
+ )  (_)_)_)  \_/`~-===-~`\_/  (_(_(_)  (
+(  春风十里扬州路卷上珠帘总不如 - 杜牧    )
+ )                                     (
+'---------------------------------------'
+*/
 /**
  * Wistron mail: Felix_Qian@Wistron.com 
  * GitHub: https://github.com/imzaghi333
@@ -249,9 +263,15 @@ if(isset($_GET["id"])){
         $sql_update.= "ReportedDate='$report_date',Results='$tt_result' WHERE FID='$fail_id'";
         
         mysqli_query($con,$sql_update);
-        sleep(1);
         mysqli_close($con);
-        echo "<script type='text/javascript'>window.history.go(-2);</script>";
+
+        $y_row    = $_GET["rowid"];           //选了fail那一行的编号
+        $y_cell = $_GET["cellid"];          //一行最后一个单元格编号
+        $y_count    = $_GET["count"];          //测试机数量
+        $y_current = $_GET["currentid"];      //一行最后一个单元格RecordID
+        $y_rows      = $_GET["rows"];           //测试总行数
+        //echo "<script type='text/javascript'>window.history.go(-2);</script>";
+        echo "<script>window.location.href='fail.php?rowid=$y_row&cellid=$y_cell&count=$y_count&currentid=$y_current&rows=$y_rows'</script>";
     }
     ?>   
 </div>

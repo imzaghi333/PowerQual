@@ -1,3 +1,24 @@
+/**
+ *              ,----------------,              ,---------,
+ *         ,-----------------------,          ,"        ,"|
+ *       ,"                      ,"|        ,"        ,"  |
+ *      +-----------------------+  |      ,"        ,"    |
+ *      |  .-----------------.  |  |     +---------+      |
+ *      |  |                 |  |  |     | -==----'|      |
+ *      |  |  I LOVE OS X    |  |  |     |         |      |
+ *      |  |  Bad command or |  |  |/----|`---=    |      |
+ *      |  |  ~$ python3     |  |  |   ,/|==== ooo |      ;
+ *      |  |                 |  |  |  // |(((( [33]|    ,"
+ *      |  `-----------------'  |," .;'| |((((     |  ,"
+ *      +-----------------------+  ;;  | |         |,"
+ *         /_)______________(_/  //'   | +---------+
+ *    ___________________________/___  `,
+ *   /  oooooooooooooooo  .o.  oooo /,   \,"-----------
+ *  / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
+ * /_==__==========__==_ooo__ooo=_/'   /___________,"
+ *
+*/
+
 var script1 = document.createElement("script"); 
 script1.type = "text/javascript"; 
 script1.src = "js/jquery-3.1.1.min.js"; 
@@ -153,11 +174,13 @@ function returnvalue20(row_no,val){
  * added on 2022-05-05 for deleting a failure record
  * 刪除一個failure記錄,數據保留在數據庫,但不知頁面上顯示,PHP文件裏設置Unitsno=NULL即可
  */
-function delOneFailure(){
+function delOneFailure(rowid,cellid,count,currentid,rows){
+    //alert(rowid+" "+cellid+" "+count+" "+currentid+" "+rows);
+    //http://localhost/DQA/fail.php?rowid=1&cellid=10&count=5&currentid=98&rows=4
     if(window.confirm("您確定刪除嗎？")){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;
-        window.location.href="./comm/delete.php?failure_id="+del_val;
+        window.location.href="./comm/delete.php?failure_id="+del_val+"&rowid="+rowid+"&cellid="+cellid+"&count="+count+"&currentid="+currentid+"&rows="+rows;
     }
 }
 
@@ -185,6 +208,8 @@ function oneRowAllPass(rowid,number){
                 oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
             }
         }
+        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
+        oTbody.rows[row_no].cells[cell_length+4].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
         layer.msg("第"+rowid+"行全部設置為Pass U•ェ•*U",{icon: 6});
     }
     else{
