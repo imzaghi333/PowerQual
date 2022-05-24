@@ -25,7 +25,7 @@ $con = linkDB($my_host,$my_user,$my_pwd);//Link to DB
 mysqli_select_db($con,"DQA_Record");//Select Database
 mysqli_query($con,"set names utf8;");//设置字符集
 date_default_timezone_set("PRC");//时区选中华人民共和国. IF YOUR NOT PRC YOUR A WANK
-$footer = "Copyright&nbsp;&nbsp;&copy;&nbsp;&nbsp;Wistron InfoComm CO.Ltd | All rights reserved | 2Q2L20 Fexlix Qian";
+$footer = "Copyright&nbsp;&nbsp;&copy;&nbsp;&nbsp;Wistron InfoComm CO.Ltd | All rights reserved | 2Q2L20 Fexlix_Qian@Wistron.com";
 
 /**
  * 定义错误处理器：发生错误就会被自动调用,而且会传入该4个实参数据;该函数需要定义4个形参，分别代表

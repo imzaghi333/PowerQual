@@ -18,8 +18,8 @@
  * \ \ `-. \_ __\ /__ _/ .-` / /
  * ======`-.____`-.___\_____/___.-`____.-'======
  * `=---='
- *          .............................................
- *           佛曰：bug泛滥，我已瘫痪！
+ *       .............................................
+ *                                佛曰：bug泛滥，我已瘫痪！
 */
 
 require_once("./js/conf.php");
@@ -65,7 +65,12 @@ echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已
 <?php
 if(isset($_GET["count"])){
 ?>
-<p class="txt_for_check">1.點擊Link為每個測試機添加failure;<br>2.溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot<br>3.Result下拉菜單為每個測試機設置Pass或TBD;<br>4.Set按鈕設置一行結果全部Pass;</p>
+<p class="txt_for_check">
+    1.點擊Link為每個測試機添加failure;<br>
+    2.溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot;<br>
+    3.Result下拉菜單為每個測試機单独設置Pass或TBD;<br>
+    4.Set按鈕設置一行結果全部Pass;
+</p>
 <table id="unit_table" class="unit_table" border="1" cellpadding="3" cellspacing="3">
     <thead>
     <tr>
@@ -112,7 +117,7 @@ if(isset($_GET["count"])){
             $ll = ""; 
             }else{
                 $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell);'>";
-                $ll.= "<option value=''>溫度选择</option>";
+                $ll.= "<option value=''>TEMP Set</option>";
                 $ll.= "<option value='Hot'>Hot</option>";
                 $ll.= "<option value='Cold'>Cold</option>";
                 $ll.= "<option value='Room'>Room</option>";
@@ -138,10 +143,10 @@ if(isset($_GET["count"])){
                 $ll = "<select class='del_fail' id='pt$cell' onchange='setPassOrTBD($cell);'>";
                 $ll.= "<option value=''>Set Result</option>";
                 $ll.= "<option value='Pass'>Pass</option>";
-                $ll.= "<option value='Fail'>Fail</option>";
-                $ll.= "<option value='EC Fail'>EC Fail</option>";
-                $ll.= "<option value='Known Fail (Open)'>Known Fail (Open)</option>";
-                $ll.= "<option value='Known Fail (Close)'>Known Fail (Close)</option>";
+                //$ll.= "<option value='Fail'>Fail</option>";
+                //$ll.= "<option value='EC Fail'>EC Fail</option>";
+                //$ll.= "<option value='Known Fail (Open)'>Known Fail (Open)</option>";
+                //$ll.= "<option value='Known Fail (Close)'>Known Fail (Close)</option>";
                 $ll.= "<option value='TBD'>TBD</option>";
                 $ll.= "</select>";
             }
@@ -222,14 +227,16 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td>Result<font color="#cc2229" size="1">*</font></td>
                 <td>
-                    <select name="ff" id="fail_result<?php echo $select_id; ?>" onchange="returnResult(<?php echo $select_id; ?>);" required>
+                    <select name="ff" id="fail_result<?php echo $select_id; ?>" onchange="returnResult(<?php echo $row_id; ?>,<?php echo $select_id; ?>,<?php echo $clicked_unit; ?>);" required>
                         <option value="">請選擇</option>
-                        <option value="Pass">Pass</option>
                         <option value="Fail">Fail</option>
                         <option value="Known Fail (Open)">Known Fail (Open)</option>
                         <option value="Known Fail (Close)">Known Fail (Close)</option>
                         <option value="EC Fail">EC Fail</option>
+                        <!--
+                        <option value="Pass">Pass</option>
                         <option value="TBD">TBD</option>
+                        -->
                     </select>
                 </td>
             </tr>
@@ -237,7 +244,7 @@ else if(isset( $_GET["cell"])){
                 <td>Defect Mode(Symptom)</td>
                 <td>
                 <?php
-                echo "<select name='df1'>";
+                echo "<select name='df1' id='df1_$select_id' onchange='returnFailSympton($row_id,$select_id);'>";
                 echo "<option value=''>請選擇</option>";
                 $opts = mysqli_query($con, "SELECT DefectMode FROM dropbox_df1");
                 while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
@@ -263,7 +270,7 @@ else if(isset( $_GET["cell"])){
             </tr>
             <tr>
                 <td>RCCA</td>
-                <td><textarea name="rcca" cols="50" rows="10" ></textarea></td>
+                <td><textarea name="rcca" id="rcca<?php echo $select_id; ?>" cols="50" rows="10" onchange="returnRCCA(<?php echo $row_id; ?>,<?php echo $select_id; ?>,<?php echo $clicked_unit; ?>);" ></textarea></td>
             </tr>
             <tr>
                 <td>Issue Status</td>
@@ -296,7 +303,7 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td>TEMP<font color="#cc2229" size="1">*</font></td>
                 <td>
-                    <select name="temp" id="temp">
+                    <select name="temp" id="temp<?php echo $select_id; ?>" onchange="returnTEMP(<?php echo $row_id; ?>,<?php echo $select_id; ?>);">
                         <option value="">請選擇</option>
                         <option value="Cold">Cold</option>
                         <option value="Hot">Hot</option>
@@ -304,13 +311,13 @@ else if(isset( $_GET["cell"])){
                     </select>
                 </td>
             </tr>
-            <tr><td>Drop Cycle</td><td><input name="drop_cycle" type="text" /></td></tr>
-            <tr><td>Drops</td><td><input name="drops" type="number" min="1" max="100" /></td></tr>
+            <tr><td>Drop Cycle</td><td><input name="drop_cycle" id="drop_cycle<?php echo $select_id; ?>" type="text" onchange="returnDropCycle(<?php echo $row_id; ?>,<?php echo $select_id; ?>);" /></td></tr>
+            <tr><td>Drops</td><td><input name="drops" id="drops<?php echo $select_id; ?>" type="number" min="1" max="100" onchange="retrunDrops(<?php echo $row_id; ?>,<?php echo $select_id; ?>);" /></td></tr>
             <tr>
                 <td>Drop Side</td>
                 <td>
                     <?php
-                    echo "<select name='drop_side'>";
+                    echo "<select name='drop_side' id='drop_side$select_id' onchange='returnDropSide($row_id,$select_id);' >";
                     echo "<option value=''>請選擇</option>";
                     $opts = mysqli_query($con, "SELECT Dropside FROM dropbox_dropside");
                     while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
@@ -320,7 +327,7 @@ else if(isset( $_GET["cell"])){
                     ?>
                 </td>
             </tr>
-            <tr><td>Hit (Tumble)</td><td><input name="hit" type="text" /></td></tr>
+            <tr><td>Hit (Tumble)</td><td><input name="hit" id="hit<?php echo $select_id; ?>" type="text" onchange="returnHitTumble(<?php echo $row_id; ?>,<?php echo $select_id; ?>);" /></td></tr>
             <tr><td>Next checkpoint date</td><td><input name="checkpoint" type="date" /></td></tr>
             <tr>
                 <td>Issue Published</td>
@@ -383,6 +390,7 @@ else if(isset( $_GET["cell"])){
         }
         
         $tt_result = $_POST["ff"];//修改Default result
+        /*
         $fail_symptom = "";
         if($df1){
             $fail_symptom .= $df1.". ";
@@ -401,7 +409,7 @@ else if(isset( $_GET["cell"])){
         }
         if($hit_tumble){
             $fail_symptom .= $hit_tumble." hits.";
-        }
+        }*/
         
         // ---------------------- MD  --------------------------------
         //echo "<script type='text/javascript'>returnvalue1(".($select_id-1).",'".$df1."')</script>";             //Defect Mode1
@@ -422,8 +430,8 @@ else if(isset( $_GET["cell"])){
         //echo "<script type='text/javascript'>returnvalue16(".($select_id-1).",'".$mfg_date."')</script>";        //ORT MFG Date
         //echo "<script type='text/javascript'>returnvalue17(".($select_id-1).",'".$report_date."')</script>";
         //echo "<script type='text/javascript'>returnvalue18(".($select_id-1).",'".$tt_result."')</script>";
-        echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";//Fail symptom
-        echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";//RCCA
+        //echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";//Fail symptom
+        //echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";//RCCA
 
         $sql_add = "INSERT INTO fail_infomation(Defectmode1,Defectmode2,RCCA,Issuestatus,Category,PIC,JIRANO,SPR,Temp,Dropcycles,Drops,Dropside,HIT,NextCheckpointDate,IssuePublished,ORTMFGDate,ReportedDate,Unitsno,TestID,RowID,CellID,Results) ";
         $sql_add.= "VALUES('$df1','$df2','$rcca_txt','$issue_status','$category','$pic','$jira','$spr','$temp','$drop_cycle','$drops','$drop_side','$hit_tumble','$checkpoint','$publish','$mfg_date','$report_date','$unit_no','$test_id','$row_no','$cell_no','$tt_result')";
@@ -438,6 +446,5 @@ else if(isset( $_GET["cell"])){
 <?php
 }
 ?>
-
 </body>
 </html>

@@ -1,24 +1,17 @@
-/**
- *              ,----------------,              ,---------,
- *         ,-----------------------,          ,"        ,"|
- *       ,"                      ,"|        ,"        ,"  |
- *      +-----------------------+  |      ,"        ,"    |
- *      |  .-----------------.  |  |     +---------+      |
- *      |  |                 |  |  |     | -==----'|      |
- *      |  |  I LOVE OS X    |  |  |     |         |      |
- *      |  |  Bad command or |  |  |/----|`---=    |      |
- *      |  |  ~$ python3     |  |  |   ,/|==== ooo |      ;
- *      |  |                 |  |  |  // |(((( [33]|    ,"
- *      |  `-----------------'  |," .;'| |((((     |  ,"
- *      +-----------------------+  ;;  | |         |,"
- *         /_)______________(_/  //'   | +---------+
- *    ___________________________/___  `,
- *   /  oooooooooooooooo  .o.  oooo /,   \,"-----------
- *  / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
- * /_==__==========__==_ooo__ooo=_/'   /___________,"
- *
+/* ********************************************
+             __   _,--="=--,_   __
+            /  \."    .-.    "./  \
+           /  ,/  _   : :   _  \/` \
+           \  `| /o\  :_:  /o\ |\__/
+            `-'| :="~` _ `~"=: |
+               \`     (_)     `/ jgs
+        .-"-.   \      |      /   .-"-.
+.------{     }--|  /,.-'-.,\  |--{     }-----.
+ )     (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
+(  Are you going to buy a BMW or an Audi TT  )
+ )                                          (
+'--------------------------------------------'
 */
-
 var script1 = document.createElement("script"); 
 script1.type = "text/javascript"; 
 script1.src = "js/jquery-3.1.1.min.js"; 
@@ -29,6 +22,9 @@ script2.type = "text/javascript";
 script2.src = "js/layui/layui.js"; 
 document.getElementsByTagName("head")[0].appendChild(script2);
 
+/**
+* 替代window.onload方法 
+*/
 function addLoadEvent(func){
     var oldonload = window.onload;
     if(typeof window.onload != "function"){
@@ -43,8 +39,8 @@ function addLoadEvent(func){
 }
 
 /**
- * info裏可以給unit添加Hot,cold, room
- */
+ * info.php可以給unit添加Hot,cold, room 而且Testorder颜色会根据温度显示不同颜色
+*/
 function setTemperature(cell){
     var sel_id = "temp"+cell;
     var temp_id = "subject9["+(cell-1)+"]";
@@ -106,36 +102,128 @@ function setPassOrTBD(cell){
     }
 }
 
-/**
- * set result
-*/
-function returnResult(cell){
+/** Set Result */
+function returnResult(row,cell,unit){
     var result_id = "subject18["+(cell-1)+"]";
     var sel_id = "fail_result"+cell;
+    var fail_sysm = "fail["+(row-1)+"]";
 
     var selbox = document.getElementById(sel_id);
     var selbox_val = selbox.value;
     switch (selbox_val) {
         case "Pass":
             window.opener.document.getElementById(result_id).value="Pass";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         case "TBD":
             window.opener.document.getElementById(result_id).value="TBD";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         case "Fail":
             window.opener.document.getElementById(result_id).value="Fail";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         case "EC Fail":
             window.opener.document.getElementById(result_id).value="EC Fail";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         case "Known Fail (Open)":
             window.opener.document.getElementById(result_id).value="Known Fail (Open)";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         case "Known Fail (Close)":
             window.opener.document.getElementById(result_id).value="Known Fail (Close)";
+            window.opener.document.getElementById(fail_sysm).value += "Unit"+unit+": ";
             break;
         default:
             break;
+    }
+}
+
+/**
+ * matrix edit页面需要填到Fail Symptom, RCCA 的内容. 5/24我重新编写了这一段的Javascript代码
+ * 1.Defect Mode Defect Mode(Symptom)
+*/
+function returnFailSympton(row,cell){
+    var sel_id = "df1_"+cell;
+    var selbox = document.getElementById(sel_id);
+    var fail_sysm = "fail["+(row-1)+"]";
+    var selbox_val = selbox.value;
+
+    if(selbox_val){
+        window.opener.document.getElementById(fail_sysm).value += selbox_val+"; ";
+    }
+}
+
+/** 2.TEMP-cold,hot,room */
+function returnTEMP(row,cell){
+    var sel_id = "temp"+cell;
+    var selbox = document.getElementById(sel_id);
+    var fail_sysm = "fail["+(row-1)+"]";
+    var selbox_val = selbox.value;
+
+    switch (selbox_val) {
+        case "Hot":
+            window.opener.document.getElementById(fail_sysm).value += selbox_val+"; ";
+            break;
+        case "Cold":
+            window.opener.document.getElementById(fail_sysm).value += selbox_val+"; ";
+            break
+        case "Room":
+            window.opener.document.getElementById(fail_sysm).value += selbox_val+"; ";
+        default:
+            break;
+    }
+}
+
+/** 3.Drop Cycle */
+function returnDropCycle(row,cell){
+    var drop_cycle_id = "drop_cycle"+cell;
+    var drop_cycle = document.getElementById(drop_cycle_id);
+    var fail_sysm = "fail["+(row-1)+"]";
+    if(drop_cycle.value){
+        window.opener.document.getElementById(fail_sysm).value += drop_cycle.value+" cycles; ";
+    }
+}
+
+/** 4.Drops */
+function retrunDrops(row,cell){
+    var drops = document.getElementById("drops"+cell);
+    var fail_sysm = "fail["+(row-1)+"]";
+    if(drops.value){
+        window.opener.document.getElementById(fail_sysm).value += drops.value+" drops; ";
+    }
+}
+
+/** 5. Drop side */
+function returnDropSide(row,cell){
+    var drop_side = document.getElementById("drop_side"+cell);
+    var fail_sysm = "fail["+(row-1)+"]";
+    if(drop_side.value){
+        window.opener.document.getElementById(fail_sysm).value += drop_side.value+" side; ";
+    }
+}
+
+/** 6. Hit Tumble */
+function returnHitTumble(row,cell){
+    var fail_sysm = "fail["+(row-1)+"]";
+    var hit_tumble = document.getElementById("hit"+cell);
+    if(hit_tumble.value){
+        window.opener.document.getElementById(fail_sysm).value += hit_tumble.value+" hits; ";
+    }
+}
+
+/**
+ * @param {*} row 行号; fail.php从1开始; matrix_edit.php作为行编号从0开始
+ * @param {*} cell 单元格编号,从1开始; matrix_edit.php用作id编号从0开始
+ * @param {*} unit 测试机编号
+ * RCCA 
+*/
+function returnRCCA(row,cell,unit){
+    var rcca_area = "rcca["+(row-1)+"]";
+    var fail_rcca = document.getElementById("rcca"+cell);
+    if(fail_rcca.value){
+        window.opener.document.getElementById(rcca_area).value += "Unit"+unit+": "+fail_rcca.value+"; ";
     }
 }
 
@@ -172,15 +260,12 @@ function returnvalue7(selectid,val){
 function returnvalue8(selectid,val){
     window.opener.document.getElementById("subject8["+selectid+"]").value=val;
 }
-*/
-
 // 9.TEMP
 function returnvalue9(selectid,val){
     if(val.length!=0){
         window.opener.document.getElementById("subject9["+selectid+"]").value=val;
     }
 }
-/*
 // 10.Dropcycles
 function returnvalue10(selectid,val){
     window.opener.document.getElementById("subject10["+selectid+"]").value=val;
@@ -219,8 +304,6 @@ function returnvalue18(selectid,val){
         window.opener.document.getElementById("subject18["+selectid+"]").value=val;
     }
 }
-*/
-
 // 19.Fail symptom
 function returnvalue19(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
@@ -237,14 +320,12 @@ function returnvalue20(row_no,val){
         window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
     }
 }
+*/
 
 /**
- * added on 2022-05-05 for deleting a failure record
- * 刪除一個failure記錄,數據保留在數據庫,但不知頁面上顯示,PHP文件裏設置Unitsno=NULL即可
+ * 刪除一個failure記錄,數據保留在數據庫,但不在頁面上顯示,PHP文件裏設置Unitsno=NULL即可
  */
 function delOneFailure(rowid,cellid,count,currentid,rows){
-    //alert(rowid+" "+cellid+" "+count+" "+currentid+" "+rows);
-    //http://localhost/DQA/fail.php?rowid=1&cellid=10&count=5&currentid=98&rows=4
     if(window.confirm("您確定刪除嗎？")){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;

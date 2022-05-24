@@ -1059,7 +1059,7 @@
             }
             ?>
             <div class="note">
-                <p>1. Query any item. Tester, Product or start time.</p>
+                <p>1. Query any item. Tester, Product or start time</p>
                 <p>2. Recommond Google Chrome <img src="./images/chrome.jpg" width="15" /> or Microsoft Edge <img src="./images/Edge.jpg" width="15" /></p>
                 <p>
                     <?php
@@ -1067,7 +1067,7 @@
                     echo "3. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
                     ?>
                 </p>
-                <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
+                <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered</p>
             </div>
             </div>
         </div>
