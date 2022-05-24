@@ -20,7 +20,6 @@
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
            佛祖保佑        永无BUG
-
 */
 
 require_once "../js/conf.php";
@@ -138,7 +137,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             break;
                     }
                     $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
                     $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
                     $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
@@ -169,7 +168,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             break;
                     }
                     $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
                     $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
                     $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
@@ -264,9 +263,8 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
-                    
                     $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
                     $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
                     $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
@@ -299,7 +297,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     
                     $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Units"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
+                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
                     $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
                     $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);

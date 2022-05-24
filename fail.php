@@ -65,7 +65,7 @@ echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已
 <?php
 if(isset($_GET["count"])){
 ?>
-<p class="txt_for_check">點擊Link添加failure; 溫度下拉框可以為測試機設置溫度為Hot, Cold, Room</p>
+<p class="txt_for_check">1.點擊Link為每個測試機添加failure;<br>2.溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot<br>3.Result下拉菜單為每個測試機設置Pass或TBD;<br>4.Set按鈕設置一行結果全部Pass;</p>
 <table id="unit_table" class="unit_table" border="1" cellpadding="3" cellspacing="3">
     <thead>
     <tr>
@@ -74,7 +74,7 @@ if(isset($_GET["count"])){
             echo "<th>Unit# ".($i+1)."</th>";
         }
         ?>
-        <th>ALL Pass</th>
+        <th>A Key ALL Pass</th>
     </tr>
     </thead>
     <tbody>
@@ -96,7 +96,7 @@ if(isset($_GET["count"])){
         }
         ?>
         <!-- One row all pass via pressing -->
-        <td><input class="all_pass" type="button" name="PP<?php echo ($row_no+1); ?>" id="PP<?php echo ($row_no+1); ?>" value="Set" onclick="oneRowAllPass(<?php echo $row_no+1; ?>,<?php echo $number; ?>);" /></td>
+        <td rowspan="3"><input class="all_pass" type="button" name="PP<?php echo ($row_no+1); ?>" id="PP<?php echo ($row_no+1); ?>" value="SET" onclick="oneRowAllPass(<?php echo $row_no+1; ?>,<?php echo $number; ?>);" /></td>
     </tr>
     <tr>
         <?php
@@ -112,10 +112,37 @@ if(isset($_GET["count"])){
             $ll = ""; 
             }else{
                 $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell);'>";
-                $ll.= "<option value=''>溫度</option>";
+                $ll.= "<option value=''>溫度选择</option>";
                 $ll.= "<option value='Hot'>Hot</option>";
                 $ll.= "<option value='Cold'>Cold</option>";
                 $ll.= "<option value='Room'>Room</option>";
+                $ll.= "</select>";
+            }
+            echo "<td>".$ll."</td>";
+        }
+        ?>
+    </tr>
+    <tr>
+        <?php
+        //設置单机Pass or TBD
+        for($i=0; $i<$number; $i++){
+            $cell = $cells[$i];
+            $id = $record_ids[$i];
+            $sql_order = mysqli_query($con,"SELECT Units FROM DQA_Test_Main WHERE RecordID='$id'");
+            $order = mysqli_fetch_array($sql_order,MYSQLI_NUM)[0];
+            $unit_name = "Unit".($i+1);
+            $ll = "";
+            if($order=="" || $order==" "){
+            $ll = ""; 
+            }else{
+                $ll = "<select class='del_fail' id='pt$cell' onchange='setPassOrTBD($cell);'>";
+                $ll.= "<option value=''>Set Result</option>";
+                $ll.= "<option value='Pass'>Pass</option>";
+                $ll.= "<option value='Fail'>Fail</option>";
+                $ll.= "<option value='EC Fail'>EC Fail</option>";
+                $ll.= "<option value='Known Fail (Open)'>Known Fail (Open)</option>";
+                $ll.= "<option value='Known Fail (Close)'>Known Fail (Close)</option>";
+                $ll.= "<option value='TBD'>TBD</option>";
                 $ll.= "</select>";
             }
             echo "<td>".$ll."</td>";
@@ -185,47 +212,6 @@ else if(isset( $_GET["cell"])){
     $clicked_unit = substr($_GET["unit"],4);  //选择的手机编号,'unit'字符被舍弃，只保留数字
     $row_id = $_GET["rowid"]+1;     //行編號
     echo "您選中了Unit".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
-
-    /**
-     * 獲取到已添加的failure,可以對其進行查看、編輯、刪除
-     */
-    /*
-    $sql_query = "SELECT FID,TestID,RowID,CellID,Unitsno,Results FROM fail_infomation WHERE TestID='$current_id' and RowID='$row_id' and CellID='$select_id' and Unitsno='$clicked_unit' ";
-    $check = mysqli_query($con,$sql_query);
-    $row_nums = mysqli_num_rows($check);
-    */
-    /**
-     * 如果該測試機沒有任何測試fail記錄,這段將不會運行
-     */
-    /*
-    if($row_nums){
-        echo "<span class='txt_for_check'>Check the added failure here.</span>";
-        echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
-        for($i=0; $i<$row_nums; $i++){
-            echo "<th>Record ".($i+1)."</th>";
-        }
-        echo "<th>返回</th>";
-        echo "<th>Delete</th>";
-        echo "<tr>";
-        for($loop=0; $loop<$row_nums; $loop++){
-            mysqli_data_seek($check,$loop);
-            $info = mysqli_fetch_array($check,MYSQLI_BOTH);
-            echo "<td><a href='fail_edit.php?id=$info[0]&unit=$info[4]' >".$info[5]."</a></td>";
-        }
-        echo '<td><input type="button" style="width:50px; background-color:#697323; color:#fff;" onclick="history.go(-1);" value="Back" /></td>';//返回上一頁
-        echo "<td>";
-        echo "<select class='del_fail' id='del_fail' onchange='delOneFailure();' >";//刪除不要的記錄,采用select方式
-        echo "<option value=''>請選擇</option>";
-        for($loop=0; $loop<$row_nums; $loop++){
-            mysqli_data_seek($check,$loop);
-            $info = mysqli_fetch_array($check,MYSQLI_BOTH);
-            echo "<option value='$info[0]'>Record".($loop+1)."</option>";
-        }
-        echo "</select></td>";
-        echo "</tr>";
-        echo "</table>";
-    }
-    */
 ?>
 <!-- 默認是添加新的failure information -->
 <div class="fail">
@@ -236,7 +222,7 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td>Result<font color="#cc2229" size="1">*</font></td>
                 <td>
-                    <select name="ff" required>
+                    <select name="ff" id="fail_result<?php echo $select_id; ?>" onchange="returnResult(<?php echo $select_id; ?>);" required>
                         <option value="">請選擇</option>
                         <option value="Pass">Pass</option>
                         <option value="Fail">Fail</option>
@@ -435,7 +421,7 @@ else if(isset( $_GET["cell"])){
         //echo "<script type='text/javascript'>returnvalue15(".($select_id-1).",'".$publish."')</script>";         //Issue Published
         //echo "<script type='text/javascript'>returnvalue16(".($select_id-1).",'".$mfg_date."')</script>";        //ORT MFG Date
         //echo "<script type='text/javascript'>returnvalue17(".($select_id-1).",'".$report_date."')</script>";
-        echo "<script type='text/javascript'>returnvalue18(".($select_id-1).",'".$tt_result."')</script>";
+        //echo "<script type='text/javascript'>returnvalue18(".($select_id-1).",'".$tt_result."')</script>";
         echo "<script type='text/javascript'>returnvalue19(".$row_no.",'Unit".$clicked_unit.":".$fail_symptom."')</script>";//Fail symptom
         echo "<script type='text/javascript'>returnvalue20(".$row_no.",'Unit".$clicked_unit.":".$rcca_txt."')</script>";//RCCA
 

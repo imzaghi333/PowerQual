@@ -231,7 +231,7 @@ else{
                         echo "<input class='order_txt' type='text' name='test_order[]' id='test_order[".$selectid."]' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
 		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-                        echo "cell: ".$selectid;
+                        echo " ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution
@@ -344,7 +344,7 @@ else{
                 <!-- Add additional informaton for failure -->
                 <td><input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'></td>
                 
-                <!-- Remove all pass in this page as DAQ request. Holy shit~~~ -->
+                <!-- Remove all pass in this page as DAQ request. -->
                 <!-- Pressing set button and current line are all set to PASS -->
                 <!-- <td><input type="button" name="PP<?php //echo $rowid; ?>" id="PP<?php //echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php //echo $rowid; ?>,<?php //echo $number; ?>);'></td> -->
                 
@@ -353,7 +353,7 @@ else{
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>
                 <td><textarea name="remarks[<?php echo $rowid; ?>]" id="remarks[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Remarks"]; ?></textarea></td>
                 
-                <!-- DQA需求不明一直在变，这项功能先暂停，老子没工夫陪他们玩
+                <!-- DQA需求不明一直在变, MD跟哥玩呢, 这项功能先暂停
                 <td>
                     <input class="btn_add" type="button" name="add" value="Add" id="add" />&nbsp;
                     <input class="btn_del" type="button" name="del" value="Del" id="del"/>

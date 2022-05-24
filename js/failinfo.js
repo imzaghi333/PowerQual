@@ -57,12 +57,15 @@ function setTemperature(cell){
     switch (selbox_val) {
         case "Hot":
             window.opener.document.getElementById(order_id).style.color="#cc2229";
+            window.opener.document.getElementById(temp_id).value="Hot";
             break;
         case "Cold":
             window.opener.document.getElementById(order_id).style.color="#1565c0";
+            window.opener.document.getElementById(temp_id).value="Cold";
             break
         case "Room":
             window.opener.document.getElementById(order_id).style.color="#0aa344";
+            window.opener.document.getElementById(temp_id).value="Room";
             break
     
         default:
@@ -70,8 +73,72 @@ function setTemperature(cell){
     }
 }
 
-// ----------- added on 2022-1-3 -----------
-// ----------- 2022-04-27 注释掉以下部分 -----
+/**
+ * 设置单个测试机pass or TBD;这样你就不用为某一个测试机进入fail里单独为它填Pass了
+*/
+function setPassOrTBD(cell){
+    var sel_id = "pt"+cell;    //fail.php pass or TDB select
+    var result_id = "subject18["+(cell-1)+"]";
+
+    var selbox = document.getElementById(sel_id);
+    var selbox_val = selbox.value
+    switch (selbox_val) {
+        case "Pass":
+            window.opener.document.getElementById(result_id).value="Pass";
+            break;
+        case "TBD":
+            window.opener.document.getElementById(result_id).value="TBD";
+            break;
+        case "Fail":
+            window.opener.document.getElementById(result_id).value="Fail";
+            break;
+        case "EC Fail":
+            window.opener.document.getElementById(result_id).value="EC Fail";
+            break;
+        case "Known Fail (Open)":
+            window.opener.document.getElementById(result_id).value="Known Fail (Open)";
+            break;
+        case "Known Fail (Close)":
+            window.opener.document.getElementById(result_id).value="Known Fail (Close)";
+            break;
+        default:
+            break;
+    }
+}
+
+/**
+ * set result
+*/
+function returnResult(cell){
+    var result_id = "subject18["+(cell-1)+"]";
+    var sel_id = "fail_result"+cell;
+
+    var selbox = document.getElementById(sel_id);
+    var selbox_val = selbox.value;
+    switch (selbox_val) {
+        case "Pass":
+            window.opener.document.getElementById(result_id).value="Pass";
+            break;
+        case "TBD":
+            window.opener.document.getElementById(result_id).value="TBD";
+            break;
+        case "Fail":
+            window.opener.document.getElementById(result_id).value="Fail";
+            break;
+        case "EC Fail":
+            window.opener.document.getElementById(result_id).value="EC Fail";
+            break;
+        case "Known Fail (Open)":
+            window.opener.document.getElementById(result_id).value="Known Fail (Open)";
+            break;
+        case "Known Fail (Close)":
+            window.opener.document.getElementById(result_id).value="Known Fail (Close)";
+            break;
+        default:
+            break;
+    }
+}
+
 /*
 // 1.Defect Mode(Symptom)
 function returnvalue1(selectid,val){
@@ -106,6 +173,7 @@ function returnvalue8(selectid,val){
     window.opener.document.getElementById("subject8["+selectid+"]").value=val;
 }
 */
+
 // 9.TEMP
 function returnvalue9(selectid,val){
     if(val.length!=0){
@@ -145,14 +213,14 @@ function returnvalue16(selectid,val){
 function returnvalue17(selectid,val){
     window.opener.document.getElementById("subject17["+selectid+"]").value=val;
 }
-*/
 // 18.change default result
 function returnvalue18(selectid,val){
     if(val.length!=0){
         window.opener.document.getElementById("subject18["+selectid+"]").value=val;
     }
 }
-// added on 2022-02-17
+*/
+
 // 19.Fail symptom
 function returnvalue19(row_no,val){
     //alert("Row:"+row_no+" ,value:"+val);
@@ -208,8 +276,8 @@ function oneRowAllPass(rowid,number){
                 oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
             }
         }
-        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
-        oTbody.rows[row_no].cells[cell_length+4].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
+        oTbody.rows[row_no].cells[cell_length+2].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
+        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
         layer.msg("第"+rowid+"行全部設置為Pass U•ェ•*U",{icon: 6});
     }
     else{

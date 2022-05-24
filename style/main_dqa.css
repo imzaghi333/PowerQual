@@ -992,12 +992,13 @@ textarea{background: transparent;}
 }
 .unit_table .all_pass{
     padding: 3px;
+    height: 100px;
     border-radius: 4px;
     font-size: 12px;
     background-color: #008793;
     color: #f1f1f1;
     border: none;
-    width: 40px;
+    width: 50px;
 }
 
 /* textare设为全局应用*/

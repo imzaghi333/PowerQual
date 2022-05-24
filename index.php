@@ -656,13 +656,13 @@
                 <tr>
                     <th>序号</th>
                     <th>Stage</th>
-                    <th width="9%">Verify Type</th>
+                    <th width="9%">VT.</th>
                     <th>Product</th>
                     <th>SKU</th>
                     <th width="5%">Year</th>
                     <th>Phase</th>
                     <th>SN</th>
-                    <th>Unit#</th>
+                    <th>Unit</th>
                     <th>Name</th>
                     <th>Group</th>
                     <th>Test Item</th>
@@ -688,7 +688,7 @@
                     $page=intval($_GET['page']);
                 }
                 $counter = 0;
-                $check = mysqli_query($con,"SELECT * FROM DQA_Test_Main WHERE Results!='N/A' ORDER BY Timedt DESC LIMIT ".($page-1)*$pagesize.",$pagesize ");
+                $check = mysqli_query($con,"SELECT * FROM DQA_Test_Main ORDER BY Timedt DESC LIMIT ".($page-1)*$pagesize.",$pagesize ");
                 while($row = mysqli_fetch_array($check,MYSQLI_BOTH)){
                     ++$counter;
                 ?>
@@ -1067,8 +1067,7 @@
                     echo "3. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
                     ?>
                 </p>
-                <p>4. Think over before deleting a test matrix.</p>
-                <p>5. If a matrix is deleted, it won't be recovered. <img src="./images/xiao.jpg" width="15" /></p>
+                <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
             </div>
             </div>
         </div>

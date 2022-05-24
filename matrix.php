@@ -19,10 +19,6 @@
 */
 
 require_once("./js/conf.php");
-header("Content-Type:text/html;charset=UTF-8");
-mysqli_query($con,"set names utf8");
-date_default_timezone_set("PRC");
-
 if(isset($_POST["action"]) && $_POST["action"]=="next"){
     $title = $_POST["title"];
     $stage = $_POST["stage"];          //NPI Sus...
@@ -75,18 +71,17 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 <tr>
                     <td width="5%">
                         <?php
-                        echo "<select name='group[]' id='group' onchange='getGroup();'>";
+                        echo "<select name='group[]' id='group'>";
                         $check = mysqli_query($con, "SELECT Groups FROM dropbox_group");
                         while ($row = mysqli_fetch_array($check)) {
                             $v1 = $row["Groups"];
-                            echo "<option value='$v1'>$v1</option>";;
+                            echo "<option value='$v1'>$v1</option>";
                         }
                         echo "</select>";
                         ?>
                     </td>
                     <td width="10%">
                         <?php
-                        $gp = $_POST["gp"];
                         echo "<select name='test_item[]' class='selbox' id='test_item'>";
                         $check = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {

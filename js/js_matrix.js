@@ -9,14 +9,14 @@ var gg = ""          //用于保存option group的字符串
 var tt = ""          //用于保存option test item的字符串
 
 function innero(couts){
-     var rowCount=0;
-     var table = document.getElementById("customers");
-     var rows = table.getElementsByTagName("tr")
+    var rowCount=0;
+    var table = document.getElementById("customers");
+    var rows = table.getElementsByTagName("tr")
 
-     for(var i = 0; i < rows.length; i++){
-         if (rows[i].getElementsByTagName("td").length > 0) {
-             rowCount=rowCount+1;
-         }
+    for(var i = 0; i < rows.length; i++){
+        if (rows[i].getElementsByTagName("td").length > 0) {
+            rowCount=rowCount+1;
+        }
     }
     if(couts<rowCount){
         for (var d = 1; d <(Number(counts)+1); d++){
@@ -392,4 +392,17 @@ window.onload = function(){
             $("#preloder").fadeIn();
         });//submit
     });//document ready
+}
+
+function addLoadEvent(func){
+    var oldonload = window.onload;
+    if(typeof window.onload != "function"){
+        window.onload = func;
+    }
+    else{
+        window.onload = function(){
+            oldonload();
+            func();
+        }
+    }
 }
