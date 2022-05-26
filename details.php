@@ -176,7 +176,7 @@ $row = mysqli_fetch_array($check,MYSQLI_BOTH);
                         <tr>
                             <td>Result</td>
                             <td>
-                                <select name="result" id="result" onchange="printResult(<?php echo $current_id ?>);">
+                                <select name="result" id="result" onchange="//printResult(<?php //echo $current_id ?>);">
                                 <?php                               
                                 echo "<option value=''>请选择</option>";
                                 $res = $row["Results"];

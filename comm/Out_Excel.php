@@ -27,7 +27,7 @@ require_once "./functions.php";
 require_once "../Classes/PHPExcel.php";
 require_once "../Classes/PHPExcel/IOFactory.php";
 
-$today = date("Y-m-d");
+$today = date("Y/n/j");
 mysqli_query($con, "UPDATE DQA_Test_Main SET Today='$today'");//更新当天日期
 mysqli_query($con, "UPDATE fail_infomation SET Today='$today'");//更新当天日期
 sleep(1);
@@ -58,7 +58,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
     $start = $_POST["from"];//开始日期
     $end = $_POST["to"];//结束日期
 
-    //选取了时间段
+    /**
+     * 选取了时间段导出数据
+    */
     if($start && $end){
         //$sql_data = "SELECT * FROM DQA_Test_Main WHERE Timedt>='$start' and Timedt<='$end'";
         $arr_product = getDistinctProductByPeriod($con,$start,$end);
@@ -136,7 +138,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
-                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
                     $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
                     $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
                     $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
@@ -183,8 +185,32 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载到本地目录
     }
-    
-    //默认导出所有数据
+    //按时间段导出数据结束
+
+    /* 导出全部数据,即默认导出方式
+
+                    .::::.
+                  .::::::::.
+                 :::::::::::  Hi
+             ..:::::::::::'
+           '::::::::::::'
+             .::::::::::
+        '::::::::::::::..
+             ..::::::::::::.
+           ``::::::::::::::::
+            ::::``:::::::::'        .:::.
+           ::::'   ':::::'       .::::::::.
+         .::::'      ::::     .:::::::'::::.
+        .:::'       :::::  .:::::::::' ':::::.
+       .::'        :::::.:::::::::'      ':::::.
+      .::'         ::::::::::::::'         ``::::.
+   ...:::           ::::::::::::'              ``::.
+ ```` ':.          ':::::::::'                  ::::..
+                    '.:::::'                    ':'````..
+
+    **************************************************************************
+
+    */
     else{
         $arr_product = getDistinctProduct($con);
         array_unshift($arr_product,"Raw All -C");
@@ -215,7 +241,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             //第一行背景色,第一行字体颜色
             $objSheet->getStyle('A1:AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
             $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
-            //第一行内容, 即标题行内容
+            //第一行内容, 即标题行内容,第一行内容固定
             $objSheet->getStyle('A1:AO1')->getAlignment()->setWrapText(true);
             $objSheet->setCellValue("A1","Stages")->setCellValue("B1","Verification\nType")->setCellValue("C1","Products")->setCellValue("D1","SKU")->setCellValue("E1","Year")->setCellValue("F1","Month")->setCellValue("G1","Phase");
             $objSheet->setCellValue("H1","SN")->setCellValue("I1","Unit#")->setCellValue("J1","Group")->setCellValue("K1","Test Item")->setCellValue("L1","Test Condition")->setCellValue("M1","Start")->setCellValue("N1","Complete");
@@ -240,7 +266,11 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getColumnDimension('AI')->setWidth(15);
             $objSheet->getColumnDimension('AM')->setWidth(15);
             $objSheet->getColumnDimension('AN')->setWidth(11);
-
+            // 第一行标题部分结束
+            
+            /**
+             * 第一张sheet是所有的Data,Raw All -C
+            */
             if($loop==0){
                 $data_raw_all = getRawAllComm($con);
                 $row=2;
@@ -263,16 +293,20 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
-                    $objSheet->setCellValue("A".$row,$val["Stages"])->setCellValue("B".$row,$val["VT"])->setCellValue("C".$row,$val["Products"])->setCellValue("D".$row,$val["SKUS"])->setCellValue("E".$row,$val["Years"])->setCellValue("F".$row,$val["Months"])->setCellValue("G".$row,$val["Phases"]);
-                    $objSheet->setCellValue("H".$row,$val["SN"])->setCellValue("I".$row,$val["Unitsno"])->setCellValue("J".$row,$val["Groups"])->setCellValue("K".$row,$val["Testitems"])->setCellValue("L".$row,$val["Testcondition"])->setCellValue("M".$row,$val["Startday"])->setCellValue("N".$row,$val["Endday"]);
-                    $objSheet->setCellValue("O".$row,$val["Testdays"])->setCellValue("P".$row,$val["Defectmode1"])->setCellValue("Q".$row,$val["Defectmode2"])->setCellValue("R".$row,$val["RCCA"])->setCellValue("S".$row,$val["Teststatus"])->setCellValue("T".$row,$val["Results"])->setCellValue("U".$row,$val["Issuestatus"]);
-                    $objSheet->setCellValue("V".$row,$val["Category"])->setCellValue("W".$row,$val["PIC"])->setCellValue("X".$row,$val["JIRANO"])->setCellValue("Y".$row,$val["SPR"])->setCellValue("Z".$row,$val["Temp"])->setCellValue("AA".$row,$val["Dropcycles"])->setCellValue("AB".$row,$val["Drops"])->setCellValue("AC".$row,$val["Dropside"]);
-                    $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
-                    $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,$val[13])->setCellValue("N".$row,$val[14]);
+                    $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$val[16])->setCellValue("T".$row,$val[17])->setCellValue("U".$row,$val[31]);
+                    $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$val[18])->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
+                    $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,$val[41])->setCellValue("AJ".$row,$val[42]);
+                    $objSheet->setCellValue("AK".$row,$val[43])->setCellValue("AL".$row,$val[44])->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
                 }
-            }
+            }//第一张sheet结束
+            
+            /**
+             * 按不同的product分车给多个sheet
+            */
             else{
                 $data = getDataByProduct($con,$arr_product[$loop]);
                 $row=2;
@@ -311,5 +345,6 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
         browser_excel($type,$filename);
         $objWriter->save("php://output");   //下载文件
     }
+    //导出全部数据结束
 }
 ?>

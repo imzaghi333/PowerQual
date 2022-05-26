@@ -27,7 +27,7 @@ require_once("./js/conf.php");
     <div class="title"><a>Power Qual Auto Transforming</a></div>
     <!--
     <div class="search_menu">
-        <form name='search' action='./searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
+        <form name='search' action='./comm/searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
             <li><button class='search_btn' type='submit' name='search_btn'><span class="icon">L</span>&nbsp;&nbsp;&nbsp;搜索</button></li>
             <li><input name='search' class='search' type='search' placeholder='Search Tester, SN, Product' /></li>
             <input type='hidden' name='searchit' value='searchdo' />
@@ -59,7 +59,7 @@ require_once("./js/conf.php");
          */
         if($_GET['dowhat'] == 'start' || $_POST['dowhat'] == 'startdo'){
         ?>
-            <p class="info">Add New Power Qual Task</p>
+            <p class="info">Add new task by filling form or uploading file</p>
             <div>
                 <form id="form1" name="form1" method="POST" action="matrix.php" onsubmit="return checkForm1()">
                     <table align="center" class="form1">
@@ -185,13 +185,13 @@ require_once("./js/conf.php");
                 </form>
             </div>
             <hr>
-            <!-- upload .xlx test matrix begins -->
+            <!-- upload .xls test matrix begins -->
             <div>
                 <!-- save data animation -->
                 <div id="preloder"><div class="loader"></div></div>
-                <p class="note">
-                    Upload Test Matrix(請務必使用本站提供的Template), Dowload Template here: 
-                    <a style="text-decoration: none; color:#cc2229;" href="./images/MatrixTemplate.xls">Template Download <span class="download-icon"></span></a>
+                <p style="color: #772953;margin-left:130px;">
+                    Test Matrix上傳 (請務必使用本站提供的Template), 點擊此處下載Template: 
+                    <a style="text-decoration:none; color:#002ea6;" href="./images/MatrixTemplate.xls">Template Download <span class="download-icon"></span></a>
                 </p>
                 <form id="form15" name="form15" action="" method="POST" enctype="multipart/form-data">
                     <input name="matrix_file" id="matrix_file" type="file" style="width: 400px;background-color:#731717;color:#e6d999;margin-left:130px;" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -390,6 +390,7 @@ require_once("./js/conf.php");
                 }//end of uploading test matrix
                 ?>
             </div>
+            <br>
             <!-- Upload test matrix file end -->
         <?php
         }
@@ -789,9 +790,7 @@ require_once("./js/conf.php");
                                 }
                                 ?>
                             </select>
-                            
                         </td>
-                        
                     </tr>
                     <tr>
                         <td width="20%">Product: </td>
@@ -1070,7 +1069,6 @@ require_once("./js/conf.php");
                 // ----------- End here -----------
             }
             ?>
-            <br>
             <div class="note">
                 <p>1. Query any item. Tester, Product or start time</p>
                 <p>2. Recommond Google Chrome <img src="./images/chrome.jpg" width="15" /> or Microsoft Edge <img src="./images/Edge.jpg" width="15" /></p>
@@ -1084,6 +1082,7 @@ require_once("./js/conf.php");
             </div>
             </div>
         </div>
+        
         <?php    
         }
         mysqli_close($con);
@@ -1094,6 +1093,7 @@ require_once("./js/conf.php");
 </div>
 
 <!-- 底部 footer -->
+<br><br>
 <div class="footer">
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
     <img class="logo_white" src="./images/logo-small_white.svg" height="40" alt="Wistronits">

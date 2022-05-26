@@ -1,4 +1,25 @@
 <?php
+/* **
+ *                    .::::.
+ *                  .::::::::.
+ *                 :::::::::::  shall we have dinner tonight
+ *             ..:::::::::::'
+ *           '::::::::::::'
+ *             .::::::::::
+ *        '::::::::::::::..
+ *             ..::::::::::::.
+ *           ``::::::::::::::::
+ *            ::::``:::::::::'        .:::.
+ *           ::::'   ':::::'       .::::::::.
+ *         .::::'      ::::     .:::::::'::::.
+ *        .:::'       :::::  .:::::::::' ':::::.
+ *       .::'        :::::.:::::::::'      ':::::.
+ *      .::'         ::::::::::::::'         ``::::.
+ *  ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ *                    '.:::::'                    ':'````..
+*/
+
 require_once("../js/conf.php");
 
 /**
@@ -124,12 +145,50 @@ function browser_excel($type,$filename){
 }
 
 /**
- * added on 2022-02-09 for matrix auto transforming
  * 根据传入的product tester date查询某一次的测试记录
  */
 function getDataForMatrixTransform($db,$product,$tester,$starting){
     $sql_query = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt LIKE '$starting%' ";
     $res = getData($db,$sql_query);
     return $res;
+}
+
+/**
+ * 去掉月份,天数的前缀0; 比如05变成5, 10这样的月份还是显示10;
+ * 人家都是要求加上前缀0，你们正好相反MD
+*/
+function removeZeroPrefix($month){
+    if(substr($month,0,1)==0){
+        return substr($month,1,1);
+    }
+    else{
+        return $month;
+    }
+}
+
+/**
+ * 把默认的时间由2022-10-01改成2022/10/1, 2022-05-11变成2022/5/1
+*/
+function changeDatesFormatGreen($date){
+    if(strlen($date)>0){
+        $tmp = date_create_from_format("Y-m-d", $date);
+        return date_format($tmp,"Y/n/j");
+    }
+    else{
+        return "";
+    }
+}
+
+/**
+ * 把默认的时间由2022-10-01改成/10/1, 2022-05-11变成/5/1
+*/
+function changeDatesFormatBlack($date){
+    if(strlen($date>0)){
+        $tmp = date_create_from_format("Y-m-d", $date);
+        return date_format($tmp,"n/j");
+    }
+    else{
+        return "";
+    }
 }
 ?>

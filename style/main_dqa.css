@@ -262,6 +262,7 @@ textarea{background: transparent;}
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);
 }
+hr{color: #00592d;}
 
 /* ------------------- index.html css for header --------------------- */
 .header{
@@ -366,10 +367,11 @@ textarea{background: transparent;}
     color: #0083b0;
     font: 12px;
     text-align:left;
-    text-indent: 2rem;
+    text-indent: 1rem;
     float: left;
-    margin-top: 30px;
+    margin-top: 5px;
     margin-left: 100px;
+    height: 300px;
 }
 .container .right .caution{
     float: right;
