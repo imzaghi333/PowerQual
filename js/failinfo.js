@@ -323,10 +323,10 @@ function returnvalue20(row_no,val){
 */
 
 /**
- * 刪除一個failure記錄,數據保留在數據庫,但不在頁面上顯示,PHP文件裏設置Unitsno=NULL即可
+ * 刪除一個failure記錄
  */
 function delOneFailure(rowid,cellid,count,currentid,rows){
-    if(window.confirm("您確定刪除嗎？")){
+    if(window.confirm("您確定刪除嗎？刪除了不可恢復")){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;
         window.location.href="./comm/delete.php?failure_id="+del_val+"&rowid="+rowid+"&cellid="+cellid+"&count="+count+"&currentid="+currentid+"&rows="+rows;

@@ -9,11 +9,23 @@
     <title>Power Query</title>
 </head>
 <body>
-<?php require_once("./js/conf.php"); ?>
+<?php
+/******************************************************/
+/* 当你看到这段的时候你就会知道纬创的全民数位化就是纯扯淡      */
+/* 数位化是一个很专业的事情，专业的事情不给专业研发人员进行    */
+/* 而是每个部门都搞,结果就是在不切实际的空想,本职工作反而不做  */
+/* 然后就是写出了对生产经营毫无用处的低代码,为数位而数位      */
+/* 除了给上头看,可以说是一无是处，浪费人力时间和金钱         */
+/* 当你接手了我的代码我劝你赶紧走人,因为低质量代码不仅不专业  */
+/* 而且也没有竞争力和战力可言,除了是领导的政绩              */
+/******************************************************/ 
+require_once("./js/conf.php"); 
+?>
 <!-- header部分 -->
 <div class="header">
     <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
-    <div class="title"><a>DQA Power Qual</a></div>
+    <div class="title"><a>Power Qual Auto Transforming</a></div>
+    <!--
     <div class="search_menu">
         <form name='search' action='./searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
             <li><button class='search_btn' type='submit' name='search_btn'><span class="icon">L</span>&nbsp;&nbsp;&nbsp;搜索</button></li>
@@ -21,6 +33,7 @@
             <input type='hidden' name='searchit' value='searchdo' />
         </form>
     </div>
+    -->
 </div>
 <!-- header部分結束 -->
 <div class="container">
@@ -30,7 +43,6 @@
             <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
-            <div><a href="index.php?dowhat=customed">Customed Data<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=edit">DropBox Edit<span class="p_right">&#10148</span></a></div>
@@ -761,7 +773,7 @@
         else{
         ?>
         <div>
-            <p class="info">Auto Transforming Begins Here ... <img src="./images/getting_started.svg" height="25" />
+            <p class="info">Working Begins Here ... <img src="./images/getting_started.svg" height="25" />
             <div>
             <form id="form7" name="form7" method="POST" action="" onsubmit="return checkForm7();">
                 <table align="center" class="form7">
@@ -1058,6 +1070,7 @@
                 // ----------- End here -----------
             }
             ?>
+            <br>
             <div class="note">
                 <p>1. Query any item. Tester, Product or start time</p>
                 <p>2. Recommond Google Chrome <img src="./images/chrome.jpg" width="15" /> or Microsoft Edge <img src="./images/Edge.jpg" width="15" /></p>
@@ -1087,4 +1100,31 @@
 </div>
 
 </body>
+
+<!--
+
+                A CHINA C           CHINA CHI
+            HINA CHINA CHINA    NA CHINA CHINA CH
+          CHINA CHINA CHINA CHINA CHINA CHINA CHINA
+         CHINA CHINA CHINA CHINA CHINA CHINA CHINA C
+        CHINA CHINA CHINA CHINA CHINA CHINA CHINA CHI
+        HINA CHINA CHINA CHINA CHINA CHINA CHINA CHIN
+        INA CHINA CHINA CHINA CHINA CHINA CHINA CHINA
+        NA CHINA CHINA CHINA CHINA CHINA CHINA CHINA
+        A CHINA CHINA CHINA CHINA CHINA CHINA CHINA C
+         CHINA CHINA CHINA CHINA CHINA CHINA CHINA CH
+         HINA CHINA CHINA CHINA CHINA CHINA CHINA CH
+          NA CHINA CHINA CHINA CHINA CHINA CHINA CH
+          A CHINA CHINA CHINA CHINA CHINA CHINA CHI
+            HINA CHINA CHINA CHINA CHINA CHINA CH
+             NA CHINA CHINA CHINA CHINA CHINA CH
+               CHINA CHINA CHINA CHINA CHINA CH
+                INA CHINA CHINA CHINA CHINA C
+                   CHINA CHINA CHINA CHINA
+                    INA CHINA CHINA CHINA
+                       CHINA CHINA CHI
+                          A CHINA C
+                             INA
+                              A
+-->
 </html>

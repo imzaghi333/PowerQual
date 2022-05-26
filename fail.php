@@ -18,8 +18,8 @@
  * \ \ `-. \_ __\ /__ _/ .-` / /
  * ======`-.____`-.___\_____/___.-`____.-'======
  * `=---='
- *       .............................................
- *                                佛曰：bug泛滥，我已瘫痪！
+ *      .............................................
+ *                               佛曰：bug泛滥，我已瘫痪！
 */
 
 require_once("./js/conf.php");
@@ -38,16 +38,16 @@ $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
 for($i=$number; $i>0; $i--){
     $cell_id = $select_id-$i+1;
-    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
+    //echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
     array_push($cells,$cell_id);
 }
 
 for($i=($number-1); $i>=0; $i--){
     $tmp_id = $currentid-$rows*$i;
-    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
+    //echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
     array_push($record_ids,$tmp_id);
 }
-echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已 ***********<br>";
+//echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已 ***********<br>";
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +66,7 @@ echo "*********** 上述内容以後會刪除, 目前只是方便我使用而已
 if(isset($_GET["count"])){
 ?>
 <p class="txt_for_check">
-    1.點擊Link為每個測試機添加failure;<br>
+    1.點擊Link标签可以為每個測試機添加failure;<br>
     2.溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot;<br>
     3.Result下拉菜單為每個測試機单独設置Pass或TBD;<br>
     4.Set按鈕設置一行結果全部Pass;
@@ -85,6 +85,9 @@ if(isset($_GET["count"])){
     <tbody>
     <tr>
         <?php
+        /**
+         * 添加failure的超链接
+        */
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -100,12 +103,14 @@ if(isset($_GET["count"])){
             echo "<td><a style='font-weight: bold;' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit=$unit_name'>".$ll."</a></td>";
         }
         ?>
-        <!-- One row all pass via pressing -->
+        <!-- One row all pass via pressing set button -->
         <td rowspan="3"><input class="all_pass" type="button" name="PP<?php echo ($row_no+1); ?>" id="PP<?php echo ($row_no+1); ?>" value="SET" onclick="oneRowAllPass(<?php echo $row_no+1; ?>,<?php echo $number; ?>);" /></td>
     </tr>
     <tr>
         <?php
-        //設置溫度
+        /**
+         * 为每个测试设置温度
+        */
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -129,7 +134,9 @@ if(isset($_GET["count"])){
     </tr>
     <tr>
         <?php
-        //設置单机Pass or TBD
+        /**
+         * 为单独的测试机添加Pass or TBD,这样不需要进入Failure Link去填写
+        */
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -159,7 +166,7 @@ if(isset($_GET["count"])){
 <hr>
 <?php
 /**
-* 显示failure的机台 
+* 显示failure的机台，如果是Pass的就不会运行这段代码 
 */
 if(isset($_GET["rowid"])){
     $row_bh = $row_no+1;

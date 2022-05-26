@@ -1,34 +1,13 @@
 <?php
 require_once("../js/conf.php");
 
-/*
-嘿嘿嘿
-      \                    / \  //\
-       \    |\___/|      /   \//  \\
-            /0  0  \__  /    //  | \ \
-           /     /  \/_/    //   |  \  \
-           @_^_@'/   \/_   //    |   \   \
-           //_^_/     \/_ //     |    \    \
-        ( //) |        \///      |     \     \
-      ( / /) _|_ /   )  //       |      \     _\
-    ( // /) '/,_ _ _/  ( ; -.    |    _ _\.-~        .-~~~^-.
-  (( / / )) ,-{        _      `-.|.-~-.           .~         `.
- (( // / ))  '/\      /                 ~-. _ .-~      .-~^-.  \
- (( /// ))      `.   {            }                   /      \  \
-  (( / ))     .----~-.\        \-'                 .~         \  `. \^-.
-             ///.----..>        \             _ -~             `.  ^-`  ^-_
-               ///-._ _ _ _ _ _ _}^ - - - - ~                     ~-- ,.-~
-                                                                  /.-~
-
-*/
-
 /**
  * 根据传入的SQL语句查询MySQL结果集
  */
 function getData($db,$sql){
     $resource = mysqli_query($db, $sql);//get a resource type data
     $res = array();
-    while($row=mysqli_fetch_assoc($resource)){
+    while($row=mysqli_fetch_array($resource)){
         $res[] = $row;//二维数组
     }
     return $res;
@@ -38,7 +17,20 @@ function getData($db,$sql){
  * 获取DQA_Test_Main中所有测试项,即Raw All -C
  */
 function getRawAllComm($db){
+    /*
     $raw_all = "SELECT * FROM DQA_Test_Main WHERE Units!='' ";
+    $res = getData($db,$raw_all);
+    return $res;*/
+    $raw_all = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
+    $raw_all.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
+    $raw_all.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
+    $raw_all.= "DQA_Test_Main.Results,DQA_Test_Main.Temp,DQA_Test_Main.Boot,DQA_Test_Main.Testlab,DQA_Test_Main.Mfgsite,DQA_Test_Main.Testername,";
+    $raw_all.= "DQA_Test_Main.Today,DQA_Test_Main.Remarks,DQA_Test_Main.Failinfo,DQA_Test_Main.Unitsno,DQA_Test_Main.FAA,";
+    $raw_all.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
+    $raw_all.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
+    $raw_all.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
+    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $raw_all.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$raw_all);
     return $res;
 }
@@ -53,12 +45,12 @@ function getRawAllCommByPeriod($db,$start,$end){
 }
 
 /**
- * 获取Product名为一个数组
+ * 获取测试数据表中Product,返回一个数组
  */
 function getDistinctProduct($db){
     $product_name = array();
     $check_product = mysqli_query($db, "SELECT DISTINCT Products FROM DQA_Test_Main");
-    while($row=mysqli_fetch_assoc($check_product)){
+    while($row=mysqli_fetch_array($check_product)){
         array_push($product_name,$row["Products"]);
     }
     return $product_name;
@@ -80,7 +72,21 @@ function getDistinctProductByPeriod($db,$start,$end){
  * 根据传入的product查询数据
  */
 function getDataByProduct($db,$product){
+    /*
     $sql = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND Units!='' ";
+    $res = getData($db,$sql);
+    return $res;
+    */
+    $sql = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
+    $sql.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
+    $sql.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
+    $sql.= "DQA_Test_Main.Results,DQA_Test_Main.Temp,DQA_Test_Main.Boot,DQA_Test_Main.Testlab,DQA_Test_Main.Mfgsite,DQA_Test_Main.Testername,";
+    $sql.= "DQA_Test_Main.Today,DQA_Test_Main.Remarks,DQA_Test_Main.Failinfo,DQA_Test_Main.Unitsno,DQA_Test_Main.FAA,";
+    $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
+    $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
+    $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Products='$product' AND Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
 }

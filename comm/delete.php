@@ -1,6 +1,6 @@
 <?php
 /***
- * Felix Qian
+ * Felix Qian 嘿嘿嘿
  *  .--,       .--,
  * ( (  \.---./  ) )
  *  '.__/o   o\__.'
@@ -12,7 +12,8 @@
  *   "'\       /'"_.-~^`'-.
  *      \  _  /--'         `
  *    ___)( )(___
- *   (((__) (__)))    高山仰止,景行行止.虽不能至,心向往之。
+ *   (((__) (__)))    
+ * 高山仰止,景行行止.虽不能至,心向往之。
 */
 
 require_once("../js/conf.php");
@@ -54,7 +55,7 @@ if(isset($_GET["username"])&&isset($_GET["product"])&&isset($_GET["starting"])){
 }
 
 /**
- * 刪除一個failure記錄,數據保留在數據庫,但不知頁面上顯示,設置Unitsno=NULL即可
+ * 刪除一個failure記錄
  * sample: http://localhost/DQA/comm/delete.php?failure_id=3&rowid=1&cellid=10&count=5&currentid=98&rows=4
  */
 if(isset($_GET["failure_id"])){
@@ -66,7 +67,7 @@ if(isset($_GET["failure_id"])){
     $d_current = $_GET["currentid"];
     $d_rows = $_GET["rows"];
     
-    $sql_del_failure = "UPDATE fail_infomation SET Unitsno=NULL WHERE FID='$del_fail_id' ";
+    $sql_del_failure = "DELETE FROM fail_infomation WHERE FID='$del_fail_id' ";
     if(mysqli_query($con,$sql_del_failure)){
         echo "<script>window.location.href='../fail.php?rowid=$d_row&cellid=$d_cell&count=$d_count&currentid=$d_current&rows=$d_rows'</script>";
     }
