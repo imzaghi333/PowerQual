@@ -230,8 +230,8 @@ else{
                         echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
                         echo "<input class='order_txt' type='text' name='test_order[]' id='test_order[".$selectid."]' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
-		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-                        echo " ".$selectid;
+		                echo "<input type='text' style='width:30px;display:none;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
+                        //echo " ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution
@@ -268,7 +268,7 @@ else{
                     if(!in_array("TBD",$results_array)){
                         $status = "Complete";
                     }
-                    echo "<input style='width:70px;' name='status' id='status' type='text' value='$status' readonly />";
+                    echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
                     ?>
                 </td>
 

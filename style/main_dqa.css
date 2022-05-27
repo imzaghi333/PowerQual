@@ -624,6 +624,7 @@ hr{color: #00592d;}
     font-size: 12px;
     color: #ccc;
     width: 30px;
+    display: none;
 }
 
 .content .txtarea {

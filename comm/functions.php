@@ -158,8 +158,11 @@ function getDataForMatrixTransform($db,$product,$tester,$starting){
  * 人家都是要求加上前缀0，你们正好相反MD
 */
 function removeZeroPrefix($month){
-    if(substr($month,0,1)==0){
+    if(substr($month,0,1)==0 && strlen($month)>0){
         return substr($month,1,1);
+    }
+    else if(strlen($month)==0){
+        return "";
     }
     else{
         return $month;

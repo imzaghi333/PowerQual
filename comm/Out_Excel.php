@@ -46,7 +46,7 @@ $filename = "QTP Raw Data record format_V4_".$current_date.".xls";//导出的文
  * else:
  *     Duration=Today-ReportedDate
  */
-mysqli_query($con, "UPDATE DQA_Test_Main SET Testdays=DATEDIFF(Endday,Startday)");    //计算测试完成的时间
+mysqli_query($con, "UPDATE DQA_Test_Main SET Testdays=DATEDIFF(Endday,Startday) WHERE Startday!='' AND Endday!='' ");    //计算测试完成的时间
 mysqli_query($con, "UPDATE fail_infomation SET IssueDuration=DATEDIFF(NextCheckpointDate,ReportedDate) WHERE Issuestatus='Closed' AND NextCheckpointDate!='' AND ReportedDate!='' ");
 mysqli_query($con, "UPDATE fail_infomation SET IssueDuration=DATEDIFF(Today,ReportedDate) WHERE Issuestatus!='Closed' AND Issuestatus!='' AND ReportedDate!='' ");
 sleep(1);
@@ -90,8 +90,11 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             );    //边框格式
             
             //第一行, 即标题行
-            $objSheet->getStyle('A1:AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");    //第一行背景色
-            $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");    //第一行字体颜色
+            $objSheet->getStyle('A1:AH1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
+            $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("8413053");
+            $objSheet->getStyle('AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
+            $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
+
             $objSheet->getStyle('A1:AO1')->getAlignment()->setWrapText(true);
             $objSheet->setCellValue("A1","Stages")->setCellValue("B1","Verification\nType")->setCellValue("C1","Products")->setCellValue("D1","SKU")->setCellValue("E1","Year")->setCellValue("F1","Month")->setCellValue("G1","Phase");
             $objSheet->setCellValue("H1","SN")->setCellValue("I1","Unit#")->setCellValue("J1","Group")->setCellValue("K1","Test Item")->setCellValue("L1","Test Condition")->setCellValue("M1","Start")->setCellValue("N1","Complete");
@@ -191,7 +194,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
 
                     .::::.
                   .::::::::.
-                 :::::::::::  Hi
+                 :::::::::::  江苏省丹阳市
              ..:::::::::::'
            '::::::::::::'
              .::::::::::
@@ -239,7 +242,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             );    //边框格式
             
             //第一行背景色,第一行字体颜色
-            $objSheet->getStyle('A1:AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
+            $objSheet->getStyle('A1:AH1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
+            $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("548235");
+            $objSheet->getStyle('AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
             $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
             //第一行内容, 即标题行内容,第一行内容固定
             $objSheet->getStyle('A1:AO1')->getAlignment()->setWrapText(true);
@@ -273,7 +278,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             */
             if($loop==0){
                 $data_raw_all = getRawAllComm($con);
-                $row=2;
+                $row=2;//从第二行开始写入内容
                 foreach($data_raw_all as $key=>$val){
                     //Temperature的设定
                     switch ($val["Temp"]) {
@@ -293,16 +298,50 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
+                    //设置test status $val[16]
+                    $test_status = "";
+                    if($val[16]=="TBD"){
+                        $test_status = "In Progress";
+                    }
+                    else{
+                        $test_status = "Complete";
+                    }
+
+                    //非Pass的结果单独处理 $val[17]
+                    $rr = "";
+                    if($val[17]=="Pass" || $val[17]=="TBD"){
+                        $rr = $val[17];
+                    }
+                    else{
+                        $rr = $val[48];
+                    }
+
+                    //非Pass的TEMP单独处理
+                    $temp = "";
+                    if($val[17]=="Pass" || $val[17]=="TBD"){
+                        $temp = $val[18];
+                    }
+                    else{
+                        $temp = $val[36];
+                    }
+                    /*
                     $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
                     $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,$val[13])->setCellValue("N".$row,$val[14]);
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$val[16])->setCellValue("T".$row,$val[17])->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$val[18])->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,$val[41])->setCellValue("AJ".$row,$val[42]);
                     $objSheet->setCellValue("AK".$row,$val[43])->setCellValue("AL".$row,$val[44])->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
+                    */
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,changeDatesFormatBlack($val[13]))->setCellValue("N".$row,changeDatesFormatBlack($val[14]));
+                    $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
+                    $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
+                    $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,changeDatesFormatGreen($val[41]))->setCellValue("AJ".$row,$val[42]);
+                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[43]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
                 }
-            }//第一张sheet结束
+            }//第一张sheet Raw All-C结束
             
             /**
              * 按不同的product分车给多个sheet
