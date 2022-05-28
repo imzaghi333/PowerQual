@@ -92,6 +92,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("8413053");
             $objSheet->getStyle('AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
             $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
+            $objSheet->freezePane('A2');//冻结首行
 
             $objSheet->getStyle('A1:AO1')->getAlignment()->setWrapText(true);
             $objSheet->setCellValue("A1","Stages")->setCellValue("B1","Verification\nType")->setCellValue("C1","Products")->setCellValue("D1","SKU")->setCellValue("E1","Year")->setCellValue("F1","Month")->setCellValue("G1","Phase");
@@ -311,6 +312,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("548235");
             $objSheet->getStyle('AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
             $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
+            $objSheet->freezePane('A2');//冻结首行
             //第一行内容, 即标题行内容,第一行内容固定
             $objSheet->getStyle('A1:AO1')->getAlignment()->setWrapText(true);
             $objSheet->setCellValue("A1","Stages")->setCellValue("B1","Verification\nType")->setCellValue("C1","Products")->setCellValue("D1","SKU")->setCellValue("E1","Year")->setCellValue("F1","Month")->setCellValue("G1","Phase");
