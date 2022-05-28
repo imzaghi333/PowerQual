@@ -39,7 +39,7 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $tc_array = mysqli_query($con,$sql_unique_tc);
     $testitem_num = mysqli_num_rows($tc_array);
     $number = $counts/$testitem_num;
-    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,測試機數量: ".$number." ,測試項數量: ".$testitem_num." ,點擊Input SN可填入SN, 點擊Wistron Logo返回首頁</p>";
+    echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".$starting." ,Total test units: ".$number." ,Total test items: ".$testitem_num." ,Click Input SN to add SN, Click Wistron Logo to index</p>";
 }
 else{
     echo "<p style='color:#cc2229;font-size:30px;text-align:center'>未查詢任何條件,兩秒后返回首頁</p>";

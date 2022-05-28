@@ -1,5 +1,6 @@
 <?php
-/* **
+/* *********************************************************
+ *
  *                    .::::.
  *                  .::::::::.
  *                 :::::::::::  shall we have dinner tonight
@@ -18,16 +19,19 @@
  *  ...:::           ::::::::::::'              ``::.
  * ```` ':.          ':::::::::'                  ::::..
  *                    '.:::::'                    ':'````..
-*/
+*********************************************************** */
 
 require_once("../js/conf.php");
 
 /**
- * 根据传入的SQL语句查询MySQL结果集
+ * 根据传入的SQL语句查询MySQL结果集; 一个通用的方法: 参数1是数据库名,参数2是SQL语句
  */
 function getData($db,$sql){
-    $resource = mysqli_query($db, $sql);//get a resource type data
+    $resource = mysqli_query($db, $sql);//get a resource type
     $res = array();
+    /**
+     * mysqli_fetch_array, mysqli_fetch_assco的参数就是mysqli_query()返回的数据指针
+    */
     while($row=mysqli_fetch_array($resource)){
         $res[] = $row;//二维数组
     }
@@ -35,13 +39,14 @@ function getData($db,$sql){
 }
 
 /**
- * 获取DQA_Test_Main中所有测试项,即Raw All -C
+ * 获取DQA_Test_Main中所有测试项,即Raw All -C;
  */
 function getRawAllComm($db){
     /*
     $raw_all = "SELECT * FROM DQA_Test_Main WHERE Units!='' ";
     $res = getData($db,$raw_all);
-    return $res;*/
+    return $res;
+    */
     $raw_all = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
     $raw_all.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
     $raw_all.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
@@ -60,7 +65,21 @@ function getRawAllComm($db){
  * 
  */
 function getRawAllCommByPeriod($db,$start,$end){
+    /*
     $raw_all = "SELECT * FROM DQA_Test_Main WHERE Units!='' AND (Timedt>='$start' and Timedt<='$end') ";
+    $res = getData($db,$raw_all);
+    return $res;
+    */
+    $raw_all = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
+    $raw_all.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
+    $raw_all.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
+    $raw_all.= "DQA_Test_Main.Results,DQA_Test_Main.Temp,DQA_Test_Main.Boot,DQA_Test_Main.Testlab,DQA_Test_Main.Mfgsite,DQA_Test_Main.Testername,";
+    $raw_all.= "DQA_Test_Main.Today,DQA_Test_Main.Remarks,DQA_Test_Main.Failinfo,DQA_Test_Main.Unitsno,DQA_Test_Main.FAA,";
+    $raw_all.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
+    $raw_all.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
+    $raw_all.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
+    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $raw_all.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Units!='' AND (Timedt>='$start' and Timedt<='$end') ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$raw_all);
     return $res;
 }
@@ -116,7 +135,21 @@ function getDataByProduct($db,$product){
  * 根据传入的product,時間段查询数据
  */
 function getDataByProductAndPeriod($db,$product,$start,$end){
+    /*
     $sql = "SELECT * FROM DQA_Test_Main WHERE Products='$product' AND (Timedt>='$start' and Timedt<='$end') AND Units!='' ";
+    $res = getData($db,$sql);
+    return $res;
+    */
+    $sql = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
+    $sql.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
+    $sql.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
+    $sql.= "DQA_Test_Main.Results,DQA_Test_Main.Temp,DQA_Test_Main.Boot,DQA_Test_Main.Testlab,DQA_Test_Main.Mfgsite,DQA_Test_Main.Testername,";
+    $sql.= "DQA_Test_Main.Today,DQA_Test_Main.Remarks,DQA_Test_Main.Failinfo,DQA_Test_Main.Unitsno,DQA_Test_Main.FAA,";
+    $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
+    $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
+    $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Products='$product' AND Units!='' AND (Timedt>='$start' and Timedt<='$end') ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
 }
@@ -125,7 +158,21 @@ function getDataByProductAndPeriod($db,$product,$start,$end){
  * 根据传入的测试人名查询数据
  */
 function getDataByTester($db,$name){
+    /*
     $sql = "SELECT * FROM DQA_Test_Main WHERE Testername='$name' Units!='' ";
+    $res = getData($db,$sql);
+    return $res;
+    */
+    $sql = "SELECT DQA_Test_Main.RecordID,DQA_Test_Main.Stages,DQA_Test_Main.VT,DQA_Test_Main.Products,DQA_Test_Main.SKUS,DQA_Test_Main.Years,";
+    $sql.= "DQA_Test_Main.Months,DQA_Test_Main.Phases,DQA_Test_Main.SN,DQA_Test_Main.Units,DQA_Test_Main.Groups,DQA_Test_Main.Testitems,";
+    $sql.= "DQA_Test_Main.Testcondition,DQA_Test_Main.Startday,DQA_Test_Main.Endday,DQA_Test_Main.Testdays,DQA_Test_Main.Teststatus,";
+    $sql.= "DQA_Test_Main.Results,DQA_Test_Main.Temp,DQA_Test_Main.Boot,DQA_Test_Main.Testlab,DQA_Test_Main.Mfgsite,DQA_Test_Main.Testername,";
+    $sql.= "DQA_Test_Main.Today,DQA_Test_Main.Remarks,DQA_Test_Main.Failinfo,DQA_Test_Main.Unitsno,DQA_Test_Main.FAA,";
+    $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
+    $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
+    $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Testername='$name' Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
 }
@@ -155,7 +202,6 @@ function getDataForMatrixTransform($db,$product,$tester,$starting){
 
 /**
  * 去掉月份,天数的前缀0; 比如05变成5, 10这样的月份还是显示10;
- * 人家都是要求加上前缀0，你们正好相反MD
 */
 function removeZeroPrefix($month){
     if(substr($month,0,1)==0 && strlen($month)>0){
@@ -165,7 +211,7 @@ function removeZeroPrefix($month){
         return "";
     }
     else{
-        return $month;
+        return $month;1
     }
 }
 

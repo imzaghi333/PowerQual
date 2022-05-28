@@ -21,6 +21,10 @@
     font-family: "JetBrainsMono-Regular.woff2";
     src: url(Helvetica/JetBrainsMono-Regular.woff2);
 }
+@font-face {
+    font-family: "Ubuntu-LI-subset";
+    src: url(Helvetica/Ubuntu-LI-subset.woff2);
+}
 body{
     margin: 0px; padding: 0px;
     font-size: 14px;
@@ -41,8 +45,8 @@ textarea{background: transparent;}
 /*Button和符號CSS*/
 .btn_download {
     color: #fff;
-    background-color: #00592d;
-    border-color: #4cae4c; 
+    background-color: #0e8420;
+    border-color: #0e8420; 
     cursor: pointer;
     font-size: 14px;
     height: 30px;
@@ -50,7 +54,7 @@ textarea{background: transparent;}
 }
 .btn_sub {
     color: #fff;
-    background-color: #337ab7;
+    background-color: #326de6;
     border-color: #2e6da4;
     cursor: pointer;
     font-size: 14px;
@@ -385,10 +389,11 @@ hr{color: #00592d;}
     font-size: 12px;
     font-family: "ecnu.otf";
     white-space: nowrap;
+    color: #111;
 }
 .container .right .my_table tbody tr:hover{ /* 鼠标到某一行背景变黄色 */
     background-color: #fff22d;
-    color:#000;
+    color:#111;
 }
 .container .right .my_table td {border: 1px solid #ccc;}
 .container .right .my_table th {
@@ -428,10 +433,11 @@ hr{color: #00592d;}
     width:80%;
     border-collapse:collapse;
     margin: 0 auto;
+    color:#111;
 }
 .container .right .query_table td,th{
     font-size:12px;
-    border:1px dotted #808080;
+    border:1px dotted #d2d2d7;
     padding:2px 2px;
 }
 .container .right .query_table th{
@@ -448,7 +454,8 @@ hr{color: #00592d;}
     padding-top:3px;
     padding-bottom:3px;
     text-decoration: none;
-    color:#000cee;
+    color:#06c;
+    font-weight: bold;
 }
 .container .right .query_table a:hover{
     font-size:12px;
@@ -513,7 +520,7 @@ hr{color: #00592d;}
     margin-bottom: 15px;
 }
 .content h1{
-    font-family: "ecnu.otf";
+    font-family: "Ubuntu-LI-subset";
     font-size: 20px;
     color: #00698f;
     text-align: center;
@@ -1021,6 +1028,7 @@ hr{color: #00592d;}
     background: transparent;
 }
 .txt_for_check{
+    font-family: "Ubuntu-LI-subset";
     font-size:16px;
     color:#faa626;
     background-color: #003355;

@@ -1078,7 +1078,7 @@ require_once("./js/conf.php");
                     echo "3. Today is ".date("l F jS, Y")."; Week ".ceil($days/7).", and Day ".$days;
                     ?>
                 </p>
-                <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered</p>
+                <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
             </div>
             </div>
         </div>
