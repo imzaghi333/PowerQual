@@ -211,7 +211,7 @@ function removeZeroPrefix($month){
         return "";
     }
     else{
-        return $month;1
+        return $month;
     }
 }
 
