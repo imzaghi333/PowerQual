@@ -717,18 +717,20 @@ hr{color: #00592d;}
     margin-bottom: 3px;
 }
 .content .input_sn th{
-    font-size: 12px;
+    font-size: 14px;
     background-color: #3c763d;
     color: #fff;
     padding: 3px 3px;
     text-align: center;
 }
+.content .input_sn td{
+    border: 1px dotted #d2d2d7;
+    color: #333;
+}
 
 .content .input_sn input[type=text]{
     font-size: 12px;
     padding: 3px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
     background-color: transparent;
 }
 .content .txt_sn{
@@ -1002,7 +1004,7 @@ hr{color: #00592d;}
 }
 .unit_table .all_pass{
     padding: 3px;
-    height: 100px;
+    height: 30px;
     border-radius: 4px;
     font-size: 12px;
     background-color: #008793;

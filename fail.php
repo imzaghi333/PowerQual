@@ -74,6 +74,7 @@ if(isset($_GET["count"])){
 <table id="unit_table" class="unit_table" border="1" cellpadding="3" cellspacing="3">
     <thead>
     <tr>
+        <th>Description</th>
         <?php
         for($i=0; $i<$number; $i++){
             echo "<th>Unit# ".($i+1)."</th>";
@@ -84,6 +85,7 @@ if(isset($_GET["count"])){
     </thead>
     <tbody>
     <tr>
+        <td>Add Fail</td>
         <?php
         /**
          * 添加failure的超链接
@@ -107,6 +109,7 @@ if(isset($_GET["count"])){
         <td rowspan="3"><input class="all_pass" type="button" name="PP<?php echo ($row_no+1); ?>" id="PP<?php echo ($row_no+1); ?>" value="SET" onclick="oneRowAllPass(<?php echo $row_no+1; ?>,<?php echo $number; ?>);" /></td>
     </tr>
     <tr>
+        <td>Set Temperature</td>
         <?php
         /**
          * 为每个测试设置温度
@@ -122,7 +125,7 @@ if(isset($_GET["count"])){
             $ll = ""; 
             }else{
                 $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell);'>";
-                $ll.= "<option value=''>TEMP Set</option>";
+                $ll.= "<option value=''>Select</option>";
                 $ll.= "<option value='Hot'>Hot</option>";
                 $ll.= "<option value='Cold'>Cold</option>";
                 $ll.= "<option value='Room'>Room</option>";
@@ -133,6 +136,7 @@ if(isset($_GET["count"])){
         ?>
     </tr>
     <tr>
+        <td>Singel unit result</td>
         <?php
         /**
          * 为单独的测试机添加Pass or TBD,这样不需要进入Failure Link去填写
@@ -148,7 +152,7 @@ if(isset($_GET["count"])){
             $ll = ""; 
             }else{
                 $ll = "<select class='del_fail' id='pt$cell' onchange='setPassOrTBD($cell);'>";
-                $ll.= "<option value=''>Set Result</option>";
+                $ll.= "<option value=''>Select</option>";
                 $ll.= "<option value='Pass'>Pass</option>";
                 //$ll.= "<option value='Fail'>Fail</option>";
                 //$ll.= "<option value='EC Fail'>EC Fail</option>";

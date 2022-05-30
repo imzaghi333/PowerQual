@@ -4,7 +4,7 @@
            /  ,/  _   : :   _  \/` \
            \  `| /o\  :_:  /o\ |\__/
             `-'| :="~` _ `~"=: |
-               \`     (_)     `/ jgs
+               \`     (_)     `/
         .-"-.   \      |      /   .-"-.
 .------{     }--|  /,.-'-.,\  |--{     }-----.
  )     (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
@@ -227,106 +227,12 @@ function returnRCCA(row,cell,unit){
     }
 }
 
-/*
-// 1.Defect Mode(Symptom)
-function returnvalue1(selectid,val){
-    window.opener.document.getElementById("subject1["+selectid+"]").value=val;
-}
-// 2.Defect Mode(Symptom+Finding)
-function returnvalue2(selectid,val){
-    window.opener.document.getElementById("subject2["+selectid+"]").value=val;
-}
-// 3.RCCA
-function returnvalue3(selectid,val){
-    window.opener.document.getElementById("subject3["+selectid+"]").value=val;
-}
-// 4.Issuestatus
-function returnvalue4(selectid,val){
-    window.opener.document.getElementById("subject4["+selectid+"]").value=val;
-}
-// 5.Category
-function returnvalue5(selectid,val){
-    window.opener.document.getElementById("subject5["+selectid+"]").value=val;
-}
-// 6.PIC
-function returnvalue6(selectid,val){
-    window.opener.document.getElementById("subject6["+selectid+"]").value=val;
-}
-// 7.JIRA
-function returnvalue7(selectid,val){
-    window.opener.document.getElementById("subject7["+selectid+"]").value=val;
-}
-// 8.SPR
-function returnvalue8(selectid,val){
-    window.opener.document.getElementById("subject8["+selectid+"]").value=val;
-}
-// 9.TEMP
-function returnvalue9(selectid,val){
-    if(val.length!=0){
-        window.opener.document.getElementById("subject9["+selectid+"]").value=val;
-    }
-}
-// 10.Dropcycles
-function returnvalue10(selectid,val){
-    window.opener.document.getElementById("subject10["+selectid+"]").value=val;
-}
-// 11.Drops
-function returnvalue11(selectid,val){
-    window.opener.document.getElementById("subject11["+selectid+"]").value=val;
-}
-// 12.Dropside
-function returnvalue12(selectid,val){
-    window.opener.document.getElementById("subject12["+selectid+"]").value=val;
-}
-// 13.HIT
-function returnvalue13(selectid,val){
-    window.opener.document.getElementById("subject13["+selectid+"]").value=val;
-}
-// 14.NextCheckpointDate
-function returnvalue14(selectid,val){
-    window.opener.document.getElementById("subject14["+selectid+"]").value=val;
-}
-// 15.IssuePublished
-function returnvalue15(selectid,val){
-    window.opener.document.getElementById("subject15["+selectid+"]").value=val;
-}
-// 16.ORTMFGDate
-function returnvalue16(selectid,val){
-    window.opener.document.getElementById("subject16["+selectid+"]").value=val;
-}
-// 17.ReportedDate
-function returnvalue17(selectid,val){
-    window.opener.document.getElementById("subject17["+selectid+"]").value=val;
-}
-// 18.change default result
-function returnvalue18(selectid,val){
-    if(val.length!=0){
-        window.opener.document.getElementById("subject18["+selectid+"]").value=val;
-    }
-}
-// 19.Fail symptom
-function returnvalue19(row_no,val){
-    //alert("Row:"+row_no+" ,value:"+val);
-    if(val.length!=0){
-        var row = row_no-1;
-        window.opener.document.getElementById("fail["+row+"]").value+=val+"\n";
-    }
-}
-// 20.RCCA
-function returnvalue20(row_no,val){
-    //alert("Row:"+row_no+" ,value:"+val);
-    if(val.length!=0){
-        var row = row_no-1;
-        window.opener.document.getElementById("rcca["+row+"]").value+=val+"\n";
-    }
-}
-*/
 
 /**
  * 刪除一個failure記錄
  */
 function delOneFailure(rowid,cellid,count,currentid,rows){
-    if(window.confirm("您確定刪除嗎？刪除了不可恢復")){
+    if(window.confirm("您確定刪除嗎？刪除不可恢復")){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;
         window.location.href="./comm/delete.php?failure_id="+del_val+"&rowid="+rowid+"&cellid="+cellid+"&count="+count+"&currentid="+currentid+"&rows="+rows;

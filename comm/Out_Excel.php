@@ -163,6 +163,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     if($val[17]=="Pass" || $val[17]=="TBD"){
                         $temp = $val[18];
                     }
+                    if($val[18]=="-"){
+                        $temp = "";
+                    }
                     else{
                         $temp = $val[36];
                     }
@@ -227,6 +230,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $temp = "";
                     if($val[17]=="Pass" || $val[17]=="TBD"){
                         $temp = $val[18];
+                    }
+                    if($val[18]=="-"){
+                        $temp = "";
                     }
                     else{
                         $temp = $val[36];
@@ -350,7 +356,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     //Temperature的设定
                     switch ($val["Temp"]) {
                         case '-':
-                            $val["Temp"]='';
+                            $objSheet->setCellValue("Z".$row,"");
                             break;
                         case 'Cold':
                             $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
@@ -387,6 +393,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $temp = "";
                     if($val[17]=="Pass" || $val[17]=="TBD"){
                         $temp = $val[18];
+                    }
+                    if($val[18]=="-"){
+                        $temp = "";
                     }
                     else{
                         $temp = $val[36];
@@ -420,7 +429,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     //Temperature的设定
                     switch ($val["Temp"]) {
                         case '-':
-                            $val["Temp"]='';
+                            $objSheet->setCellValue("Z".$row,"");
                             break;
                         case 'Cold':
                             $objSheet->getStyle("Z".$row)->getFont()->getColor()->setRGB("1565c0");
@@ -457,6 +466,9 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $temp = "";
                     if($val[17]=="Pass" || $val[17]=="TBD"){
                         $temp = $val[18];
+                    }
+                    if($val[18]=="-"){
+                        $temp = "";
                     }
                     else{
                         $temp = $val[36];
