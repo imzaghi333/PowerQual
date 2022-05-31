@@ -26,6 +26,7 @@ date_default_timezone_set("PRC");
                     <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
                         <option value="">請選擇</option>
                         <option value="DQA_Test_Main">DQA_Test_Main</option>
+                        <option value="FialInfo">Fail Info Table</option>
                         <option value="Product">Product Menu</option>
                         <option value="SKU">SKU Menu</option>
                         <option value="phases">Phase Menu(PT,MV...)</option>
@@ -203,6 +204,18 @@ date_default_timezone_set("PRC");
             
             if($result){
                 echo "<h1 style='color:#ffb800;'>Records table Data are all cleared :)</h1>";
+            }
+            else{
+                echo "<h1 style='color:#a94442;'>Fail :(</h1>";
+            }
+            break;
+        
+        //14. FialInfo
+        case 'FialInfo':
+            $sql = "DELETE FROM fail_infomation";
+            $result = mysqli_query($con,$sql);
+            if($result){
+                echo "<h1 style='color:#ffb800;'>Fail Info table Data are all cleared :)</h1>";
             }
             else{
                 echo "<h1 style='color:#a94442;'>Fail :(</h1>";

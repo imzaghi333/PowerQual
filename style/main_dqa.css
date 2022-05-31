@@ -631,7 +631,6 @@ hr{color: #00592d;}
     font-size: 12px;
     color: #ccc;
     width: 30px;
-    display: none;
 }
 
 .content .txtarea {
@@ -843,6 +842,7 @@ hr{color: #00592d;}
     background-size: cover;
     background-color: #333;
     border-bottom: 2px solid #cc2229;
+    flex: 0 0 auto;
 }
 .footer .logo_white{
     float: right; 
@@ -865,8 +865,8 @@ hr{color: #00592d;}
 /* ------- create dropbox table ------- */
 .dropbox{
     margin: 0 auto;
-    width: 1000px;
-    height: 631px;
+    width: 1024px;
+    height: 682px;
     color: #fff;
     font-size: 16px;
     font-family: "ecnu.otf";

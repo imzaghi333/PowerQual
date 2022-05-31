@@ -142,7 +142,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[16]=="TBD"){
+                    if($val[17]=="TBD"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -210,7 +210,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[16]=="TBD"){
+                    if($val[17]=="TBD"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -373,7 +373,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[16]=="TBD"){
+                    if($val[17]=="TBD"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -446,7 +446,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[16]=="TBD"){
+                    if($val[17]=="TBD"){
                         $test_status = "In Progress";
                     }
                     else{
