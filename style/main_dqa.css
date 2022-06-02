@@ -343,20 +343,23 @@ hr{color: #00592d;}
     font-family: "ecnu.otf";
 }
 .container .right .form1 {
-    width: 80%;
+    width: 70%;
     border-collapse:collapse;
     font-size: 14px;
     font-weight: bold;
     color: #00698f;
     font-family: "ecnu.otf";
+    margin: 0 auto;
 }
 .container .right .form1 tr,td {padding: 4px 4px;}
-.container .right .form1 select,input {
-    width: 70%;
-    padding: 4px 4px;
-    border: 1px solid #e2e2e2;
+.container .right .form1 select,input[type=text],input[type=month],input[type=number] {
+    width: 90%;
+    padding: 7px;
+    border: 1px solid #888;
     border-radius: 4px;
+    background: transparent;
 }
+
 .container .right .success-info{
     color:#355386; 
     text-align:center; 
@@ -618,10 +621,12 @@ hr{color: #00592d;}
 .content .customers .add_info{
     font-size: 12px;
     background-color: #e6d999;
+    border: none;
 }
 .content .customers .result_txt{
     font-size: 12px;
     width: 40px;
+    display: none;
 }
 .content .customers .order_txt{
     font-size: 12px;
@@ -631,6 +636,7 @@ hr{color: #00592d;}
     font-size: 12px;
     color: #ccc;
     width: 30px;
+    display: none;
 }
 
 .content .txtarea {
@@ -810,8 +816,8 @@ hr{color: #00592d;}
         border-left-color: transparent;
     }
 }
+/* ----------Loading animation over -------- */
 
-/* -------------------------------------- */
 .container .right .form7 {
     width: 750px;
     border-collapse:collapse;
@@ -823,11 +829,12 @@ hr{color: #00592d;}
 .container .right .form7 tr,td {
     padding: 4px 4px;
 }
-.container .right .form7 select,input {
+.container .right .form7 select,input[type=date] {
     width: 80%;
-    padding: 4px 4px;
-    border: 1px solid #e2e2e2;
+    padding: 10px;
+    border: 1px solid #d2d2d7;
     border-radius: 4px;
+    background: transparent;
 }
 
 /* ------- footer css ------- */
@@ -954,10 +961,17 @@ hr{color: #00592d;}
 .fail .form_fail select{
     width: 370px;
     overflow: hidden;
-    padding: 10px;
-    border: 1px solid #f1f1f1;
+    padding: 7px;
+    border: 1px solid #888;
     border-radius: 4px;
     white-space: nowrap;
+    background: transparent;
+}
+.fail .form_fail input[type=date],input[type=text],input[type=number]{
+    padding: 10px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    background: transparent;
 }
 .fail .form_fail input[type=submit] {
     width: 70px;
@@ -1001,6 +1015,8 @@ hr{color: #00592d;}
     padding: 5px;
     border: 1px solid #f1f1f1;
     border-radius: 4px;
+    background: transparent;
+    border: 1px solid #d2d2d7;
 }
 .unit_table .all_pass{
     padding: 3px;

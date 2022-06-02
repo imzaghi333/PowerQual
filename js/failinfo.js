@@ -12,9 +12,10 @@
  )                                          (
 '--------------------------------------------'
 */
+
 var script1 = document.createElement("script"); 
 script1.type = "text/javascript"; 
-script1.src = "js/jquery-3.1.1.min.js"; 
+script1.src = "js/jquery-3.6.0.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
 var script2 = document.createElement("script"); 
@@ -38,18 +39,42 @@ function addLoadEvent(func){
     }
 }
 
+function goback(row_id,selectid,number,currentid,rows,reload){
+    //alert(reload);
+    alert(window.parent.document.getElementById("pp2").value);
+    //alert(window.parent.location.href);
+    //window.parent.location.reload();
+    window.location.replace(document.referrer);
+    //history.go(-1);
+    //window.open(window.parent.location.href);//+"?rowid="&row_id&"&cellid="&select_id&"&count="&number&"&currentid="&currentid&"&rows="&rows, "Fail Links","height=800, width=950, top=100, left=100");
+    /*if(reload==undefined)
+    {
+        window.open("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&reload=", "Fail Links","height=800, width=950, top=100, left=100");
+
+    }
+    else
+    {
+        window.open("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&reload=2", "Fail Links","height=800, width=950, top=100, left=100");
+    }
+    */
+}
+
+
 /**
  * info.php可以給unit添加Hot,cold, room 而且Testorder颜色会根据温度显示不同颜色
 */
-function setTemperature(cell){
+function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows,reload){
     var sel_id = "temp"+cell;
     var temp_id = "subject9["+(cell-1)+"]";
     var order_id = "test_order["+(cell-1)+"]";
-
+    
     //alert("選擇框ID: "+sel_id+", 溫度文本框ID: "+temp_id+" ,test order ID: "+order_id);
     var selbox = document.getElementById(sel_id);
     var selbox_val = selbox.value
+    //alert(selbox_val);
+
     window.opener.document.getElementById(temp_id).value=selbox_val;
+    //alert(selbox_val);
     switch (selbox_val) {
         case "Hot":
             window.opener.document.getElementById(order_id).style.color="#cc2229";
@@ -67,6 +92,7 @@ function setTemperature(cell){
         default:
             break;
     }
+    document.getElementById(unit_id).href="fail.php?cell="+cell+"&id="+iid+"&rowid="+row_no+"&unit=Unit"+unit_id+"&temp="+selbox_val+"&cellidII="+select_id+"&counts="+numbers+"&currentid="+currentid+"&rows="+rows+"&reload=2";
 }
 
 /**

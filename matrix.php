@@ -35,7 +35,7 @@ if(isset($_POST["action"]) && $_POST["action"]=="next"){
 }
 else{
     echo "<p style='color:#cc2229;font-size:30px;text-align:center'>请在New Test页面写入初始内容</p>";
-    echo "<meta http-equiv='refresh' content='2; url=index.php'>";
+    //echo "<meta http-equiv='refresh' content='2; url=index.php'>";
 }
 echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
 ?>
@@ -71,7 +71,8 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 <tr>
                     <td width="5%">
                         <?php
-                        echo "<select name='group[]' id='group'>";
+                        echo "<select name='group[]' id='group1'>";
+                        echo "<option value=Select_Group>Select_Group</option>";
                         $check = mysqli_query($con, "SELECT Groups FROM dropbox_group");
                         while ($row = mysqli_fetch_array($check)) {
                             $v1 = $row["Groups"];
@@ -82,10 +83,14 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     </td>
                     <td width="10%">
                         <?php
-                        echo "<select name='test_item[]' class='selbox' id='test_item'>";
-                        $check = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
+                        echo "<select name='test_item[]' class='selbox' id='test_item1'>";
+                        echo "<option value=Select_Item class=select_item>Select_Item</option>";
+                        
+                        $check = mysqli_query($con, "SELECT Testitem,Grouped FROM dropbox_test_item");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
-                            echo "<option value=" ."'$row[0]'" . ">" . $row[0] . "</option>";
+                         
+                        echo "<option value=" ."'$row[0]'" . "class="."'$row[1]'" . " hidden=true>" . $row[0] . "</option>";
+
                         }
                         echo "</select>";
                         ?>
@@ -176,10 +181,8 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     $tmp2[$j][$i] = $tmp1[$i][$j];    //转置后安装unit1,2,3...顺序排列
                 }
             }          
-
             $len3 = count($tmp2); 
             $len4 = count($tmp2[0]);
-            
             $timedt = date("Y-m-d H:i:s");
             $counter = 0;        //作为测试机编号 1,2,3.......N
 
@@ -193,18 +196,16 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     $group     = $arr_group[$j];
                     $test_item = $arr_items[$j];
                     $unit      = $tmp2[$i][$j];     //test order
-                    //SQL for adding record
                     $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
                     $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$testlab','$mfgsite','$tester','$timedt','$counter')";
-                    //echo $counter."----->".$sql_add."<br>";
+                    //echo $counter.". ".$sql_add."<br>";
                     mysqli_query($con,$sql_add);
                 }
             }
-            sleep(1);
+            
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
             mysqli_close($con);
-            //$url = "index.php";
             $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
             $message = urlencode("数据保存完成 :)");
             header("location:success.php?url=$url&message=$message");

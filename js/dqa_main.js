@@ -1,7 +1,7 @@
 /* ----------- import jQuery ---------- */
 var script1 = document.createElement("script"); 
 script1.type = "text/javascript"; 
-script1.src = "js/jquery-3.1.1.min.js"; 
+script1.src = "js/jquery-3.6.0.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
 var script2 = document.createElement("script"); 

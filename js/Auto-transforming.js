@@ -1,6 +1,6 @@
 var script1 = document.createElement("script"); 
 script1.type = "text/javascript"; 
-script1.src = "js/jquery-3.1.1.min.js"; 
+script1.src = "js/jquery-3.6.0.min.js"; 
 document.getElementsByTagName("head")[0].appendChild(script1);
 
 var script2 = document.createElement("script"); 
@@ -10,8 +10,7 @@ document.getElementsByTagName("head")[0].appendChild(script2);
 
 /**
  * 替换window.onload()
- * @param {*} func onload的函数名
- */
+*/
 function addLoadEvent(func){
     var oldonload = window.onload;
     if(typeof window.onload != "function"){
@@ -21,6 +20,81 @@ function addLoadEvent(func){
         window.onload = function(){
             oldonload();
             func();
+        }
+    }
+}
+
+function groupchange(aa){
+    //alert("aa="+aa);
+    //var member_id = this.value;
+    var el = document.getElementById("group"+aa).value;
+    //alert(el.slice(6,7));
+    //alert(el);
+    var check=0;
+    var test_item = document.getElementById("test_item"+aa);
+    var test_item_opt = test_item.options;
+
+    if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+    // alert("Browser is Safari");  
+        var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    // alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
+        if(nodesSnapshot.snapshotLength==57){
+            for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
+                var nodeA = nodesSnapshot.snapshotItem(i);
+                var nodeclass=nodeA.getAttribute('class');
+                arrayclass.push(nodeclass);
+            }  
+        }
+        var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/div", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        // alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
+        for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
+            var nodeA = nodesSnapshot.snapshotItem(i);
+            //alert(arrayclass[i]);
+            var elemA = document.createElement('option');
+            elemA.innerHTML = nodeA.innerHTML;
+            nodeA.parentNode.replaceChild(elemA, nodeA);
+        }  
+
+        var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
+        for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
+            var nodeA = nodesSnapshot.snapshotItem(i);
+            //alert(arrayclass[i]);
+            var elemA = document.createElement('option');
+            elemA.setAttribute("class",arrayclass[i])
+            elemA.innerHTML = nodeA.innerHTML;
+            nodeA.parentNode.replaceChild(elemA, nodeA);
+        }  
+
+        var nodesSnapshot = document.evaluate("//select[@id='test_item"+aa+"']/option[@class!='"+el.slice(6,7)+"']", test_item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        //alert("nodesSnapshot.snapshotLength="+nodesSnapshot.snapshotLength);
+        for (var i = 1; i < nodesSnapshot.snapshotLength; i++) {
+            var nodeA = nodesSnapshot.snapshotItem(i);
+            var elemA = document.createElement('div');
+            elemA.innerHTML = nodeA.innerHTML;
+            nodeA.parentNode.replaceChild(elemA, nodeA);
+        }       
+    }
+        
+    for(var i=0; i<test_item_opt.length; i++){
+        if(test_item_opt[i].getAttribute('class')!=el)
+        {
+            test_item_opt[i].setAttribute("hidden",true);
+        }
+        else
+        {
+            if(check==0)
+            {
+                document.getElementById("test_item"+aa).options[i].selected="selected"
+            }
+            //alert("nothide");
+            test_item_opt[i].removeAttribute("hidden");
+            check=1;
+        }
+        if(check==0)
+        {
+            document.getElementById("test_item"+aa).options[0].selected="selected"
+
         }
     }
 }
@@ -192,7 +266,7 @@ function addRow(){
 function checkTemp(){
     var temps = document.getElementsByClassName("temp_txt");
     var orders = document.getElementsByClassName("order_txt");
-
+    //alert(temps+" "+orders);
     for(var i=0; i<temps.length; i++){
         temp_val = temps[i].value;
         switch (temp_val) {
@@ -223,7 +297,7 @@ function printResult(rowid,selectid,count,currentid,rows){
     if(txt.match(reg)){
         window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=500, width=850, top=100, left=100");
     }*/
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100","toolbar=yes","menubar=yes");
 }
 
 //JS中fail调用fail.php
@@ -292,5 +366,5 @@ function oneRowAllPass(rowid,number){
     layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
 }
 
-addLoadEvent(addRow);
+//addLoadEvent(addRow);
 addLoadEvent(checkTemp);

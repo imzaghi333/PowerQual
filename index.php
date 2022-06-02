@@ -196,7 +196,7 @@ require_once("./js/conf.php");
                     <a style="text-decoration:none; color:#002ea6;" href="./images/MatrixTemplate.xls">Template Download <span class="download-icon"></span></a>
                 </p>
                 <form id="form15" name="form15" action="" method="POST" enctype="multipart/form-data">
-                    <input name="matrix_file" id="matrix_file" type="file" style="width: 400px;background-color:#731717;color:#e6d999;margin-left:130px;" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input name="matrix_file" id="matrix_file" type="file" style="width: 400px;background-color:#772953;color:#e6d999;margin-left:130px;padding:5px;" required />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button name="matrix_upload" type="submit" class="btn_query">Upload</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button name="matrix_upload" type="reset" class="btn_reset">Clear</button>
                     <input name="upload_matrix" value="upload_matrix_do" type="hidden" />
                 </form>
@@ -231,10 +231,7 @@ require_once("./js/conf.php");
                     require_once "Classes/PHPExcel/IOFactory.php";
                     require_once "Classes/PHPExcel/Reader/Excel5.php"; 
                     require_once "Classes/PHPExcel/Reader/Excel2007.php";
-                    
-                    //header("Access-Control-Allow-Origin: *");      //解决跨域
-                    //header("Access-Control-Allow-Methods:GET");    //响应类型
-                    //header("Access-Control-Allow-Headers: *");
+
                     set_time_limit(0);
                     error_reporting(0);
 
@@ -246,7 +243,7 @@ require_once("./js/conf.php");
                     $highestRow = $sheet->getHighestRow();       //取得总行数
                     $highestCol = $sheet->getHighestColumn();    //取得总列数
                     $LAST_COL_NO = PHPExcel_Cell::columnIndexFromString($highestCol);    //最后一列转成数字
-                    define("OFFSET1",6);    //用于计算测试机数量
+                    define("OFFSET1",7);    //用于计算测试机数量
                     define("OFFSET2",4);    //用于获取最后一个测试机所在列的下一列的字符串
 
                     $title   = $sheet->getCell("B1")->getValue();
@@ -313,19 +310,22 @@ require_once("./js/conf.php");
                     $arr_items = array();
                     $order = array();        // test order array
                     $arr_order = array();    // 对空内容和小写字符处理后的新test order
+                    $array_conditon = array();
                     
                     //PHPExcel行列从1开始计算，这里从第15行开始循环
                     for($i=15; $i<=$highestRow; $i++){
                         array_push($arr_group,$sheet->getCell("A".$i)->getValue());
                         array_push($arr_items,$sheet->getCell("B".$i)->getValue());
+                        array_push($array_conditon,$sheet->getCell("C".$i)->getValue());
                     }
                     // 有相同的Test item提示错误
                     if(count($arr_items)!=count(array_unique($arr_items))){
                         echo "<script>window.alert('有相同的Test Item!~點擊返回');history.back();</script>";
                         exit();
                     }
+                    //獲取test order
                     for($i=15; $i<=$highestRow; $i++){
-                        for($j='C'; $j!=$lastUnitCol; $j++){
+                        for($j='D'; $j!=$lastUnitCol; $j++){
                             array_push($order,$sheet->getCell("$j$i")->getValue());
                         }
                     }
@@ -365,9 +365,10 @@ require_once("./js/conf.php");
                             $group     = $arr_group[$j];
                             $test_item = $arr_items[$j];
                             $unit      = $tmp2[$i][$j];     //test order
+                            $condition = $array_conditon[$j];
                             //SQL for adding records
-                            $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
-                            $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$testlab','$mfgsite','$tester','$timedt','$counter')";
+                            $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testcondition,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
+                            $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$condition','$testlab','$mfgsite','$tester','$timedt','$counter')";
                             //echo $counter."----->".$sql_add."<br>";
                             mysqli_query($con,$sql_add);
                         }
@@ -422,8 +423,8 @@ require_once("./js/conf.php");
                 <p> 3. 如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
             </div>
         <?php
-        }
-        //Export Raw Data end here
+        }//Export Raw Data end here
+        
         /**
          * upload Drop down menu excel file
          */
@@ -1081,6 +1082,7 @@ require_once("./js/conf.php");
                     ?>
                 </p>
                 <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
+                <p>5. When creating matrix, recommend uploading Excel by attached template if units >= 10  .</p>
             </div>
             </div>
         </div>

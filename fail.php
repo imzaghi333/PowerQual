@@ -18,8 +18,8 @@
  * \ \ `-. \_ __\ /__ _/ .-` / /
  * ======`-.____`-.___\_____/___.-`____.-'======
  * `=---='
- * .............................................
- *                               佛曰：永无BUG
+ *      .............................................
+ *                               佛曰：bug泛滥，我已瘫痪！
 */
 
 require_once("./js/conf.php");
@@ -28,10 +28,13 @@ header("Content-Type:text/html;charset=UTF-8");
 date_default_timezone_set("PRC");
 
 $row_no    = $_GET["rowid"];           //选了fail那一行的编号
-$select_id = $_GET["cellid"];          //一行最后一个单元格编号
+$select_id = $_GET["cellid"];
+$select_idII = $_GET["cellidII"];          //一行最后一个单元格编号
 $number    = $_GET["count"];          //测试机数量
 $currentid = $_GET["currentid"];      //一行最后一个单元格RecordID
-$rows      = $_GET["rows"];           //测试总行数 
+$rows      = $_GET["rows"];           //测试总行数
+$numbers   = $_GET["counts"];          //
+$reload    = $_GET["reload"]; 
 echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
 $cells = array();        //一行的每个单元格编号
@@ -69,9 +72,8 @@ if(isset($_GET["count"])){
     1.點擊Link标签可以為每個測試機添加failure;<br>
     2.溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot;<br>
     3.Result下拉菜單為每個測試機单独設置Pass或TBD;<br>
-    4.Set Button 設置一行結果全部Pass;
+    4.Set按鈕設置一行結果全部Pass;
 </p>
-<span style="color:#00592d;font-size:14px;font-weight:bold;">Add Result here:</span>
 <table id="unit_table" class="unit_table" border="1" cellpadding="3" cellspacing="3">
     <thead>
     <tr>
@@ -94,16 +96,18 @@ if(isset($_GET["count"])){
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
+            $setTemp[$cell]="";
             $sql_order = mysqli_query($con,"SELECT Units FROM DQA_Test_Main WHERE RecordID='$id'");
             $order = mysqli_fetch_array($sql_order,MYSQLI_NUM)[0];
             $unit_name = "Unit".($i+1);
+            $unit_id = ($i+1);
             $ll = "";
             if($order=="" || $order==" "){
             $ll = ""; 
             }else{
                 $ll = "Link";
             }
-            echo "<td><a style='font-weight: bold;' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit=$unit_name'>".$ll."</a></td>";
+            echo "<td><a style='font-weight: bold;' id='$unit_id' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit_id=$unit_id&unit=$unit_name&cellidII=$select_id&counts=$number&currentid=$currentid&rows=$rows'>".$ll."</a></td>";
         }
         ?>
         <!-- One row all pass via pressing set button -->
@@ -116,17 +120,39 @@ if(isset($_GET["count"])){
         <td>Set Temperature</td>
         <?php
         /**
-         * 为每个测试设置温度,一小段代码居然for while if全用上了
+         * 为每个测试设置温度
         */
+        /*
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
+            $sql_order = mysqli_query($con,"SELECT Units FROM DQA_Test_Main WHERE RecordID='$id'");
+            $order = mysqli_fetch_array($sql_order,MYSQLI_NUM)[0];
+            $unit_name = "Unit".($i+1);
+            $unit_id = ($i+1);
+            $ll = "";
+            if($order=="" || $order==" "){
+            $ll = ""; 
+            }else{
+                $ll = "<select class='del_fail' id='temp$cell' onchange='setTemperature($cell,$row_no,$id,$unit_id,$number,$select_id,$currentid,$rows,$reload);'>";
+                $ll.= "<option value=''>Select</option>";
+                $ll.= "<option value='Hot'>Hot</option>";
+                $ll.= "<option value='Cold'>Cold</option>";
+                $ll.= "<option value='Room'>Room</option>";
+                $ll.= "</select>";
+            }
+            echo "<td>".$ll."</td>";
+        }*/
+        for($i=0; $i<$number; $i++){
+            $cell = $cells[$i];
+            $id = $record_ids[$i];
+            $unit_id = ($i+1);
             $sql = mysqli_query($con,"SELECT Units,Temp FROM DQA_Test_Main WHERE RecordID='$id'");
             while($info1 = mysqli_fetch_array($sql,MYSQLI_NUM)){
                 if($info1[0]!=""){
                 ?>
                 <td>
-                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>);">
+                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>,<?php echo $reload; ?>);">
                         <option value="">Select</option>
                         <option value="Hot" <?php if($info1[1]=="Hot"){echo "selected = 'selected'";} ?> >Hot</option>
                         <option value="Room" <?php if($info1[1]=="Room"){echo "selected = 'selected'";} ?> >Room</option>
@@ -140,8 +166,7 @@ if(isset($_GET["count"])){
                 }
             }
         }
-        //https://stackoverflow.com/questions/15153595/getting-the-option-value-without-submitting-a-form/15153759
-        //https://www.jb51.net/article/145560.htm
+        ?>
         ?>
     </tr>
     <tr>
@@ -150,7 +175,6 @@ if(isset($_GET["count"])){
         /**
          * 为单独的测试机添加Pass or TBD,这样不需要进入Failure Link去填写
         */
-
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -177,8 +201,7 @@ if(isset($_GET["count"])){
     </tr>
     </tbody>
 </table>
-<span style="color:#117cb0;font-size:14px;">下拉框Fail只是顯示該測試機有Fail,集體的内容請參考已添加issue list,新增fail請點擊Link</span>
-<br><br>
+<hr>
 <?php
 /**
 * 显示failure的机台，如果是Pass的就不会运行这段代码 
@@ -201,7 +224,6 @@ if(isset($_GET["rowid"])){
         $check = mysqli_query($con,$sql_query);
         $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
         if($row_nums>0){
-            echo "<span style='color:#cc2229;font-size:14px;font-weight:bold;'>Issue List:</span>";
             echo "<table class='unit_table' border='1' cellpadding='3' cellspacing='3'>";
             echo "<tr>";
             $sql_query0 = "SELECT Unitsno FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell_id' and Unitsno='$unit_no'";
@@ -326,12 +348,44 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td>TEMP<font color="#cc2229" size="1">*</font></td>
                 <td>
-                    <select name="temp" id="temp<?php echo $select_id; ?>" onchange="returnTEMP(<?php echo $row_id; ?>,<?php echo $select_id; ?>);">
-                        <option value="">請選擇</option>
-                        <option value="Cold">Cold</option>
-                        <option value="Hot">Hot</option>
-                        <option value="Room">Room</option>
-                    </select>
+                    <?php
+                        if($_GET['temp']==""){
+                            echo "<select name='temp' id='temp".$select_id."' onchange='returnTEMP(". $row_id.",". $select_id.")'>";
+                            echo "<option value=''>請選擇</option>";
+                            echo "<option value='Cold'>Cold</option>";
+                            echo "<option value='Hot'>Hot</option>";
+                            echo "<option value='Room'>Room</option>";
+                            echo "</select>";
+                        }
+                        else{
+                            switch($_GET['temp']){
+                                case "Cold":
+                                    echo "<select name='temp' id='temp".$select_id."' onchange='returnTEMP(". $row_id.",". $select_id.")'>";
+                                    echo "<option value=''>請選擇</option>";
+                                    echo "<option selected='selected' value='Cold'>Cold</option>";
+                                    echo "<option value='Hot'>Hot</option>";
+                                    echo "<option value='Room'>Room</option>";
+                                    echo "</select>"; 
+                                    break; 
+                                case "Hot":
+                                    echo "<select name='temp' id='temp".$select_id."' onchange='returnTEMP(". $row_id.",". $select_id.")'>";
+                                    echo "<option value=''>請選擇</option>";
+                                    echo "<option value='Cold'>Cold</option>";
+                                    echo "<option selected='selected' value='Hot'>Hot</option>";
+                                    echo "<option value='Room'>Room</option>";
+                                    echo "</select>"; 
+                                    break;
+                                case "Room":
+                                    echo "<select name='temp' id='temp".$select_id."' onchange='returnTEMP(". $row_id.",". $select_id.")'>";
+                                    echo "<option value=''>請選擇</option>";
+                                    echo "<option value='Cold'>Cold</option>";
+                                    echo "<option value='Hot'>Hot</option>";
+                                    echo "<option selected='selected' value='Room'>Room</option>";
+                                    echo "</select>"; 
+                                    break;
+                            }
+                        }
+                    ?>
                 </td>
             </tr>
             <tr><td>Drop Cycle</td><td><input name="drop_cycle" id="drop_cycle<?php echo $select_id; ?>" type="text" onchange="returnDropCycle(<?php echo $row_id; ?>,<?php echo $select_id; ?>);" /></td></tr>
@@ -371,7 +425,8 @@ else if(isset( $_GET["cell"])){
             <tr>
                 <td colspan="2" align="center">
                     <button class="btn_sub" type="submit">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" onClick="history.go(-1);">返回</button>
+                    <!--<button type="button" onclick="goback(<?php //echo $row_no; ?>,<?php //echo $select_idII; ?>,<?php //echo $numbers; ?>,<?php //echo $currentid; ?>,<?php //echo $rows; ?>,<?php //echo $reload; ?>);">返回</button>--><!-- -----------history.go(-1); ----------- -->
+                    <button type="button" onClick="history.back();">返回</button>
                     <input type="hidden" name="fail" value="fail_do" />
                     <!-- ----------- Hidden Area ----------- -->
                     <input type="hidden" name="cell_no" value="<?php echo $select_id; ?>" />

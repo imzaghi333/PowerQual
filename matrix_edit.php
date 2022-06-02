@@ -32,13 +32,19 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     //echo $stage."--".$vt."--".$pr_name."--".$sku."--".$nn."--".$yy."--".$phases."--".$testlab."--".$mfgsite."--".$tester."--".$timedt."--".$title;
 
     //獲取某一次測試的機台數量
-    //$qty_query = mysqli_query($con,"SELECT COUNT(DISTINCT Unitsno) FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ");
+    //$qty_query = mysqli_query($con,"SELECT COUNT(DISTINCT Testitems) FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ");
     //$qty_info = mysqli_fetch_array($qty_query,MYSQLI_NUM);
     //$number = $qty_info[0];
+    //echo $number;
     $sql_unique_tc = "SELECT DISTINCT Testitems FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting'";
     $tc_array = mysqli_query($con,$sql_unique_tc);
     $testitem_num = mysqli_num_rows($tc_array);
-    $number = $counts/$testitem_num;
+    if($testitem_num){
+        $number = $counts/$testitem_num;
+    }
+    else{
+        echo "好像没有查询到Test Items";
+    }
     echo "<p class='txt_for_check'>Product Name: ".$product." ,Tester: ".$tester." ,Start time: ".substr($starting,0,10)." ,Total test units: ".$number." ,Total test items: ".$testitem_num." ,Click Input SN to import SN, Click Wistron Logo to home page</p>";
 }
 else{
@@ -123,6 +129,7 @@ else{
                 $gp_one = mysqli_fetch_array($gp_info,MYSQLI_BOTH)[0];
                 array_push($groups,$gp_one);
             }
+            
             //Table的内容
             for($i=0; $i<$tc_num; $i++){
                 $tc_txt = $test_items[$i];
@@ -144,10 +151,13 @@ else{
             <tr>
                 <td><input name='requests[]' id='requests' type='text' value='<?php echo $row["Requests"] ?>'></td>
                 <td>
-                    <select name='group[]' id='group' class='gp'>
+                    <!--select name='group[]' id='group' class='gp'-->
                     <?php
+                    $w++;
                     $gp_txt = $groups[$i];
                     $opts = mysqli_query($con, "SELECT `Groups` FROM dropbox_group");
+                    echo"<select name=group[] id=group"."$w"." onchange=groupchange($w)>";
+                    echo "<option value=Select_Group>Select_Group</option>";
                     while($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                         if($info[0]==$gp_txt){
                             echo "<option value="."'$info[0]'"." selected >".$info[0]."</option>";
@@ -160,24 +170,41 @@ else{
                     </select>
                 </td>
                 <td>
-                    <select name='test_item[]' id='test_item' class='selbox'>
+                    <!--select name='test_item[]' id='test_item' class='selbox'-->
                     <?php
-                    $opts = mysqli_query($con, "SELECT Testitem FROM dropbox_test_item");
+                    $q++;
+                    $gp_txt = $groups[$i];
+                    $opts = mysqli_query($con, "SELECT Testitem,Grouped FROM dropbox_test_item");
+                    echo"<select name=test_item[] id=test_item"."$q"." class=selbox >";
+                    echo "<option value=Select_Item class=select_item>Select_Item</option>";
+
                     while($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
                         if($info[0]==$tc_txt){
-                            echo "<option value="."'$info[0]'"." selected >".$info[0]."</option>";
+                            echo "<option value="."'$info[0]'"." class="."'$info[1]'" . "selected >".$info[0]."</option>";
+
                         }
-                        else{
-                            echo "<option value="."'$info[0]'".">".$info[0]."</option>";
+                        else
+                        {
+                            if($info[1]==$gp_txt&&$info[0]!=$tc_txt){
+                                echo "<option value="."'$info[0]'"." class="."'$info[1]'" . " >".$info[0]."</option>";
+                            }
+                            else
+                            {
+                                echo "<option value="."'$info[0]'"." class="."'$info[1]'" . " hidden=true >".$info[0]."</option>";
+    
+                            }
                         }
                     }
                     ?>
                     </select>
                 </td>
                 <!--<td><input name='terminal[]' id='terminal' type='text' value=""></td> canceled on 2022-03-11 -->
+                <!-- test condition -->
                 <td>
+                    <!--
                     <select name='conditions[]' id='conditions' class='selbox'>
-                    <?php 
+                    <?php
+                    /*
                     $opts = mysqli_query($con, "SELECT Testcondition FROM dropbox_test_condition");
                     echo "<option value=''>请选择Test Condition</option>";
                     while($info = mysqli_fetch_array($opts,MYSQLI_NUM)){
@@ -188,8 +215,11 @@ else{
                             echo "<option value="."'$info[0]'".">".$info[0]."</option>";
                         }
                     }
+                    */
                     ?>
                     </select>
+                    -->
+                    <textarea name='conditions[]' id='conditions' rows="1" class="text-adaption"><?php echo $row["Testcondition"]; ?></textarea>
                 </td>
                 <!-- -------Unit Distribution------- -->
                 <?php
@@ -230,8 +260,8 @@ else{
                         echo "<input class='result_txt' type='text' name='subject18[".$selectid."]' id='subject18[".$selectid."]' value='$result_record'>";
                         echo "<input class='order_txt' type='text' name='test_order[]' id='test_order[".$selectid."]' type='text' value="."'$info[0]'"." />";    //Test order A,B,C....Z
                         $selectid += 1;    //Table cell by row: 1,2,3......
-		                echo "<input type='text' style='width:30px;' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
-                        echo " ".$selectid;
+		                echo "<input type='text' style='width:30px;display:none' name='record_id[]' value="."'$info[1]'"." readonly />";   //RecordID
+                        //echo " ".$selectid;
                     }
                     echo "</td>";
                 }//end of Unit Distribution
