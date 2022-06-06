@@ -176,11 +176,13 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 for($j=0; $j<$len2; $j++){
                     $tmp2[$j][$i] = $tmp1[$i][$j];    //转置后安装unit1,2,3...顺序排列
                 }
-            }          
+            }
+            
             $len3 = count($tmp2); 
             $len4 = count($tmp2[0]);
             $timedt = date("Y-m-d H:i:s");
             $counter = 0;        //作为测试机编号 1,2,3.......N
+            $title = preg_replace("/\'/","",$title);
 
             $get_test_name = urlencode($tester);
             $get_product_name = urlencode($product);

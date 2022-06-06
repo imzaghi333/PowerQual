@@ -358,7 +358,8 @@ require_once("./js/conf.php");
                     $get_test_name = urlencode($tester);
                     $get_product_name = urlencode($product);
                     $get_start_day = urlencode($timedt);
-
+                    $title = preg_replace("/\'/","",$title);
+                    
                     for($i=0; $i<$len3; $i++){
                         $counter++;
                         for($j=0; $j<$len4; $j++){
