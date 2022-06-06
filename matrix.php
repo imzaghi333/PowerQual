@@ -84,9 +84,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                         
                         $check = mysqli_query($con, "SELECT Testitem,Grouped FROM dropbox_test_item");
                         while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
-                         
-                        echo "<option value=" ."'$row[0]'" . "class="."'$row[1]'" . " hidden=true>" . $row[0] . "</option>";
-
+                            echo "<option value=" ."'$row[0]'" . "class="."'$row[1]'" . " hidden=true>" . $row[0] . "</option>";
                         }
                         echo "</select>";
                         ?>
@@ -205,7 +203,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
             mysqli_close($con);
             $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
             $message = urlencode("数据保存完成 :)");
-            header("location:success.php?url=$url&message=$message");
+            echo "<script>window.location.href='success.php?url=$url&message=$message'</script>";
         }
         ?>
         <!-- save matrix over -->

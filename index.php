@@ -366,7 +366,8 @@ require_once("./js/conf.php");
                             $group     = $arr_group[$j];
                             $test_item = $arr_items[$j];
                             $unit      = $tmp2[$i][$j];     //test order
-                            $condition = $array_conditon[$j];
+                            //$condition = $array_conditon[$j];
+                            $condition = preg_replace("/\'/","\'",$array_conditon[$j]);//单引号转义\'
                             //SQL for adding records
                             $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testcondition,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
                             $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$condition','$testlab','$mfgsite','$tester','$timedt','$counter')";

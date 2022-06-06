@@ -1,4 +1,23 @@
 <?php
+/*
+                          (  ) (@@) ( )  (@)  ()    @@    O     @     O     @      O
+                     (@@@)
+                 (    )
+              (@@@@)
+
+            (   )
+         ====        ________                ___________
+     _D _|  |_______/        \__I_I_____===__|_________|
+      |(_)---  |   H\________/ |   |        =|___ ___|      _________________
+      /     |  |   H  |  |     |   |         ||_| |_||     _|                \_____A
+     |      |  |   H  |__--------------------| [___] |   =|                        |
+     | ________|___H__/__|_____/[][]~\_______|       |   -|  Felix Qian 钱暾        |
+     |/ |   |-----------I_____I [][] []  D   |=======|____|________________________|_
+   __/ =| o |=-O=====O=====O=====O \ ____Y___________|__|__________________________|_
+    |/-=|___|=    ||    ||    ||    |_____/~\___/          |_D__D__D_|  |_D__D__D_|
+     \_/      \__/  \__/  \__/  \__/      \_/               \_/   \_/    \_/   \_/
+*/
+
 require_once("./js/conf.php");
 mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
@@ -30,12 +49,6 @@ if(isset($_GET["product"])&&isset($_GET["user"])&&isset($_GET["starting"])){
     $timedt  = $user_one_row[42];     //测试项录入的时间
     $title   = $user_one_row[45];
     //echo $stage."--".$vt."--".$pr_name."--".$sku."--".$nn."--".$yy."--".$phases."--".$testlab."--".$mfgsite."--".$tester."--".$timedt."--".$title;
-
-    //獲取某一次測試的機台數量
-    //$qty_query = mysqli_query($con,"SELECT COUNT(DISTINCT Testitems) FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting' ");
-    //$qty_info = mysqli_fetch_array($qty_query,MYSQLI_NUM);
-    //$number = $qty_info[0];
-    //echo $number;
     $sql_unique_tc = "SELECT DISTINCT Testitems FROM DQA_Test_Main WHERE Products='$product' AND Testername='$tester' AND Timedt='$starting'";
     $tc_array = mysqli_query($con,$sql_unique_tc);
     $testitem_num = mysqli_num_rows($tc_array);

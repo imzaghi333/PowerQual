@@ -108,7 +108,8 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
             $group = $arr_group[$j];
             $test_item = $arr_test[$j];
             $test_id = $arr_id_tmp2[$i][$j];
-            $condition = $arr_condition[$j];
+            //$condition = $arr_condition[$j];
+            $condition = preg_replace("/\'/","\'",$arr_condition[$j]);//单引号转义\'
             $unit = $arr_order_tmp2[$i][$j];       //test order
             $start = $arr_start[$j];
             $end = $arr_end[$j];
