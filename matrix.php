@@ -33,15 +33,11 @@ if(isset($_POST["action"]) && $_POST["action"]=="next"){
     $mfgsite = $_POST["mfgsite"];      //WKS WHQ......
     $tester = $_POST["tester"];        //英文名
 }
-else{
-    echo "<p style='color:#cc2229;font-size:30px;text-align:center'>请在New Test页面写入初始内容</p>";
-    //echo "<meta http-equiv='refresh' content='2; url=index.php'>";
-}
+
 echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
 ?>
 
 <!DOCTYPE html>
-
 <html lang="zh_cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -160,7 +156,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 strtoupper($order[$loop]);
                 //echo $loop."--->".$order[$loop]."<br>";
                 if($order[$loop]=="请选择"){
-                    $arr_order[$loop] = ' ';
+                    $arr_order[$loop] = "";
                 }
                 else{
                     array_push($arr_order,$order[$loop]);
@@ -202,7 +198,6 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     mysqli_query($con,$sql_add);
                 }
             }
-            
             //echo "<h1 style='color:#4f7764; text-align:center; font-size:20px;'>数据保存完成:)</h1>";
             //echo "<meta http-equiv='refresh' content='1; url=index.php'>";
             mysqli_close($con);
@@ -216,10 +211,4 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
 </div>
 <div>&nbsp;&nbsp;&nbsp;&nbsp;<img src="./images/bear.svg" height="200" /></div>
 </body>
-<!--
-钟山风雨起苍黄，百万雄师过大江。
-虎踞龙盘今胜昔，天翻地覆慨而慷。
-宜将剩勇追穷寇，不可沽名学霸王。
-天若有情天亦老，人间正道是沧桑。
--->
 </html>

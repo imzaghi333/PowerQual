@@ -872,8 +872,8 @@ hr{color: #00592d;}
 /* ------- create dropbox table ------- */
 .dropbox{
     margin: 0 auto;
-    width: 1024px;
-    height: 682px;
+    width: 1000px;
+    height: 555px;
     color: #fff;
     font-size: 16px;
     font-family: "ecnu.otf";
@@ -890,7 +890,7 @@ hr{color: #00592d;}
 .dropbox .xqq{
     font-family: "ecnu.otf";
     font-size: 14px;
-    color: #00698f;
+    color: #7c355d;
     margin-left: 5px;
 }
 
