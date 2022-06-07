@@ -1,5 +1,32 @@
 <?php
-require_once("./js/conf.php");
+/*
+ ____________________________
+ < 毛主席教导我们枪杆子出政权 >
+  ----------------------------
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
+*/
+
+require_once "./js/conf.php";
+
+/**
+ * 编辑的时候去掉月份前缀0
+*/
+function removeZeroPrefix($month){
+    if(substr($month,0,1)==0 && strlen($month)>0){
+        return substr($month,1,1);
+    }
+    else if(strlen($month)==0){
+        return "";
+    }
+    else{
+        return $month;
+    }
+}
+
 if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
     // =========== 以下内容就是New Test页面用户填写的 ========
     $stage     = $_POST["stage"];
@@ -134,24 +161,10 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
     mysqli_close($con);
     $url = "matrix_edit.php?user={$get_test_name}&product={$get_product_name}&starting={$get_start_day}";
     $message = urlencode("数据保存完成 :)");
-    header("location:success.php?url=$url&message=$message");
+    //header("location:success.php?url=$url&message=$message");
+    echo "<script>window.location.href='success.php?url=$url&message=$message'</script>";
 }
 else{
     echo "您没有选择Test Matrix";
-}
-
-/**
- * 原来是在导出的时候去掉月份前缀0,现在改到这里
-*/
-function removeZeroPrefix($month){
-    if(substr($month,0,1)==0 && strlen($month)>0){
-        return substr($month,1,1);
-    }
-    else if(strlen($month)==0){
-        return "";
-    }
-    else{
-        return $month;
-    }
 }
 ?>

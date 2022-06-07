@@ -20,7 +20,6 @@
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
            佛祖保佑        永无BUG
-
 ****************************************** */
 
 require_once "../js/conf.php";
@@ -140,6 +139,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
+
+                    $mm = "";
+                    if(substr($val[6],0,1)==0){
+                        $mm = removeZeroPrefix($val[6]);
+                    }
+                    else{
+                        $mm = $val[6];
+                    }
                     //设置test status $val[16]
                     $test_status = "";
                     if($val[17]=="TBD"){
@@ -177,7 +184,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
                     $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
                     */
-                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$mm)->setCellValue("G".$row,$val[7]);
                     $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,changeDatesFormatBlack($val[13]))->setCellValue("N".$row,changeDatesFormatBlack($val[14]));
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
@@ -207,6 +214,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                         default:
                             # code...
                             break;
+                    }
+
+                    $mm = "";
+                    if(substr($val[6],0,1)==0){
+                        $mm = removeZeroPrefix($val[6]);
+                    }
+                    else{
+                        $mm = $val[6];
                     }
                     //设置test status $val[16]
                     $test_status = "";
@@ -245,7 +260,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
                     $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
                     */
-                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$mm)->setCellValue("G".$row,$val[7]);
                     $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,changeDatesFormatBlack($val[13]))->setCellValue("N".$row,changeDatesFormatBlack($val[14]));
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
@@ -371,6 +386,16 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                             # code...
                             break;
                     }
+
+                    //F列月份去掉前缀0
+                    $mm = "";
+                    if(substr($val[6],0,1)==0){
+                        $mm = removeZeroPrefix($val[6]);
+                    }
+                    else{
+                        $mm = $val[6];
+                    }
+
                     //设置test status $val[16]
                     $test_status = "";
                     if($val[17]=="TBD"){
@@ -408,7 +433,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,$val[41])->setCellValue("AJ".$row,$val[42]);
                     $objSheet->setCellValue("AK".$row,$val[43])->setCellValue("AL".$row,$val[44])->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     */
-                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$mm)->setCellValue("G".$row,$val[7]);
                     $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,changeDatesFormatBlack($val[13]))->setCellValue("N".$row,changeDatesFormatBlack($val[14]));
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
@@ -443,6 +468,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                         default:
                             # code...
                             break;
+                    }
+
+                    $mm = "";
+                    if(substr($val[6],0,1)==0){
+                        $mm = removeZeroPrefix($val[6]);
+                    }
+                    else{
+                        $mm = $val[6];
                     }
                     //设置test status $val[16]
                     $test_status = "";
@@ -481,7 +514,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("AD".$row,$val["Hit"])->setCellValue("AE".$row,$val["Boot"])->setCellValue("AF".$row,$val["Testlab"])->setCellValue("AG".$row,$val["Mfgsite"])->setCellValue("AH".$row,$val["Testername"])->setCellValue("AI".$row,$val["NextCheckpointDate"])->setCellValue("AJ".$row,$val["IssuePublished"]);
                     $objSheet->setCellValue("AK".$row,$val["ORTMFGDate"])->setCellValue("AL".$row,$val["ReportedDate"])->setCellValue("AM".$row,$val["IssueDuration"])->setCellValue("AN".$row,$val["Today"])->setCellValue("AO".$row,$val["Remarks"]);
                     */
-                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$val[6])->setCellValue("G".$row,$val[7]);
+                    $objSheet->setCellValue("A".$row,$val[1])->setCellValue("B".$row,$val[2])->setCellValue("C".$row,$val[3])->setCellValue("D".$row,$val[4])->setCellValue("E".$row,$val[5])->setCellValue("F".$row,$mm)->setCellValue("G".$row,$val[7]);
                     $objSheet->setCellValue("H".$row,$val[8])->setCellValue("I".$row,$val[26])->setCellValue("J".$row,$val[10])->setCellValue("K".$row,$val[11])->setCellValue("L".$row,$val[12])->setCellValue("M".$row,changeDatesFormatBlack($val[13]))->setCellValue("N".$row,changeDatesFormatBlack($val[14]));
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
