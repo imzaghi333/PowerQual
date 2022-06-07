@@ -39,24 +39,45 @@ function addLoadEvent(func){
     }
 }
 
-function goback(row_id,selectid,number,currentid,rows,reload){
-    //alert(reload);
-    alert(window.parent.document.getElementById("pp2").value);
-    //alert(window.parent.location.href);
-    //window.parent.location.reload();
-    window.location.replace(document.referrer);
-    //history.go(-1);
-    //window.open(window.parent.location.href);//+"?rowid="&row_id&"&cellid="&select_id&"&count="&number&"&currentid="&currentid&"&rows="&rows, "Fail Links","height=800, width=950, top=100, left=100");
-    /*if(reload==undefined)
-    {
-        window.open("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&reload=", "Fail Links","height=800, width=950, top=100, left=100");
+function savegoback(id,row_id,selectid,number,currentid,rows,temp){
+    //alert(row_id);
+    //alert(window.parent.location);
+    window.location.replace("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
 
+}
+
+function goback(cell,row_id,selectid,number,currentid,rows,reload){
+    //alert(reload);
+    // alert(window.parent.document.getElementById("3"));
+    var sel_id = "temp"+cell;
+    var temp_id = "subject9["+(cell-1)+"]";
+    var order_id = "test_order["+(cell-1)+"]";
+   
+    //alert("選擇框ID: "+sel_id+", 溫度文本框ID: "+temp_id+" ,test order ID: "+order_id);
+    var selbox = document.getElementById(sel_id);
+    var selbox_val = selbox.value
+    //alert(selbox_val);
+
+    window.opener.document.getElementById(temp_id).value=selbox_val;
+    //alert(selbox_val);
+    switch (selbox_val) {
+        case "Hot":
+            window.opener.document.getElementById(order_id).style.color="#000000";
+            window.opener.document.getElementById(temp_id).value="Hot";
+            break;
+        case "Cold":
+            window.opener.document.getElementById(order_id).style.color="#000000";
+            window.opener.document.getElementById(temp_id).value="Cold";
+            break
+        case "Room":
+            window.opener.document.getElementById(order_id).style.color="#000000";
+            window.opener.document.getElementById(temp_id).value="Room";
+            break
+    
+        default:
+            break;
     }
-    else
-    {
-        window.open("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&reload=2", "Fail Links","height=800, width=950, top=100, left=100");
-    }
-    */
+    window.location.replace(document.referrer);
 }
 
 
@@ -67,14 +88,11 @@ function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows
     var sel_id = "temp"+cell;
     var temp_id = "subject9["+(cell-1)+"]";
     var order_id = "test_order["+(cell-1)+"]";
-    
-    //alert("選擇框ID: "+sel_id+", 溫度文本框ID: "+temp_id+" ,test order ID: "+order_id);
+
     var selbox = document.getElementById(sel_id);
     var selbox_val = selbox.value
-    //alert(selbox_val);
 
     window.opener.document.getElementById(temp_id).value=selbox_val;
-    //alert(selbox_val);
     switch (selbox_val) {
         case "Hot":
             window.opener.document.getElementById(order_id).style.color="#cc2229";
@@ -128,7 +146,9 @@ function setPassOrTBD(cell){
     }
 }
 
-/** Set Result */
+/**  
+ * Set Result
+*/
 function returnResult(row,cell,unit){
     var result_id = "subject18["+(cell-1)+"]";
     var sel_id = "fail_result"+cell;
@@ -257,11 +277,23 @@ function returnRCCA(row,cell,unit){
 /**
  * 刪除一個failure記錄
  */
-function delOneFailure(rowid,cellid,count,currentid,rows){
+function delOneFailure(rowid,cellid,count,currentid,rows,temp){
+    if(temp=="1")
+    {
+        temp="Hot";
+    }
+    if(temp=="2")
+    {
+        temp="Cold";
+    }
+    if(temp=="3")
+    {
+        temp="Room";
+    }
     if(window.confirm("您確定刪除嗎？刪除不可恢復")){
         var del_select = document.getElementById("del_fail");
         var del_val = del_select.value;
-        window.location.href="./comm/delete.php?failure_id="+del_val+"&rowid="+rowid+"&cellid="+cellid+"&count="+count+"&currentid="+currentid+"&rows="+rows;
+        window.location.href="./comm/delete.php?failure_id="+del_val+"&rowid="+rowid+"&cellid="+cellid+"&count="+count+"&currentid="+currentid+"&rows="+rows+"&temp="+temp;
     }
 }
 

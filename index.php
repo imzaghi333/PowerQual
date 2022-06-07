@@ -423,6 +423,7 @@ require_once("./js/conf.php");
                 <p> 1. 如果未選擇時間段，導出所有數據到電腦的下載目錄</p>
                 <p> 2. 如果選擇時間範圍，導出這一時間段數據</p>
                 <p> 3. 如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
+                <p><img src="./images/eat.gif" style="margin-top: -50px;"></p>
             </div>
         <?php
         }//Export Raw Data end here
@@ -861,7 +862,7 @@ require_once("./js/conf.php");
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
 
-                        <td><input name="del_matrix1" id="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix1" id="del_matrix1" class="del_matrix1"  type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -895,7 +896,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $tester; ?>&product=<?php echo $product; ?>&starting=<?php echo $starting ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" class="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -928,7 +929,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" type="button" class="del_matrix1" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -963,7 +964,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" type="button" class="del_matrix1" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -997,7 +998,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" class="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -1031,7 +1032,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" class="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -1065,7 +1066,7 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td><input name="del_matrix2" id="del_matrix2" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
+                        <td align="center"><input name="del_matrix2" id="del_matrix2" class="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }

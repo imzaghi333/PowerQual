@@ -79,14 +79,20 @@ function innero(couts){
             rowCount=rowCount+1;
         }
     }
+    
     if(couts<rowCount){
         for (var i = (rowCount); i > (couts); i--){
             for (var d = 1; d <(Number(counts)+1); d++){
                 eval("original_select"+(i+1)+d+"=original_select"+(i)+d);
                 eval("original_select"+(i)+d+"=''");
+                //alert("i="+i+"d="+d);
                 document.getElementById("test_order"+(i)+d).setAttribute("id","test_order"+(i+1)+d);
                 document.getElementById("test_order"+(i+1)+d).setAttribute("onchange","testchange("+(i+1)+","+d+")");
             }
+
+            document.getElementById("group"+(i)).setAttribute("id","group"+(i+1));
+            document.getElementById("group"+(i+1)).setAttribute("onchange","groupchange("+(i+1)+")");
+            document.getElementById("test_item"+(i)).setAttribute("id","test_item"+(i+1));
             document.getElementById((i)+"add").setAttribute("id",(i+1)+"add");                    
             document.getElementById((i)+"del").setAttribute("id",(i+1)+"del");
             document.getElementById((i+1)+"add").setAttribute("name",(i+1)+"add");

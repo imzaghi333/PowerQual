@@ -289,27 +289,11 @@ function checkTemp(){
 //rowid是表格行编号,selectid是单元格编号,count是机台数量,current是RecordID,rows是总行数
 function printResult(rowid,selectid,count,currentid,rows){
     //alert("参数列表，表格行编号: "+rowid+", 单元格编号: "+selectid+", 机台数量: "+count+", RecordID: "+currentid+", 总行数: "+rows);
-    /*
-    var result = document.getElementById("result["+selectid+"]");
-    var index = result.selectedIndex;
-    var txt = result.options[index].value
-    var reg = RegExp(/Fail/);
-    if(txt.match(reg)){
-        window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=500, width=850, top=100, left=100");
-    }*/
     window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100","toolbar=yes","menubar=yes");
 }
 
 //JS中fail调用fail.php
 function printMatrixResult(rowid,selectid,count,currentid,rows){
-    /*
-    var result = document.getElementById("result["+selectid+"]");
-    var index = result.selectedIndex;
-    var txt = result.options[index].value;
-    var reg = RegExp(/Fail/);
-    if(txt.match(reg)){
-        window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=500, width=850, top=100, left=100");
-    }*/
     window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=800, width=950, top=100, left=100");
 }
 
