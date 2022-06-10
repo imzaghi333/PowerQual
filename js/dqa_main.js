@@ -210,7 +210,7 @@ function confirmDel(id){
 
 function deleteMatrix(username,product,starting){
     //alert(username+"==="+product+"==="+starting);
-    if(window.confirm("您確定刪除嗎?")){
+    if(window.confirm("您確定刪除嗎?刪除不可恢復!")){
         location.href="./comm/delete.php?username="+username+"&product="+product+"&starting="+starting;
     }
 }

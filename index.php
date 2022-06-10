@@ -440,7 +440,7 @@ require_once("./js/conf.php");
                         <tr>
                             <td>Dropbox update：</td>
                             <td>
-                                <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
+                                <select name="dropbox" class="sel_edit">
                                     <option value="">請選擇</option>
                                     <option value="Product">Product Menu</option>
                                     <option value="SKU">SKU Menu</option>
@@ -491,7 +491,7 @@ require_once("./js/conf.php");
                     <tr>
                         <td>Dropbox Select: </td>
                         <td>
-                            <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
+                            <select name="dropbox" class="sel_edit">
                                 <option value="">請選擇</option>
                                 <option value="Product">Product Menu</option>
                                 <option value="SKU">SKU Menu</option>
@@ -623,7 +623,7 @@ require_once("./js/conf.php");
                     <tr>
                         <td>Dropbox Select: </td>
                         <td>
-                            <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
+                            <select name="dropbox" class="sel_edit">
                                 <option value="">請選擇</option>
                                 <option value="Product">Product Menu</option>
                                 <option value="SKU">SKU Menu</option>

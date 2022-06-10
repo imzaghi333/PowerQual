@@ -36,7 +36,7 @@ $footer = "Copyright&nbsp;&nbsp;&copy;&nbsp;&nbsp;Wistron InfoComm CO.Ltd | All 
  */
 function my_error_handler($errCode, $errMsg, $errFile, $errLine){
 	$str = "";
-	$str .= "<p><font color='red'>大事不好,发生错误啦:( ：</font>";
+	$str .= "<p><font color='red'>大事不好,发生错误啦:( </font>";
 	$str .= "<br />错误代号为：" . $errCode;
 	$str .= "<br />错误内容为：" . $errMsg;
 	$str .= "<br />错误文件为：" . $errFile;

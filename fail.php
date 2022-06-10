@@ -23,9 +23,7 @@
 */
 
 require_once("./js/conf.php");
-mysqli_query($con,"set names utf8");
 header("Content-Type:text/html;charset=UTF-8");
-date_default_timezone_set("PRC");
 
 $row_no    = $_GET["rowid"]; 
 $row_noII    = $_GET["rowid"];           //选了fail那一行的编号
@@ -38,7 +36,9 @@ $numbers   = $_GET["counts"];          //
 $reload    = $_GET["reload"];
 $cell      =$_GET["cell"];
 $temp      =$_GET["temp"]; 
-$id      =$_GET["id"]; 
+$id        =$_GET["id"];
+$updateTemp  =$_GET["updatetemp"];
+$slecttemp  ="";
 echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
 $cells = array();        //一行的每个单元格编号
@@ -69,6 +69,30 @@ echo "*********** 上述内容以後會刪除, 目前还是需要看的 ********
 </head>
 
 <body>
+<?php
+if(isset($_GET["updatetemp"])){
+
+    //echo "<script>alert('$updateTemp')</script>";
+    $row_bh = $row_no+1;
+    for($loop=0; $loop<$number; $loop++){
+        //echo $record_ids[$loop]." ===> Cell: ".$cells[$loop]."<br>";
+        $test_id = $record_ids[$loop];
+        $cell_id = $cells[$loop];
+        $unit_no = $loop+1;
+
+        $sql_query2 = "SELECT FID FROM fail_infomation WHERE TestID='$test_id' and RowID='$row_bh' and CellID='$cell' and Unitsno='$unit_no'";
+        $check = mysqli_query($con,$sql_query2);
+        $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
+        if($row_nums>0){
+            while($info1 = mysqli_fetch_array($check,MYSQLI_NUM)){
+                
+                $sql_query1="UPDATE fail_infomation SET Temp='$updateTemp' WHERE FID='$info1[0]'";
+                mysqli_query($con,$sql_query1);
+            }
+        }
+    }
+}
+?>
 <?php
 if(isset($_GET["count"])){
 ?>
@@ -131,8 +155,16 @@ if(isset($_GET["count"])){
         <?php
         /**
          * 为每个测试设置温度
+         * 参数定义:
+         * 1. cell - 每个单元格编号
+         * 2. row_no - 单元格所在行的行号,从0开始
+         * 3. id - 一个测试记录的ID对应DQA_Test_Main->RecordID & fail_infomation->TestID
+         * 4. unit_id 测试机编号 1,2,3......N
+         * 5. number 某个test matrix 测试机数量
+         * 6. select_id 最后一个测试机单元格编号
+         * 7. 一行最后一个单元格RecordID
+         * 8. rows matrix表格总行数
         */
-
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
@@ -141,12 +173,13 @@ if(isset($_GET["count"])){
             $sql = mysqli_query($con,"SELECT Units,Temp FROM DQA_Test_Main WHERE RecordID='$id'");
             $sq2 = mysqli_query($con,"SELECT Temp FROM fail_infomation WHERE TestID='$id'");
             $info2 = mysqli_fetch_array($sq2,MYSQLI_NUM);
+
             while($info1 = mysqli_fetch_array($sql,MYSQLI_NUM)){
                 if($info1[0]!="" && $info2[0]!=""){
                     //echo $info1[0]." ".$id." ".$cell;
                 ?>
                 <td>
-                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>,<?php echo $id; ?>);">
+                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>);">
                         <option value="">Select</option>
                         <option value="Hot" <?php if($info2[0]=="Hot"){echo "selected = 'selected'";}   ?> >Hot</option>
                         <option value="Room" <?php if($info2[0]=="Room"){echo "selected = 'selected'";} ?> >Room</option>
@@ -502,8 +535,8 @@ else if(isset( $_GET["cell"])){
         mysqli_query($con,$sql_add);
         sleep(1);
         mysqli_close($con);
-        echo "<script type='text/javascript'>window.history.go(-2);</script>";
-        //echo "<script type='text/javascript'> savegoback('$id','$row_noII','$select_idII','$numbers','$currentid','$rows','$temp');</script>";
+        //echo "<script type='text/javascript'>window.history.go(-2);</script>";
+        echo "<script type='text/javascript'> savegoback('$id','$row_noII','$select_idII','$numbers','$currentid','$rows','$temp');</script>";
 
     }
     ?>

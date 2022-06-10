@@ -366,7 +366,6 @@ hr{color: #00592d;}
     border-radius: 4px;
     background: transparent;
 }
-
 .container .right .success-info{
     color:#355386; 
     text-align:center; 
@@ -393,23 +392,30 @@ hr{color: #00592d;}
     margin-top: 50px;
     border-radius: 10px;
 }
+.container .right .sel_edit{
+    padding: 7px;
+    border: 1px solid #888;
+    width: 70%;
+    border-radius: 4px;
+    background-color: transparent;
+}
 .container .right .my_table {
     width: 100%;
     border-collapse:collapse;
     font-size: 12px;
     font-family: "ecnu.otf";
     white-space: nowrap;
-    color: #111;
+    color: #282a35;
 }
 .container .right .my_table tbody tr:hover{ /* 鼠标到某一行背景变黄色 */
     background-color: #fff22d;
-    color:#111;
+    color:#282a35;
 }
 .container .right .my_table td {border: 1px solid #ccc;}
 .container .right .my_table th {
     font-size:12px;
     text-align:center;
-    background-color:#509a80;
+    background-color:#04aa6d;
     color:#fff;
     border: 1px solid #509a80;
 }
@@ -443,7 +449,7 @@ hr{color: #00592d;}
     width:80%;
     border-collapse:collapse;
     margin: 0 auto;
-    color:#111;
+    color:#282a35;
 }
 .container .right .query_table td,th{
     font-size:12px;
@@ -479,6 +485,7 @@ hr{color: #00592d;}
 .container .right .query_table .del_matrix1{
     font-size: 12px;
     font-family: "Ubuntu-LI-subset";
+    font-weight: bold;
     background-color: #e6d999;
     padding: 5px;
     border: 1px solid #e6d999;
@@ -556,7 +563,7 @@ hr{color: #00592d;}
 }
 .content .customers th{
     font-size: 12px;
-    background-color: #7c355d;
+    background-color: #04aa6d;
     color: #fff;
     padding: 3px 3px;
     text-align: center;
@@ -635,7 +642,7 @@ hr{color: #00592d;}
 }
 .content .customers .add_info{
     font-size: 12px;
-    background-color: #e6d999;
+    background-color: #fff4a3;
     border: 1px solid #e6d969;
     height: 25px;
     border-radius: 4px;
@@ -952,10 +959,11 @@ hr{color: #00592d;}
 .container .right .form4 select{
     width: 370px;
     overflow: hidden;
-    padding: 10px;
-    border: 1px solid #f1f1f1;
+    padding: 7px;
+    border: 1px solid #888;
     border-radius: 4px;
     white-space: nowrap;
+    background-color: transparent;
 }
 .container .right .form4 input[type=submit] {
     width: 100px;
@@ -1075,6 +1083,6 @@ hr{color: #00592d;}
 .txt_for_check{
     font-family: "Ubuntu-LI-subset";
     font-size:16px;
-    color:#faa626;
-    background-color: #003355;
+    color:#fff;
+    background-color: #7c355d;
 }
