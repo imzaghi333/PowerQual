@@ -22,7 +22,7 @@ date_default_timezone_set("PRC");
             <tr>
                 <td>Data Table Name：</td>
                 <td>
-                    <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
+                    <select name="dropbox" class="sel_del_add">
                         <option value="">請選擇</option>
                         <option value="DQA_Test_Main">DQA_Test_Main</option>
                         <option value="Product">Product Menu</option>

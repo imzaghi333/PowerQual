@@ -307,7 +307,7 @@ else{
                 </td>
                 <!-- Add additional informaton -->
                 <td>
-                    <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>&nbsp;|&nbsp;
                     <input type="button" class="add_info" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'> 
                 </td>
                 <!-- Fail symptom, RCCA, Remark -->

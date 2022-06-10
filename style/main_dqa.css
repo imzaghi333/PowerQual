@@ -35,13 +35,13 @@ body{
 ul,li,a,ol,img{margin: 0;padding: 0;}
 ul,li,ol{list-style:none;}
 img{border:0;}
-textarea{background: transparent;}
+textarea{background-color: transparent;}
 .clear{clear:both;}/*清除浮動*/
 .icon{
     font-size:14px;
     font-family:"web-symbol";    /*特殊符號*/
 }
-.container{ width: 1200px;margin: 0 auto; }
+.container{ width: 1200px; margin: 0 auto; }
 /*Button和符號CSS*/
 .btn_download {
     color: #fff;
@@ -364,7 +364,7 @@ hr{color: #00592d;}
     padding: 7px;
     border: 1px solid #888;
     border-radius: 4px;
-    background: transparent;
+    background-color: transparent;
 }
 .container .right .success-info{
     color:#355386; 
@@ -385,6 +385,13 @@ hr{color: #00592d;}
     margin-top: 5px;
     margin-left: 100px;
     height: 300px;
+}
+.tut-btn{
+    background-color: #04AA6D;
+    color: #fff;
+    border: 1px solid #04AA6D;
+    border-radius: 4px;
+    font-size: 14px;
 }
 .container .right .caution{
     float: right;
@@ -429,7 +436,7 @@ hr{color: #00592d;}
     display: none; 
     font-size: 9px; 
     color: #fff; 
-    background: #cb364a; 
+    background-color: #cb364a; 
     position: absolute; 
     top: 20px;
     left: 200px; 
@@ -906,8 +913,8 @@ hr{color: #00592d;}
 /* ------- create dropbox table ------- */
 .dropbox{
     margin: 0 auto;
-    width: 1000px;
-    height: 555px;
+    width: 1500px;
+    height: 1000px;
     color: #fff;
     font-size: 16px;
     font-family: "ecnu.otf";
@@ -927,6 +934,13 @@ hr{color: #00592d;}
     color: #7c355d;
     margin-left: 5px;
 }
+.dropbox .sel_del_add{
+    padding:7px;
+    border: 1px solid #999;
+    width: 70%;
+    border-radius: 4px;
+    background-color:transparent;
+}
 
 /* -------------- Details css ----------------- */
 .container .right #wrapper{width:1000px;overflow:hidden;}
@@ -940,7 +954,7 @@ hr{color: #00592d;}
     border-radius: 4px;
 }
 .container .right #wrapper .active {
-    background: #008080;
+    background-color: #008080;
     color: #fff;
     cursor: pointer;
     font-size: 14px;
@@ -1006,7 +1020,7 @@ hr{color: #00592d;}
     padding: 10px;
     border: 1px solid #888;
     border-radius: 4px;
-    background: transparent;
+    background-color: transparent;
 }
 .fail .form_fail input[type=submit] {
     width: 70px;
@@ -1050,7 +1064,7 @@ hr{color: #00592d;}
     padding: 5px;
     border: 1px solid #f1f1f1;
     border-radius: 4px;
-    background: transparent;
+    background-color: transparent;
     border: 1px solid #d2d2d7;
 }
 .unit_table .all_pass{
@@ -1078,7 +1092,7 @@ hr{color: #00592d;}
     outline: 0 none;
     border-radius: 3px;
     box-sizing: border-box;
-    background: transparent;
+    background-color: transparent;
 }
 .txt_for_check{
     font-family: "Ubuntu-LI-subset";
@@ -1086,3 +1100,5 @@ hr{color: #00592d;}
     color:#fff;
     background-color: #7c355d;
 }
+
+/* Filter */

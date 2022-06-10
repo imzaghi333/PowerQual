@@ -153,22 +153,7 @@ $row = mysqli_fetch_array($check,MYSQLI_BOTH);
                         <tr>
                             <td>Test Condition</td>
                             <td>
-                                <?php
-                                echo "<select name='condition'>";
-                                echo "<option value=''>请选择</option>";
-                                $tc = $row["Testcondition"];
-                                $opts = mysqli_query($con, "SELECT Testcondition FROM dropbox_test_condition");
-                                while ($info = mysqli_fetch_array($opts,MYSQLI_NUM)) {
-                                    //echo "<option value="."'$info[0]'".">".$info[0]."</option>";
-                                    if($info[0]==$tc){
-                                        echo "<option value="."'$info[0]'"." selected >".$info[0]."</option>";
-                                    }
-                                    else{
-                                        echo "<option value="."'$info[0]'".">".$info[0]."</option>";
-                                    }
-                                }
-                                echo "</select>"
-                                ?>
+                                <textarea name='condition' id='condition' rows="10" cols="80"><?php echo $row["Testcondition"]; ?></textarea>
                             </td>
                         </tr>
                         <tr><td>Start Day</td><td><input name="start" type="date" value="<?php echo $row['Startday']; ?>" /></td></tr>

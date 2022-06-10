@@ -27,7 +27,6 @@ require_once("./js/conf.php");
 <div class="header">
     <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
     <div class="title"><a>Power Qual Auto Transforming</a></div>
-    <!--
     <div class="search_menu">
         <form name='search' action='./comm/searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
             <li><button class='search_btn' type='submit' name='search_btn'><span class="icon">L</span>&nbsp;&nbsp;&nbsp;搜索</button></li>
@@ -35,7 +34,6 @@ require_once("./js/conf.php");
             <input type='hidden' name='searchit' value='searchdo' />
         </form>
     </div>
-    -->
 </div>
 <!-- header部分結束 -->
 <div class="container">
@@ -423,8 +421,10 @@ require_once("./js/conf.php");
                 <p> 1. 如果未選擇時間段，導出所有數據到電腦的下載目錄</p>
                 <p> 2. 如果選擇時間範圍，導出這一時間段數據</p>
                 <p> 3. 如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
+                <p> 4. 篩選數據請點擊這裏:&nbsp;&nbsp;&nbsp;<a href="./comm/filter.php"><button class="tut-btn">FILTER</button></a></p>
                 <p><img src="./images/eat.gif" style="margin-top: -50px;"></p>
             </div>
+            <img src="./images/my_alipay.JPG" style="float:right;margin-right:10px" height="333">
         <?php
         }//Export Raw Data end here
         
