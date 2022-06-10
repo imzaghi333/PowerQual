@@ -39,22 +39,22 @@ $temp      =$_GET["temp"];
 $id        =$_GET["id"];
 $updateTemp  =$_GET["updatetemp"];
 $slecttemp  ="";
-echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
+//echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
 $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
 for($i=$number; $i>0; $i--){
     $cell_id = $select_id-$i+1;
-    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
+    //echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
     array_push($cells,$cell_id);
 }
 
 for($i=($number-1); $i>=0; $i--){
     $tmp_id = $currentid-$rows*$i;
-    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
+    //echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
     array_push($record_ids,$tmp_id);
 }
-echo "*********** 上述内容以後會刪除, 目前还是需要看的 ***********<br>";
+//echo "*********** 上述内容以後會刪除, 目前还是需要看的 ***********<br>";
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +71,6 @@ echo "*********** 上述内容以後會刪除, 目前还是需要看的 ********
 <body>
 <?php
 if(isset($_GET["updatetemp"])){
-
     //echo "<script>alert('$updateTemp')</script>";
     $row_bh = $row_no+1;
     for($loop=0; $loop<$number; $loop++){
@@ -96,7 +95,6 @@ if(isset($_GET["updatetemp"])){
 <?php
 if(isset($_GET["count"])){
 ?>
-<span style="font-size:16px;color:#cc2229;font-weight:bold;">Read Here:</span>
 <p class="txt_for_check">
     1.&nbsp;&nbsp;點擊Link标签可以為每個測試機添加failure;<br>
     2.&nbsp;&nbsp;溫度下拉菜單可以為每個測試機設置溫度Cold,Room,Hot;<br>
@@ -323,7 +321,7 @@ else if(isset( $_GET["cell"])){
     $current_id = $_GET["id"];      //一个测试记录ID
     $clicked_unit = substr($_GET["unit"],4);  //选择的手机编号,'unit'字符被舍弃，只保留数字
     $row_id = $_GET["rowid"]+1;     //行編號
-    echo "您選中了Unit".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
+    //echo "您選中了Unit".$clicked_unit."；它處於第".$row_id."行；它的单元格编号是:".$select_id." ,测试记录ID是:".$current_id."<br>";
 ?>
 <!-- 默認是添加新的failure information -->
 <div class="fail">
@@ -340,10 +338,6 @@ else if(isset( $_GET["cell"])){
                         <option value="Known Fail (Open)">Known Fail (Open)</option>
                         <option value="Known Fail (Close)">Known Fail (Close)</option>
                         <option value="EC Fail">EC Fail</option>
-                        <!--
-                        <option value="Pass">Pass</option>
-                        <option value="TBD">TBD</option>
-                        -->
                     </select>
                 </td>
             </tr>
