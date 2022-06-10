@@ -101,7 +101,7 @@ else{
                 <th colspan="2">Test Schedule</th>
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Test Result</th>
-                <th rowspan="2">Info for<br>failure</th>
+                <th rowspan="2">More Info</th>
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
@@ -306,7 +306,10 @@ else{
                     ?>
                 </td>
                 <!-- Add additional informaton -->
-                <td><input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'></td>
+                <td>
+                    <input type="button" class="add_info" name="FF<?php echo $rowid; ?>" id="FF<?php echo $rowid; ?>" value="Info" onclick='printResult(<?php echo $rowid; ?>,<?php echo $selectid; ?>,<?php echo $number; ?>,<?php echo $unit_id; ?>,<?php echo $tc_num; ?>);'>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <input type="button" class="add_info" name="PP<?php echo $rowid; ?>" id="PP<?php echo $rowid; ?>" value="Set" onclick='oneRowAllPass(<?php echo $rowid; ?>,<?php echo $number; ?>);'> 
+                </td>
                 <!-- Fail symptom, RCCA, Remark -->
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>

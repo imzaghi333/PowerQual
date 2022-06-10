@@ -348,6 +348,8 @@ function oneRowAllPass(rowid,number){
             oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
         }
     }
+    oTbody.rows[row_no].cells[cell_length+2].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
+        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
     layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
 }
 
