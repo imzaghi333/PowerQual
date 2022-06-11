@@ -50,6 +50,7 @@ mysqli_query($con,"set names utf8");
                 </tr>
             </table>
         </form>
+        <img style="float:right;margin-right:100px;" src="../images/logo_HW_100.png" />
         <?php
         $dropbox = $_POST["dropbox"];
         switch ($dropbox) {

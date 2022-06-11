@@ -1086,6 +1086,7 @@ require_once("./js/conf.php");
                 </p>
                 <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
                 <p>5. When creating matrix, recommend uploading Excel by attached template if units >= 10  .</p>
+                <p><img src="./images/HUAWEI.png" /></p>
             </div>
             </div>
         </div>
