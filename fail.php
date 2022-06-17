@@ -38,7 +38,9 @@ $cell      =$_GET["cell"];
 $temp      =$_GET["temp"]; 
 $id        =$_GET["id"];
 $updateTemp  =$_GET["updatetemp"];
+$RecordId    =$_GET["RecordId"];
 $slecttemp  ="";
+
 //echo "<p class='txt_for_check'>當前是第".($row_no+1)."行 ,表总行数：".$rows." ,测试机数量：".$number." ,最后一个单元格ID：".$currentid."</p>";
 
 $cells = array();        //一行的每个单元格编号
@@ -84,12 +86,14 @@ if(isset($_GET["updatetemp"])){
         $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
         if($row_nums>0){
             while($info1 = mysqli_fetch_array($check,MYSQLI_NUM)){
-                
                 $sql_query1="UPDATE fail_infomation SET Temp='$updateTemp' WHERE FID='$info1[0]'";
                 mysqli_query($con,$sql_query1);
             }
         }
+
     }
+    $sql_query1="UPDATE DQA_Test_Main SET Temp='$updateTemp' WHERE RecordID='$RecordId'";
+    mysqli_query($con,$sql_query1);
 }
 ?>
 <?php
@@ -126,11 +130,12 @@ if(isset($_GET["count"])){
             $cell = $cells[$i];
             $id = $record_ids[$i];
             $setTemp[$cell]="";
-            $sql_order = mysqli_query($con,"SELECT Units FROM DQA_Test_Main WHERE RecordID='$id'");
-            $order = mysqli_fetch_array($sql_order,MYSQLI_NUM)[0];
+            $sql_order = mysqli_query($con,"SELECT Units,Temp FROM DQA_Test_Main WHERE RecordID='$id'");
+            $order = mysqli_fetch_array($sql_order,MYSQLI_NUM);
             $sq2 = mysqli_query($con,"SELECT Temp FROM fail_infomation WHERE TestID='$id'");
             $info2 = mysqli_fetch_array($sq2,MYSQLI_NUM);
             $temp=$info2[0];
+            $Main_temp=$order[1];
             $unit_name = "Unit".($i+1);
             $unit_id = ($i+1);
             $ll = "";
@@ -139,7 +144,16 @@ if(isset($_GET["count"])){
             }else{
                 $ll = "Link";
             }
-            echo "<td><a style='font-weight: bold;' id='$unit_id' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit_id=$unit_id&unit=$unit_name&cellidII=$select_id&counts=$number&currentid=$currentid&rows=$rows&temp=$temp'>".$ll."</a></td>";
+            if($temp=="")
+            {
+                echo "<td><a style='font-weight: bold;' id='$unit_id' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit_id=$unit_id&unit=$unit_name&cellidII=$select_id&counts=$number&currentid=$currentid&rows=$rows&temp=$Main_temp'>".$ll."</a></td>";
+
+            }
+            else
+            {
+                echo "<td><a style='font-weight: bold;' id='$unit_id' href='fail.php?cell=$cell&id=$id&rowid=$row_no&unit_id=$unit_id&unit=$unit_name&cellidII=$select_id&counts=$number&currentid=$currentid&rows=$rows&temp=$temp'>".$ll."</a></td>";
+
+            }
         }
         ?>
         <!-- One row all pass via pressing set button -->
@@ -163,21 +177,30 @@ if(isset($_GET["count"])){
          * 7. 一行最后一个单元格RecordID
          * 8. rows matrix表格总行数
         */
+        $row_bh = $row_no+1;
         for($i=0; $i<$number; $i++){
             $cell = $cells[$i];
             $id = $record_ids[$i];
             $unit_id = ($i+1);
             $tmp_id = $currentid-$rows*$i;
+
+
+
             $sql = mysqli_query($con,"SELECT Units,Temp FROM DQA_Test_Main WHERE RecordID='$id'");
             $sq2 = mysqli_query($con,"SELECT Temp FROM fail_infomation WHERE TestID='$id'");
             $info2 = mysqli_fetch_array($sq2,MYSQLI_NUM);
+
+
+            $sql_query2 = "SELECT FID FROM fail_infomation WHERE TestID='$id' and RowID='$row_bh' and CellID='$cell' and Unitsno='$unit_id'";
+            $check = mysqli_query($con,$sql_query2);
+            $row_nums = mysqli_num_rows($check);//該測試機failure info的數量
 
             while($info1 = mysqli_fetch_array($sql,MYSQLI_NUM)){
                 if($info1[0]!="" && $info2[0]!=""){
                     //echo $info1[0]." ".$id." ".$cell;
                 ?>
                 <td>
-                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>);">
+                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>,<?php echo $row_nums; ?>,<?php echo $id; ?>);">
                         <option value="">Select</option>
                         <option value="Hot" <?php if($info2[0]=="Hot"){echo "selected = 'selected'";}   ?> >Hot</option>
                         <option value="Room" <?php if($info2[0]=="Room"){echo "selected = 'selected'";} ?> >Room</option>
@@ -189,7 +212,7 @@ if(isset($_GET["count"])){
                 else if($info1[0]!="" && $info1[1]!="" && $info2[0]==""){
                 ?>
                 <td>
-                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>,<?php echo $id; ?>);">
+                    <select class="del_fail" id="temp<?php echo $cell; ?>" onchange="setTemperature(<?php echo $cell; ?>,<?php echo $row_no; ?>,<?php echo $id; ?>,<?php echo $unit_id; ?>,<?php echo $number; ?>,<?php echo $select_id; ?>,<?php echo $currentid; ?>,<?php echo $rows; ?>,<?php echo $row_nums; ?>,<?php echo $id; ?>);">
                         <option value="">Select</option>
                         <option value="Hot" <?php if($info1[1]=="Hot"){echo "selected = 'selected'";}   ?> >Hot</option>
                         <option value="Room" <?php if($info1[1]=="Room"){echo "selected = 'selected'";} ?> >Room</option>

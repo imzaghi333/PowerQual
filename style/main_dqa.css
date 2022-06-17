@@ -341,7 +341,7 @@ hr{color: #00592d;}
 }
 
 /* -----------index right css ----------*/
-.container .right{width:1000px;float: right;}
+.container .right{width:1000px;float: right; margin:0 auto;}
 
 .container .right .info{
     color: #ff5722;
@@ -387,9 +387,10 @@ hr{color: #00592d;}
     height: 300px;
 }
 .tut-btn{
-    background-color: #04AA6D;
+    background-color: #7c355d;
+    height: 30px;
     color: #fff;
-    border: 1px solid #04AA6D;
+    border: 1px solid #7c355d;
     border-radius: 4px;
     font-size: 14px;
 }
@@ -1101,4 +1102,21 @@ hr{color: #00592d;}
     background-color: #7c355d;
 }
 
-/* Filter */
+/**/
+
+.container .left .mul_select{
+    width: 95%;
+    height: 100px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: transparent;
+}
+.container .left .mul_select2{
+    width: 95%;
+    height: 50px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: transparent;
+}

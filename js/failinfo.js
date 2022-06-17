@@ -84,7 +84,7 @@ function goback(cell,row_id,selectid,number,currentid,rows,reload){
 /**
  * info.php可以給unit添加Hot,cold, room 而且Testorder颜色会根据温度显示不同颜色
 */
-function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows){
+function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows,rownums,tmpid){
     var sel_id = "temp"+cell;
     var temp_id = "subject9["+(cell-1)+"]";
     var order_id = "test_order["+(cell-1)+"]";
@@ -111,8 +111,10 @@ function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows
             break;
     }
     document.getElementById(unit_id).href="fail.php?cell="+cell+"&id="+iid+"&rowid="+row_no+"&unit=Unit"+unit_id+"&temp="+selbox_val+"&cellidII="+select_id+"&counts="+numbers+"&currentid="+currentid+"&rows="+rows+"&reload=2";
-    //window.location = "http://dqa.myftp.org:8080/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val;
-    window.location = "http://localhost/DQA/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val;
+    if(rownums!=0){
+        //window.location = "http://dqa.myftp.org:8080/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
+        window.location = "http://localhost/DQA/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
+    }
 }
 
 /**

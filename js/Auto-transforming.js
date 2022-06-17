@@ -290,7 +290,7 @@ function checkTemp(){
 function printResult(rowid,selectid,count,currentid,rows){
     //alert("参数列表，表格行编号: "+rowid+", 单元格编号: "+selectid+", 机台数量: "+count+", RecordID: "+currentid+", 总行数: "+rows);
     window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100","toolbar=yes","menubar=yes");
-    layer.msg("别忘记Matrix页面点击'Save'按钮",{icon:6,time:10000});
+    layer.msg("别忘记Matrix页面点击'Save'按钮",{icon:6,time:5000});
 }
 
 //JS中fail调用fail.php

@@ -14,9 +14,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./style/main_dqa.css">
+    
     <link rel="shortcut icon" href="images/favior.ico">
     <script type="text/javascript" src="js/dqa_main.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" type="text/css" href="./Filter/css/latin-ext.css" >
+
+	<link rel="stylesheet" type="text/css" href="./Filter/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="./Filter/css/select2.min.css"  />
+	<link rel="stylesheet" type="text/css" href="Filter/css/style.css">
+    <link rel="stylesheet" type="text/css" href="style/main_dqa.css">
     <title>Power Query</title>
 </head>
 <body>
@@ -24,26 +35,15 @@
 require_once("./js/conf.php"); 
 ?>
 <!-- header部分 -->
-<div class="header">
-    <a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a>&nbsp;
-    <div class="title"><a>Power Qual Auto Transforming</a></div>
-    <div class="search_menu">
-        <form name='search' action='./comm/searched.php' target="_blank" method='POST' onsubmit='return checkSerch()'>                
-            <li><button class='search_btn' type='submit' name='search_btn'><span class="icon">L</span>&nbsp;&nbsp;&nbsp;搜索</button></li>
-            <li><input name='search' class='search' type='search' placeholder='Search Tester, SN, Product' /></li>
-            <input type='hidden' name='searchit' value='searchdo' />
-        </form>
-    </div>
-</div>
-<!-- header部分結束 -->
+<div class="header"><a href="index.php"><img class="wistron_logo" src="./images/logo.svg" width="180" /></a></div>
+
 <div class="container">
     <!-- 左邊菜單欄 -->
     <div class="left">
         <div class="action">
             <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
-            <div><a href="index.php?dowhat=export">Export Raw All -C<span class="p_right">&#10148</span></a></div>
-            <div><a href="index_filter.php?dowhat=export">Filter Data<span class="p_right">&#10148</span></a></div>
+            <div><a href="index_filter.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=edit">DropBox Edit<span class="p_right">&#10148</span></a></div>
@@ -394,37 +394,296 @@ require_once("./js/conf.php");
                 }//end of uploading test matrix
                 ?>
             </div>
-            <br>
+            <!--br-->
             <!-- Upload test matrix file end -->
         <?php
         }
         /**
          * Export Raw Data to Excel, modified begins from 2022-05-09
          */
-        else if($_GET['dowhat'] == 'export' || $_POST['dowhat'] == 'exportdo'){
+        else if($_GET['dowhat'] == 'export' || $_POST['dowhat'] == 'exportdo' || $_GET['dowhat'] == 'Export_search' ){
         ?>
             <p class="info">Export Raw Data to Excel&nbsp;&nbsp;<span class="icon"><img src="./images/logo_excel.svg" height="30" /></span></p>
             <div id="preloder"><div class="loader"></div></div>
             <!-- -->
-            <form name="export_excel" id="export_excel" method="POST" action="./comm/Out_Excel.php">
-                <table align="center" width="70%" cellpadding="5" border="0">
+            <!--form name="export_excel" id="export_excel" method="POST" action="./comm/Out_Excel_filter.php"-->
+            <form action="index_filter.php?dowhat=Export_search" method="post">
+            <table align="center" width="50%" cellpadding="10" border="0">
+                    <tr>
+                    <td>Product &nbsp;&nbsp;<span class="tablet-icon"></span></td>
+                            <td>
+                                <?php
+                                echo "<select name='ary[]' class='js-select2' multiple='multiple'>";
+                                $check = mysqli_query($con, "SELECT DISTINCT(Products) FROM DQA_Test_Main ORDER BY Products ASC ");
+                                if($_POST['ary']!="")
+                                {
+                              
+                                    while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                        $flage=0;
+                                        foreach($_POST['ary'] as $selected) 
+                                        {
+
+                                            if($selected==$row[0])
+                                            {
+                                                echo "<option value=" ."'$row[0]'" . "  data-badge=''selected='selected'>" . $row[0] . "</option>";
+                                                $flage=1;
+                                            }
+                                        }
+                                        if($flage==0)
+                                        {
+                                            echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+                                        }
+
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                        echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+                                    } 
+                                }
+                                echo "</select>";
+                            ?>
+                            </td>
+                    </tr>
+                    <tr>
+                    <td>SKU &nbsp;&nbsp;<!--span class="tablet-icon"></span--></td>
+                            <td>
+                                <?php
+                                
+                            echo "<select name='aryy[]' class='js-select2' multiple='multiple'>";
+                            $check = mysqli_query($con, "SELECT SKUS FROM dropbox_sku");
+                            if($_POST['aryy']!="")
+                            {
+                                while ($row = mysqli_fetch_array($check)) {
+                                    $flage=0;
+                                    foreach($_POST['aryy'] as $selected) {
+                                        if($selected==$row["SKUS"])
+                                        {
+                                            echo "<option value='{$row["SKUS"]}' data-badge='' selected='selected'>{$row['SKUS']}</option>";
+                                            $flage=1;
+                                        }
+                                    
+                                    }
+                                    if($flage==0)
+                                    {
+                                        echo "<option value='{$row["SKUS"]}' data-badge=''>{$row['SKUS']}</option>";
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                while ($row = mysqli_fetch_array($check)) {
+                                    echo "<option value='{$row["SKUS"]}' data-badge=''>{$row['SKUS']}</option>";
+                                }
+                            }
+
+                            echo "</select>";
+                        ?>
+                            </td>
+                    </td>
+                    </tr>
+                    <td>Verification Type &nbsp;&nbsp;<!--span class="tablet-icon"></span--></td>
+                            <td>
+                                <?php
+                                    echo "<select name='ary3[]' class='js-select2' multiple='multiple'>";
+                                    $check = mysqli_query($con, "SELECT DISTINCT(VT) FROM DQA_Test_Main ORDER BY VT ASC ");
+                                    if($_POST['ary3']!="")
+                                    {
+                                        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                            $flage=0;
+                                            foreach($_POST['ary3'] as $selected) {
+                                                if($selected==$row[0])
+                                                {
+                                                    echo "<option value=" ."'$row[0]'" . "  data-badge='' selected='selected'>" . $row[0] . "</option>";
+                                                    $flage=1;
+                                                }
+                                            }
+                                            if($flage==0)
+                                            {
+                                                echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                            echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+                                        }
+                                    }
+                                    echo "</select>";
+                                ?>
+                            </td>
+                                </tr>
+                            <tr>
+                                <td>Stage &nbsp;&nbsp;<!--span class="tablet-icon"></span--></td>
+                            <td>
+                                <?php
+                                    echo "<select name='ary4[]' class='js-select2' multiple='multiple'>";
+                                    $check = mysqli_query($con, "SELECT DISTINCT(Stages) FROM DQA_Test_Main ORDER BY Stages ASC ");
+                                    if($_POST['ary4']!="")
+                                    {
+                                        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                            $flage=0;
+                                            foreach($_POST['ary4'] as $selected) {
+                                                if($selected==$row[0])
+                                                {
+                                                    echo "<option value=" ."'$row[0]'" . "  data-badge='' selected='selected'>" . $row[0] . "</option>";
+                                                    $flage=1;
+                                                }
+                                            }
+                                            if($flage==0)
+                                            {
+                                                echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+                                            echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+                                        }
+
+                                    }
+
+                                    echo "</select>";
+                                ?>
+                            </td>
+                    </tr>
                     <tr>
                         <td>
-                            From: <input style="width: 150px;" name="from" type="date" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                            to: <input style="width: 150px;" name="to" type="date" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn_download" type="submit" onclick="layer.msg('加载数据中,请耐心等待...',{icon:6,time:20000})">Export</button>
-                            <input name="to_excel" type="hidden" value="to_excel_do" />
-                        </td>
+                                </td>
+                    <td align="center">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<input type="submit" name="submit" value=Search>
+                                </td>
                     </tr>
                 </table>
             </form>
-            <div class="note">
-                <p> 1. 如果未選擇時間段，導出所有數據到電腦的下載目錄</p>
-                <p> 2. 如果選擇時間範圍，導出這一時間段數據</p>
-                <p> 3. 如果選擇時間範圍，請一定要填寫開始時間和結束時間</p>
-                <p> 4. 篩選數據請點擊這裏:&nbsp;&nbsp;&nbsp;<a href="./index_filter.php?dowhat=export"><button class="tut-btn">FILTER</button></a></p>
-                <p><img src="./images/eat.gif" style="margin-top: -50px;"></p>
-            </div>
+<!--form name="export_excel" id="export_excel" method="POST" action="checkbox.php"-->
+<form name="export_excel" id="export_excel" method="POST" action="./comm/Out_Excel_filter.php">
+
+<?php
+
+if ($_POST) 
+{ 
+    if($_POST['ary']!="")
+    {
+        foreach($_POST['ary'] as $selected) {
+            //echo "project list ".$selected."<br>";
+            $filter_Pro[] = ' Products = '."'$selected'";
+        }
+    }
+    else
+    {
+        $check = mysqli_query($con, "SELECT DISTINCT(Products) FROM DQA_Test_Main ORDER BY Products ASC ");
+        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+            //echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+            $filter_Pro[] = ' Products = '."'$row[0]'";
+
+        }
+    }
+      if($_POST['aryy']!="")
+      {
+        foreach($_POST['aryy'] as $selected) {
+            //echo "SKU list ".$selected."<br>";
+            $filter_SKU[] = ' SKUS = '."'$selected'";
+        }
+    }
+    else
+    {
+        $check = mysqli_query($con, "SELECT SKUS FROM dropbox_sku");
+        while ($row = mysqli_fetch_array($check)) {
+            //echo "<option value='{$row["SKUS"]}' data-badge=''>{$row['SKUS']}</option>";
+            $filter_SKU[] = ' SKUS = '."'{$row['SKUS']}'";
+        }
+        
+
+    }
+
+    if($_POST['ary3']!="")
+    {
+      foreach($_POST['ary3'] as $selected) {
+          //echo "VT list ".$selected."<br>";
+          $filter_VT[] = ' VT = '."'$selected'";
+      }
+    }
+    else
+    {
+
+            $check = mysqli_query($con, "SELECT DISTINCT(VT) FROM DQA_Test_Main ORDER BY VT ASC ");
+            while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+            //echo "<option value='{$row["SKUS"]}' data-badge=''>{$row['SKUS']}</option>";
+            $filter_VT[] = ' VT = '."'$row[0]'";
+        }
+        
+
+    }
+
+    if($_POST['ary4']!="")
+    {
+      foreach($_POST['ary4'] as $selected) {
+          //echo "Stages list ".$selected."<br>";
+          $filter_Sta[] = ' Stages = '."'$selected'";
+      }
+    }
+    else
+    {
+
+        $check = mysqli_query($con, "SELECT DISTINCT(Stages) FROM DQA_Test_Main ORDER BY Stages ASC ");
+        while ($row = mysqli_fetch_array($check,MYSQLI_NUM)) {
+            //echo "<option value=" ."'$row[0]'" . "  data-badge=''>" . $row[0] . "</option>";
+            $filter_Sta[] = ' Stages = '."'$row[0]'";
+
+        }
+
+    }
+
+    $cc = 0;
+    $sql_tt = "SELECT DISTINCT Titles,Stages,VT,Products,SKUS,Phases,Testername,Timedt FROM DQA_Test_Main WHERE (". implode(" OR",$filter_Pro).")"." AND (".implode(" OR",$filter_SKU).")"." AND (".implode(" OR",$filter_VT).")"." AND (".implode(" OR",$filter_Sta).")";
+    //echo $sql_tt;
+    $rr_time = mysqli_query($con,$sql_tt);
+    echo "<p class='query_desc'>您查询了".$tt."的测试记录</p>";
+    echo "<table border='1' rules='all' class='query_table'>";
+    echo "<tr><th width='4%'>NO.</th><th>Title</th><th>Stage</th><th>VT</th><th>Product</th><th>SKU</th><th>Tester</th><th>Date</th><th>Link</th><th>CheckBox</th></tr>";
+    while($row=mysqli_fetch_array($rr_time,MYSQLI_BOTH)){
+        $cc++;
+        $product = $row['Products'];
+        $tester = $row['Testername'];
+        $starting = $row['Timedt'];
+        $user_name = urlencode($tester);
+        $product_name = urlencode($product);
+        $start = urlencode($starting);
+    
+    ?>
+    
+    <tr>
+        <td><?php echo $cc; ?></td>
+        <td><?php echo $row['Titles']; ?></td>
+        <td><?php echo $row['Stages']; ?></td>
+        <td><?php echo $row['VT']; ?></td>
+        <td><?php echo $product ?></td>
+        <td><?php echo $row['SKUS']; ?></td>
+        <td><?php echo $tester ?></td>
+        <td><?php echo substr($starting,0,10); ?></td>
+        <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
+        <td align="center"><input type="checkbox" name="checkbox[]"id="ch_box<?php echo $cc; ?>" class="form" value="<?php echo $row['Titles']; ?>_<?php echo  $product ; ?>_<?php echo $row['SKUS']; ?>_<?php echo $row['VT']; ?>_<?php echo $row['Stages']; ?>"></td>
+    </tr>
+    <?php
+                }
+        echo "<tr>";
+        echo "<td colspan ='11' align='center'> <button class='btn_download' type='submit' onclick='layer.msg('加载数据中,请耐心等待...',{icon:6,time:20000})'>Export</button><input name='to_excel' type='hidden' value='to_excel_do'></td>";    
+        echo "</tr>";
+        echo "</table>";
+
+    }
+
+    ?>
+    </form>
         <?php
         }//Export Raw Data end here
         
@@ -943,7 +1202,7 @@ require_once("./js/conf.php");
                     $rr_product_teser = mysqli_query($con,$sql_result);
                     echo "<p class='query_desc'>您查询了".$user.", ".$nickname."测试记录</p>";
                     echo "<table border='1' rules='all' class='query_table'>";
-                    echo "<tr><th width='4%'>NO.</th><th>Title</th><th>Stage</th><th>VT</th><th>Product</th><th>SKU</th><th>Tester</th><th>Date</th><th>Link</th><th>Del</th></tr>";
+                    echo "<tr><th width='4%'>NO.</th><th>Title</th><th>Stage</th><th>VT</th><th>Product</th><th>SKU</th><th>Tester</th><th>Date</th><th>Link</th></tr>";
                     while($row=mysqli_fetch_array($rr_product_teser,MYSQLI_BOTH)){
                         $cc++;
                         $product = $row['Products'];
@@ -964,7 +1223,6 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td align="center"><input name="del_matrix2" id="del_matrix2" type="button" class="del_matrix1" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -998,7 +1256,6 @@ require_once("./js/conf.php");
                         <td><?php echo $tester ?></td>
                         <td><?php echo substr($starting,0,10); ?></td>
                         <td><a href="matrix_edit.php?user=<?php echo $user_name; ?>&product=<?php echo $product_name; ?>&starting=<?php echo $start ?>" >Matrix</a></td>
-                        <td align="center"><input name="del_matrix2" id="del_matrix2" class="del_matrix1" type="button" value="Del" onclick="deleteMatrix('<?php echo $tester; ?>','<?php echo $product; ?>','<?php echo $starting; ?>');" /></td>
                     </tr>
                     <?php
                     }
@@ -1086,6 +1343,7 @@ require_once("./js/conf.php");
                 </p>
                 <p>4. Think over before deleting a matrix. If it is deleted, it won't be recovered.</p>
                 <p>5. When creating matrix, recommend uploading Excel by attached template if units >= 10  .</p>
+                <p><img src="./images/HUAWEI.png" /></p>
             </div>
             </div>
         </div>
@@ -1105,6 +1363,12 @@ require_once("./js/conf.php");
     <span class="icon">Z</span>&nbsp;&nbsp;<?php echo $footer ?>
     <img class="logo_white" src="./images/logo-small_white.svg" height="40" alt="Wistronits">
 </div>
+
+<script src="Filter/js/jquery.min.js"></script>
+<script src="Filter/js/popper.js"></script>
+<script src="Filter/js/bootstrap.min.js"></script>
+<script src="./Filter/js/select2.min.js"></script>
+<script src="Filter/js/main.js"></script>
 
 </body>
 

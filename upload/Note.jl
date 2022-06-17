@@ -22,8 +22,6 @@
 # #####################################################################################################
 http://dqa.myftp.org:8080/[index.php]
 http://localhost:8080/comm/create_tables
-https://github.com/imzaghi333    my GitHub
-https://zhuanlan.zhihu.com/p/76032647 如何在 win10 下使用 ubuntu 子系统！
 
 # SW Download
 https://sourceforge.net/    SOURCEFORGE
@@ -37,6 +35,10 @@ https://www.cnblogs.com/baihualiaoluan/p/10661669.html    vscode配置c/c++环�
 #發生於每 2 週的Wednesday有效期間從 22/2/9 到 22/12/28 從 15:00 到 16:00
 https://teams.microsoft.com/l/meetup-join/19%3ameeting_NTFmN2I1NWQtMWI1OC00ODYwLWE2NDMtMGFkOGEwYWNlOTUx%40thread.v2/0?context=%7b%22Tid%22%3a%22de0795e0-d7c0-4eeb-b9bb-bc94d8980d3b%22%2c%22Oid%22%3a%22444f1641-56e9-4654-b7e1-3d8e78b64b20%22%7d
 
+C Primer Plus(第6版)(中文版) PDF超清版下载地址：
+链接: https://pan.baidu.com/s/1jRdX5ijeA22gwPL4GUtckA
+提取码: 51be
+百度网盘: https://pan.baidu.com/s/14thx7oJg7z14wxFxSnlfUw 提取码： 6666
 
 e^iπ+1 = 0
 可以查询到唯一的一个测试记录
@@ -45,9 +47,6 @@ select RecordID,VT,Products,SKUS,Testitems,Testername,Unitsno from DQA_Test_Main
 https://www.cnblogs.com/baocheng/p/10904186.html     PHP7函数大全(4553个函数)
 https://www.fosshub.com/ SW Download
 https://www.zfuhao.com/ 找符号网
-
-PowerQual每周一15:00
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDAxZWZlNzMtYzg5NS00MzZiLTg3MDQtMDZiYTg1MWVjNzli%40thread.v2/0?context=%7b%22Tid%22%3a%22de0795e0-d7c0-4eeb-b9bb-bc94d8980d3b%22%2c%22Oid%22%3a%228dc781aa-29f2-4cae-8a08-4b3ba84672e6%22%7d
 
 
 #上傳的文件是一個數組: 
@@ -70,21 +69,6 @@ PHPExcel_Cell::columnIndexFromString('AA');
 賬號: 2Q2L10
 密碼: TvcW3ZWS
 路徑: /Taskforce/智能機器人
-
-週四 2022/4/28 下午 03:00 - 下午 04:30
-ISTQB-CTFL Introduction
-Hi all QT members,
-
-Please reserve time to join this training course, it’s a required subject for all QT members (SW testing engineer).
-If you are not SW tester but are also interested in learning about it, you are also welcome to take this course.
-Please preview the following information before this course, thank you.
-
-https://www.istqb.org/
-https://www.istqb.org/certifications/certified-tester-foundation-level
-ISTQB CTFL 基础级_Istqb初级认证大纲_ISQB Certified Tester Foundation Level_ISTQB国际软件测试工程师认证官网
-ISTQB认证测试工程师_FL大纲-2018版_V3.1_20211104（中文版）_ISTQB国际软件测试工程师认证官网
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_NWMzNzc0YzAtZjMwYi00NWEzLTlhM2ItNWVhODk4NWE2ZDgx%40thread.v2/0?context=%7b%22Tid%22%3a%22de0795e0-d7c0-4eeb-b9bb-bc94d8980d3b%22%2c%22Oid%22%3a%2299b4a62b-750f-4098-8e0f-206b68ce3aa2%22%7d
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_NWMzNzc0YzAtZjMwYi00NWEzLTlhM2ItNWVhODk4NWE2ZDgx%40thread.v2/0?context=%7b%22Tid%22%3a%22de0795e0-d7c0-4eeb-b9bb-bc94d8980d3b%22%2c%22Oid%22%3a%2299b4a62b-750f-4098-8e0f-206b68ce3aa2%22%7d
 
 毛厍社区电话: 5518-5036
 https://www.cnblogs.com/rmy020718/p/9620890.html 字符画,可以复制粘贴

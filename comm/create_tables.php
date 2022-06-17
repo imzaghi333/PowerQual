@@ -22,7 +22,7 @@ mysqli_query($con,"set names utf8");
                 <tr>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dropbox Name：</td>
                     <td>
-                        <select name="dropbox" class="sel_del_add">
+                        <select name="dropbox" style="padding: 4px 4px;border: 1px solid #e2e2e2;width: 70%;border-radius: 4px;">
                             <option value="">請選擇</option>
                             <option value="Main_Record">测试记录数据表</option>
                             <option value="Product">Product Menu</option>
@@ -50,7 +50,6 @@ mysqli_query($con,"set names utf8");
                 </tr>
             </table>
         </form>
-        <img style="float:right;margin-right:100px;" src="../images/logo_HW_100.png" />
         <?php
         $dropbox = $_POST["dropbox"];
         switch ($dropbox) {

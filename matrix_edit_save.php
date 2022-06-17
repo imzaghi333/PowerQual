@@ -148,6 +148,7 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
             $temp = $arr_fail_temp[$i][$j];
             
             //SQL语句 O(∩_∩)O
+            /*
             $sql_add = "REPLACE INTO DQA_Test_Main(RecordID,Stages,VT,Products,SKUS,Years,Months,Phases,Testlab,Mfgsite,Testername,";
             $sql_add.= "Units,`Groups`,Testitems,Startday,Endday,Results,Remarks,Timedt,Unitsno,Teststatus,";
             $sql_add.= "Temp,Requests,Titles,Testcondition,Failinfo,FAA) ";
@@ -156,6 +157,9 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
             $sql_add.= "'$temp','$request','$title','$condition','$fail_symptom','$fa')";
             //echo "Unit#".$counter.". ".$sql_add."<br>";
             mysqli_query($con,$sql_add);
+            */
+            $sql_update = "UPDATE DQA_Test_Main SET Units='$unit',`Groups`='$group',Testitems='$test_item',Startday='$start',Endday='$end',Results='$result',Remarks='$remark',Unitsno='$counter',Teststatus='$test_status',Temp='$temp',Requests='$request',Testcondition='$condition',Failinfo='$fail_symptom',FAA='$fa' WHERE RecordID='$test_id' ";
+            mysqli_query($con,$sql_update);
         }
     }
     mysqli_close($con);
