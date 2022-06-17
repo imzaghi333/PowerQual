@@ -43,7 +43,8 @@ require_once("./js/conf.php");
         <div class="action">
             <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
-            <div><a href="index_filter.php?dowhat=export">Export Raw Data<span class="p_right">&#10148</span></a></div>
+            <div><a href="index_filter.php?dowhat=export">Filter Data&Export<span class="p_right">&#10148</span></a></div>
+            <div><a href="index.php?dowhat=export">Export Raw All -C<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=edit">DropBox Edit<span class="p_right">&#10148</span></a></div>
@@ -134,17 +135,7 @@ require_once("./js/conf.php");
                             <td>Unit數量 <font size="3" color="#be0f2d">*</font></td>
                             <td><input name="unit" type="number" min="0" max="99" placeholder="測試機數量(如1，2，3...)" /></td>
                         </tr>
-                        <!-- Calcel boot option on 2022-01-10
-                        <tr>
-                            <td>Boot</td>
-                            <td>
-                                <select name="boot">
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </td>
-                        </tr>
-                        -->
+
                         <tr>
                             <td>Test LAB</td>
                             <td>
