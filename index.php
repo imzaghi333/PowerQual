@@ -43,7 +43,7 @@ require_once("./js/conf.php");
             <div><a href="index.php">Query<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=start">Matrix Creating<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=export">Export Raw All -C<span class="p_right">&#10148</span></a></div>
-            <div><a href="index_filter.php?dowhat=export">Filter Data<span class="p_right">&#10148</span></a></div>
+            <div><a href="index_filter.php?dowhat=export">Filter Data&Export<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=data">All Data&nbsp;&nbsp;<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=upload">DropBox Upload<span class="p_right">&#10148</span></a></div>
             <div><a href="index.php?dowhat=edit">DropBox Edit<span class="p_right">&#10148</span></a></div>

@@ -47,13 +47,13 @@ $cells = array();        //一行的每个单元格编号
 $record_ids = array();   //一行的每个测试记录的RecordID
 for($i=$number; $i>0; $i--){
     $cell_id = $select_id-$i+1;
-    //echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
+    echo "第".($row_no+1)."行每个单元格编号: ".$cell_id."<br>";
     array_push($cells,$cell_id);
 }
 
 for($i=($number-1); $i>=0; $i--){
     $tmp_id = $currentid-$rows*$i;
-    //echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
+    echo "第".($row_no+1)."行每个单元格测试ID: ".$tmp_id."<br>";
     array_push($record_ids,$tmp_id);
 }
 //echo "*********** 上述内容以後會刪除, 目前还是需要看的 ***********<br>";
@@ -230,7 +230,7 @@ if(isset($_GET["count"])){
         
     </tr>
     <tr>
-        <td>Singel unit result</td>
+        <td>Single unit result</td>
         <?php
         /**
          * 为单独的测试机添加Pass or TBD,这样不需要进入Failure Link去填写
@@ -246,6 +246,7 @@ if(isset($_GET["count"])){
                     <select class="del_fail" id="pt<?php echo $cell; ?>" onchange="setPassOrTBD(<?php echo $cell; ?>);" >
                         <option value="">Select</option>
                         <option value="Pass" <?php if($info2[1]=="Pass"){echo "selected = 'selected'";} ?> >Pass</option>
+                        <option value="In Progress" <?php if($info2[1]=="In Progress"){echo "selected = 'selected'";} ?> >In Progress</option>
                         <option value="TBD" <?php if($info2[1]=="TBD"){echo "selected = 'selected'";} ?> >TBD</option>
                         <option <?php if(preg_match("/Fail/i",$info2[1])){echo "selected = 'selected'";} ?> disabled>Fail</option>
                     </select>
@@ -428,7 +429,7 @@ else if(isset( $_GET["cell"])){
                 <td>TEMP<font color="#cc2229" size="1">*</font></td>
                 <td>
                     <?php
-                        if($_GET['temp']==""){
+                        if($_GET['temp']=="-"){
                             echo "<select name='temp' id='temp".$select_id."' onchange='returnTEMP(". $row_id.",". $select_id.")'>";
                             echo "<option value=''>請選擇</option>";
                             echo "<option value='Cold'>Cold</option>";
