@@ -55,7 +55,7 @@ function getRawAllComm($db){
     $raw_all.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $raw_all.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $raw_all.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $raw_all.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$raw_all);
     return $res;
@@ -78,7 +78,7 @@ function getRawAllCommByPeriod($db,$start,$end){
     $raw_all.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $raw_all.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $raw_all.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $raw_all.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Units!='' AND (Timedt>='$start' and Timedt<='$end') ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$raw_all);
     return $res;
@@ -98,7 +98,7 @@ function getfilterRawAllCommByPeriod($db,$arrtitle){
     $raw_all.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $raw_all.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $raw_all.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $raw_all.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $raw_all.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Units!='' AND $arrtitle ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$raw_all);
     return $res;
@@ -146,7 +146,7 @@ function getDataByProduct($db,$product){
     $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Products='$product' AND Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
@@ -169,7 +169,7 @@ function getDataByProductAndPeriod($db,$product,$start,$end){
     $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Products='$product' AND Units!='' AND (Timedt>='$start' and Timedt<='$end') ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
@@ -188,7 +188,7 @@ function getfilterDataByProductAndPeriod($db,$product,$arrtitle){
     $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Products='$product' AND Units!='' AND Titles='$arrtitle' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;
@@ -211,7 +211,7 @@ function getDataByTester($db,$name){
     $sql.= "fail_infomation.Defectmode1,fail_infomation.Defectmode2,fail_infomation.RCCA,fail_infomation.Issuestatus,fail_infomation.Category,";
     $sql.= "fail_infomation.PIC,fail_infomation.JIRANO,fail_infomation.SPR,fail_infomation.Temp,fail_infomation.Dropcycles,fail_infomation.Drops,";
     $sql.= "fail_infomation.Dropside,fail_infomation.HIT,fail_infomation.NextCheckpointDate,fail_infomation.IssuePublished,fail_infomation.ORTMFGDate,";
-    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results ";
+    $sql.= "fail_infomation.ReportedDate,fail_infomation.IssueDuration,fail_infomation.Today,fail_infomation.Unitsno,fail_infomation.Results,DQA_Test_Main.ORTMFGDate ";
     $sql.= "FROM DQA_Test_Main LEFT JOIN fail_infomation ON DQA_Test_Main.RecordID=fail_infomation.TestID WHERE Testername='$name' Units!='' ORDER BY DQA_Test_Main.RecordID ASC";
     $res = getData($db,$sql);
     return $res;

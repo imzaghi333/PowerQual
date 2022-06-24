@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+    .container{
+        width: 200px;
+        height: 300px;
+        margin: 10px auto;
+        background-color: #5fb878;
+        border: 1px solid #2f4056;
+    }
+    #div1{
+        margin: 0 auto;
+        text-align: center;
+        background-color: #393d49;
+        height: 60px;
+    }
+    #div1 span{
+        font-size: 30px;
+        color: #ccc;
+        text-align: center;
+        line-height: 60px;
+    }
+    #div2{
+        margin: 5px auto;
+        text-align: center;
+    }
+    #div2 button{
+        color: #fff;
+        width: 50px;
+        background-color: #1e9fff;
+        border-color: #1e9fff;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+    </style>
+    <script type="text/javascript">
+    //简易获取ID方法
+    function $(id){
+        return document.getElementById(id);
+    }
+    var i = 0;    //总秒数
+    var timer = null;
+    var isRunning = false;    //表示计时是否在进行
+    window.onload = function(){
+        function startFunc(){
+            timer = setInterval(function(){
+                i++;
+                $("sec").innerHTML = doubleNum(i%60);
+                $("min").innerHTML = doubleNum(parseInt(i/60)%60)
+                $("hour").innerHTML = doubleNum(parseInt(i/3600));
+            },1000);
+        }
+        function pauseFunc(){
+            clearInterval(timer);
+        }
+
+        //给计时按钮添加事件
+        oStart = $("start");
+        oStart.onclick = function(){
+            if(!isRunning){
+                oStart.innerHTML = "暂停";
+                isRunning = true;
+                startFunc();
+            }else{
+                oStart.innerHTML = "开始";
+                isRunning = false;
+                pauseFunc();
+            }
+        }
+        $("reset").onclick = function(){
+            clearInterval(timer);
+            i = 0;
+            isRunning = false;
+            $("start").innerHTML = "开始";
+            $("sec").innerHTML = "00";
+            $("min").innerHTML = "00";
+            $("hour").innerHTML = "00";
+        }
+    }
+    function doubleNum(num){
+        if(num<10){
+            return "0"+num;
+        }else{
+            return num;
+        }
+    }
+    </script>
+    <title>简易秒表</title>
+</head>
+<body>
+<div class="container" id="container">
+    <div id="div1">
+        <span id="hour">00</span>
+        <span>:</span>
+        <span id="min">00</span>
+        <span>:</span>
+        <span id="sec">00</span>
+        <br>
+    </div>
+    <div id="div2">
+        <button id="start">开始</button><br>
+        <button id="reset">复位</button>
+    </div>
+</div>
+</body>
+</html>

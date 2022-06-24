@@ -171,6 +171,11 @@ require_once("./js/conf.php");
                                 ?>
                             </td>
                         </tr>
+                        <!-- 2022-06-20要求添加MFG DATE, MD -->
+                        <tr>
+                            <td>ORT MFG DATE</td>
+                            <td><input name="ort_date" type="date" />
+                        </tr>
                         <tr>
                             <td><span class="icon">U</span> (測試人): <font size="3" color="#be0f2d">*</font> </td>
                             <td><input name="tester" type="text" placeholder="填寫測試人" /></td>
@@ -253,10 +258,16 @@ require_once("./js/conf.php");
                     $year    = $sheet->getCell("B6")->getValue();
                     $month    = $sheet->getCell("B7")->getValue();
                     $phase   = $sheet->getCell("B8")->getValue();
-                    $number  = $LAST_COL_NO-OFFSET1;    //避免有人在Excel填错数量
+                    $ort_date_num = $sheet->getCell("B9")->getValue();//PHP读取到Excel的日期是数字
+                    $number  = $LAST_COL_NO-OFFSET1;    //测试机数量由代码计算,避免人填写错误
                     $testlab = $sheet->getCell("B10")->getValue();
                     $mfgsite = $sheet->getCell("B11")->getValue();
                     $tester  = $sheet->getCell("B12")->getValue();
+
+                    define("DELTA",25569);
+                    define("SEC",86400);//24*60*60
+
+                    $ort_date = gmdate("Y-m-d",($ort_date_num-DELTA)*SEC);//数字转换成日期
 
                     $LAST_UNIT_COL_NO = $LAST_COL_NO-OFFSET2;
                     $lastUnitCol = PHPExcel_Cell::stringFromColumnIndex($LAST_UNIT_COL_NO);    //从0开始
@@ -368,8 +379,8 @@ require_once("./js/conf.php");
                             //$condition = $array_conditon[$j];
                             $condition = preg_replace("/\'/","\'",$array_conditon[$j]);//单引号转义\'
                             //SQL for adding records
-                            $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testcondition,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
-                            $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$condition','$testlab','$mfgsite','$tester','$timedt','$counter')";
+                            $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testcondition,Testlab,Mfgsite,ORTMFGDate,Testername,Timedt,Unitsno) ";
+                            $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$condition','$testlab','$mfgsite','$ort_date','$tester','$timedt','$counter')";
                             //echo $counter."----->".$sql_add."<br>";
                             mysqli_query($con,$sql_add);
                         }

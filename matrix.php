@@ -32,6 +32,7 @@ if(isset($_POST["action"]) && $_POST["action"]=="next"){
     $testlab = $_POST["testlab"];      //WKS WHQ......
     $mfgsite = $_POST["mfgsite"];      //WKS WHQ......
     $tester = $_POST["tester"];        //英文名
+    $ort_date = $_POST["ort_date"];    //ORT MFG Date
 }
 
 echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
@@ -122,6 +123,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                 <input name="testlab" type="hidden" value="<?php echo $testlab; ?>"/>
                 <input name="mfgsite" type="hidden" value="<?php echo $mfgsite; ?>"/>
                 <input name="title" type="hidden" value="<?php echo $title; ?>"/>
+                <input name="ort_date" type="hidden" value="<?php echo $ort_date; ?>"/>
                 <input name="tester" type="hidden" value="<?php echo $tester; ?>"/>
                 <input name="number" type="hidden" id ="units_qty" value="<?php echo $number; ?>" />
                 <input name="matrix_do" type="hidden" value="matrix_save" />
@@ -142,6 +144,7 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
             $testlab = $_POST["testlab"];
             $mfgsite = $_POST["mfgsite"];
             $title = $_POST["title"];
+            $ort_date = $_POST["ort_date"];
             $tester = $_POST["tester"];
             $arr_group = $_POST["group"];        // group array
             $arr_items = $_POST["test_item"];    // test item array
@@ -192,8 +195,8 @@ echo '<script type="text/javascript" src="./js/js_matrix.js"></script>';
                     $group     = $arr_group[$j];
                     $test_item = $arr_items[$j];
                     $unit      = $tmp2[$i][$j];     //test order
-                    $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testlab,Mfgsite,Testername,Timedt,Unitsno) ";
-                    $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$testlab','$mfgsite','$tester','$timedt','$counter')";
+                    $sql_add = "INSERT INTO DQA_Test_Main(Titles,Stages,VT,Products,SKUS,Years,Months,Phases,Units,Groups,Testitems,Testlab,Mfgsite,ORTMFGDate,Testername,Timedt,Unitsno) ";
+                    $sql_add .= "VALUES('$title','$stage','$vt','$product','$sku','$year','$month','$phase','$unit','$group','$test_item','$testlab','$mfgsite','$ort_date','$tester','$timedt','$counter')";
                     //echo $counter.". ".$sql_add."<br>";
                     mysqli_query($con,$sql_add);
                 }

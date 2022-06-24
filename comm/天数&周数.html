@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/htm;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+    .container{
+        width: 800px;
+        height: 300px;
+        margin: 0 auto;
+        background-color: #393d49;
+        color: #c2c2c2;
+        text-align: center;
+        font-size: 30px;
+    }
+    </style>
+    <script type="text/javascript">
+    var sum = 0;    //一年的第几天
+    var week = 0;   //第几周
+    var d = new Date();
+    var yy = d.getFullYear();
+    var mm = d.getMonth()+1;
+    var dd = d.getDate();
+    switch(mm){
+        case 12:
+            sum += 30;         
+        case 11:
+            sum += 31;           
+        case 10:
+            sum += 30;        
+        case 9:
+            sum += 31;        
+        case 8:
+            sum += 31;    
+        case 7:
+            sum += 30;
+        case 6:
+            sum += 31;
+        case 5:
+            sum += 30;           
+        case 4:
+            sum += 31;           
+        case 3:
+            sum += 28;
+            if((yy%4==0 && yy%100!=0) || (yy%400==0)){
+                sum += 1;
+            }               
+        case 2:
+            sum += 31;        
+        case 1:
+            sum += dd;
+            break;
+        default:
+            alert("Error！~~~");
+            break;
+    }
+    week = Math.ceil(sum/7);
+    window.onload = function(){
+        var container = document.getElementById("container");
+        ss = "今天是"+yy+"年"+doubleNum(mm)+"月"+doubleNum(dd)+"日<br>";
+        ss += "第"+doubleNum(sum)+"天 第"+doubleNum(week)+"周";
+        container.innerHTML = ss;
+    }
+    function doubleNum(num){
+        if(num<10){
+            return "0"+num;
+        }else{
+            return num;
+        }
+    }
+    </script>
+    <title>计算天数&周数</title>
+</head>
+<body>
+<div id="container" class="container">
+</div>
+</body>
+</html>

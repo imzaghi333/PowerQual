@@ -88,7 +88,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
             
             //第一行, 即标题行
             $objSheet->getStyle('A1:AH1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
-            $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("8413053");
+            $objSheet->getStyle('AI1:AN1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("548235");
             $objSheet->getStyle('AO1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB("000020");
             $objSheet->getStyle('A1:AO1')->getFont()->getColor()->setRGB("ffffff");
             $objSheet->freezePane('A2');//冻结首行
@@ -166,7 +166,16 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[17]=="TBD"){
+                    //result is TBD+start day is null
+                    if($val[17]=="TBD" && $val[13]==""){
+                        $test_status = "Not Start";
+                    }
+                    //result is TBD+start day filled
+                    else if($val[17]=="TBD" && $val[13]){
+                        $test_status = "In Progress";
+                    }
+                    //result is In progress
+                    else if($val[17]=="In Progress"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -203,7 +212,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,changeDatesFormatGreen($val[41]))->setCellValue("AJ".$row,$val[42]);
-                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[43]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
+                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[49]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
                 }
@@ -256,7 +265,16 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[17]=="TBD"){
+                    //result is TBD+start day is null
+                    if($val[17]=="TBD" && $val[13]==""){
+                        $test_status = "Not Start";
+                    }
+                    //result is TBD+start day filled
+                    else if($val[17]=="TBD" && $val[13]){
+                        $test_status = "In Progress";
+                    }
+                    //result is In progress
+                    else if($val[17]=="In Progress"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -293,7 +311,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,changeDatesFormatGreen($val[41]))->setCellValue("AJ".$row,$val[42]);
-                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[43]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
+                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[49]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);
                 }
@@ -443,7 +461,16 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
 
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[17]=="TBD"){
+                    //result is TBD+start day is null
+                    if($val[17]=="TBD" && $val[13]==""){
+                        $test_status = "Not Start";
+                    }
+                    //result is TBD+start day filled
+                    else if($val[17]=="TBD" && $val[13]){
+                        $test_status = "In Progress";
+                    }
+                    //result is In progress
+                    else if($val[17]=="In Progress"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -480,7 +507,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,changeDatesFormatGreen($val[41]))->setCellValue("AJ".$row,$val[42]);
-                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[43]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
+                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[49]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);//加上边框
                 }
@@ -538,7 +565,16 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    if($val[17]=="TBD"){
+                    //result is TBD+start day is null
+                    if($val[17]=="TBD" && $val[13]==""){
+                        $test_status = "Not Start";
+                    }
+                    //result is TBD+start day filled
+                    else if($val[17]=="TBD" && $val[13]){
+                        $test_status = "In Progress";
+                    }
+                    //result is In progress
+                    else if($val[17]=="In Progress"){
                         $test_status = "In Progress";
                     }
                     else{
@@ -575,7 +611,7 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     $objSheet->setCellValue("O".$row,$val[15])->setCellValue("P".$row,$val[28])->setCellValue("Q".$row,$val[29])->setCellValue("R".$row,$val[30])->setCellValue("S".$row,$test_status)->setCellValue("T".$row,$rr)->setCellValue("U".$row,$val[31]);
                     $objSheet->setCellValue("V".$row,$val[32])->setCellValue("W".$row,$val[33])->setCellValue("X".$row,$val[34])->setCellValue("Y".$row,$val[35])->setCellValue("Z".$row,$temp)->setCellValue("AA".$row,$val[37])->setCellValue("AB".$row,$val[38])->setCellValue("AC".$row,$val[39]);
                     $objSheet->setCellValue("AD".$row,$val[40])->setCellValue("AE".$row,$val[19])->setCellValue("AF".$row,$val[20])->setCellValue("AG".$row,$val[21])->setCellValue("AH".$row,$val[22])->setCellValue("AI".$row,changeDatesFormatGreen($val[41]))->setCellValue("AJ".$row,$val[42]);
-                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[43]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
+                    $objSheet->setCellValue("AK".$row,changeDatesFormatGreen($val[49]))->setCellValue("AL".$row,changeDatesFormatGreen($val[44]))->setCellValue("AM".$row,$val[45])->setCellValue("AN".$row,$val[23])->setCellValue("AO".$row,$val[24]);
                     $row++;
                     $objSheet->getStyle('A2:AO'.($row-1))->applyFromArray($styleThinBlackBorderOutline);//加上边框
                 }

@@ -24,7 +24,7 @@ script2.src = "js/layui/layui.js";
 document.getElementsByTagName("head")[0].appendChild(script2);
 
 /**
-* 替代window.onload方法  cell,row_no,iid,unit_id,numbers,select_id,currentid,row
+* 替代window.onload方法
 */
 function addLoadEvent(func){
     var oldonload = window.onload;
@@ -40,7 +40,6 @@ function addLoadEvent(func){
 }
 
 function savegoback(id,row_id,selectid,number,currentid,rows,temp){
-    //alert(row_id);
     //alert(window.parent.location);
     window.location.replace("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
     //window.location.replace("http://localhost/DQA/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
@@ -120,9 +119,10 @@ function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows
 /**
  * 设置单个测试机pass or TBD;这样你就不用为某一个测试机进入fail里单独为它填Pass了
 */
-function setPassOrTBD(cell){
+function setPassOrTBD(cell,row){
     var sel_id = "pt"+cell;    //fail.php pass or TDB select
     var result_id = "subject18["+(cell-1)+"]";
+    var status_id = "status"+row;//row从0开始
 
     var selbox = document.getElementById(sel_id);
     var selbox_val = selbox.value
@@ -132,6 +132,10 @@ function setPassOrTBD(cell){
             break;
         case "TBD":
             window.opener.document.getElementById(result_id).value="TBD";
+            break;
+        case "In Progress":
+            window.opener.document.getElementById(result_id).value="In Progress";
+            window.opener.document.getElementById(status_id).value="In Progress";
             break;
         case "Fail":
             window.opener.document.getElementById(result_id).value="Fail";
@@ -307,27 +311,44 @@ function delOneFailure(rowid,cellid,count,currentid,rows,temp){
  * @param {*} number 测试机数量
 */
 function oneRowAllPass(rowid,number){
-    var row_no = rowid-1;          //行號,從0開始計數
-    var cell_length = number+4;  //單元格數量,从0开始计数
-
-    var reg1 = RegExp(/value=""/i);  //匹配tes order為空的單元格,不改變默認的TBD
-    var reg2 = RegExp(/TBD/i);       //匹配有tes order單元格,改變其結果為Pass
-    
-    //父窗口edit_matrix.php处于开启状态才可以设置一键全pass
+    var MIN = (rowid-1)*number;
+    var MAX = (rowid-1)*number+number;
     if(window.opener && !window.opener.closed){
-        var oTab = window.opener.document.getElementById("customers");
-        var oTbody = oTab.tBodies[0];    //表格不含標題欄部分
-        for(var i=4; i<cell_length; i++){
-            var s = oTbody.rows[row_no].cells[i].innerHTML;    //獲取原來單元格的html内容
-            var m = "";
-            if(!s.match(reg1)){
-                m = s.replace(reg2,"Pass");    //有test order字符串的TBD改成Pass
-                oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
+        var status_txt = window.opener.document.getElementById("status"+(rowid-1));
+        var result_txt = window.opener.document.getElementById("result"+(rowid-1));
+        var reg1 = RegExp(/Fail/i);
+        var ff = Array();
+        for(var i=MIN; i<MAX; i++){
+            var res_id = "subject18["+i+"]";
+            var order_id = "test_order["+i+"]";
+            var unit_result = window.opener.document.getElementById(res_id);
+            var unit_order = window.opener.document.getElementById(order_id);
+            if(unit_order.value!="" && !unit_result.value.match(reg1)){
+                unit_result.value="Pass";
             }
         }
-        oTbody.rows[row_no].cells[cell_length+2].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
-        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
-        layer.msg("第"+rowid+"行全部設置為Pass U•ェ•*U",{icon: 6});
+        status_txt.value = "Complete";
+        for(var j=MIN; j<MAX; j++){
+            var res_id = "subject18["+j+"]";
+            var unit_result = window.opener.document.getElementById(res_id);
+            ff.push(unit_result.value);
+        }
+        if(ff.includes("EC Fail")){
+            result_txt.value = "EC Fail";
+        }
+        else if(ff.includes("Fail")){
+            result_txt.value = "Fail";
+        }
+        else if(ff.includes("Known Fail (Open)")){
+            result_txt.value = "Known Fail (Open)";
+        }
+        else if(ff.includes("Known Fail (Close)")){
+            result_txt.value = "Known Fail (Close)";
+        }
+        else{
+            result_txt.value = "Pass";
+        }
+        layer.msg("第"+rowid+"行除Fail外,全部設置為Pass",{icon: 6});
     }
     else{
         layer.msg("你关闭了Edit Matrix页面",{icon:5});

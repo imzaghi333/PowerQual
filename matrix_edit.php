@@ -105,6 +105,7 @@ else{
                 <th rowspan="2">Fail Symptom</th>
                 <th rowspan="2">RCCA</th>
                 <th rowspan="2">Remark</th>
+                <th rowspan="2">ORT MFG Date</th>
                 <!-- <th rowspan="2">Add&Delete</th> -->
             </tr>
             <tr>
@@ -142,7 +143,7 @@ else{
             for($i=0; $i<$tc_num; $i++){
                 $tc_txt = $test_items[$i];
                 //echo $tc_txt."<br>";
-                $sql_one_row = "SELECT DISTINCT `Groups`,Testitems,Terminal,Testcondition,RCCA,Teststatus,Startday,Endday,Requests,Failinfo,Remarks,FAA ";
+                $sql_one_row = "SELECT DISTINCT `Groups`,Testitems,Terminal,Testcondition,RCCA,Teststatus,Startday,Endday,Requests,Failinfo,Remarks,FAA,ORTMFGDate ";
                 $sql_one_row .="FROM DQA_Test_Main WHERE Testitems='$tc_txt' AND Testername='$tester' AND Products='$product' AND Timedt='$starting' ";
                 $row_one_check = mysqli_query($con,$sql_one_row);
                 $row = mysqli_fetch_array($row_one_check,MYSQLI_BOTH);    //根据某一个测试item和其他条件获取某一行的需要的内容
@@ -268,7 +269,7 @@ else{
                     if(!in_array("TBD",$results_array)){
                         $status = "Complete";
                     }
-                    echo "<input style='width:70px;' name='status[]' id='status' type='text' value='$status' readonly />";
+                    echo "<input style='width:70px;' name='status[]' id='status$rowid' type='text' value='$status' readonly />";
                     ?>
                 </td>
 
@@ -302,7 +303,7 @@ else{
                             $row_result = "Known Fail (Close)";
                         }
                     }
-                    echo "<input style='width:110px;' name='result' id='result' type='text' value='$row_result' readonly />";
+                    echo "<input style='width:110px;' name='result' id='result$rowid' type='text' value='$row_result' readonly />";
                     ?>
                 </td>
                 <!-- Add additional informaton -->
@@ -314,6 +315,7 @@ else{
                 <td><textarea name="fail[<?php echo $rowid; ?>]" id="fail[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Failinfo"]; ?></textarea></td>
                 <td><textarea name="rcca[<?php echo $rowid; ?>]" id="rcca[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["FAA"]; ?></textarea></td>
                 <td><textarea name="remarks[<?php echo $rowid; ?>]" id="remarks[<?php echo $rowid; ?>]" rows="1" class="text-adaption"><?php echo $row["Remarks"]; ?></textarea></td>
+                <td><input type="date" value="<?php echo $row["ORTMFGDate"] ?>" readonly /></td>
             </tr>
             <?php 
             $rowid = $rowid+1;

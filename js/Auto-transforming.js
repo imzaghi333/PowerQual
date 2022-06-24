@@ -25,7 +25,6 @@ function addLoadEvent(func){
 }
 
 function groupchange(aa){
-    //alert("aa="+aa);
     //var member_id = this.value;
     var el = document.getElementById("group"+aa).value;
     //alert(el.slice(6,7));
@@ -328,30 +327,49 @@ function getRows(){
 }
 
 /**
-* @param {*} rowid button所在的行号
-* @param {*} number 测试机数量
+ * @param {*} row_id button所在的行号,从0开始计数
+ * @param {*} number 测试机数量
+ * 这是原来的方法,已经放弃
 */
-function oneRowAllPass(rowid,number){
-    var row_no = rowid;          //行號,從0開始計數
-    var cell_length = number+4;  //單元格數量,从0开始计数
-    var oTab = document.getElementById("customers");    //Test Matrix Table
-    var oTbody = oTab.tBodies[0];    //表格不含標題欄部分
-    var reg1 = RegExp(/value=""/i);  //匹配tes order為空的單元格,不改變默認的TBD
-    var reg2 = RegExp(/TBD/i);       //匹配有tes order單元格,改變其結果為Pass
+function oneRowAllPass(row_id,number){
+    var MIN = row_id*number;
+    var MAX = row_id*number+number;
+    var status_txt = document.getElementById("status"+row_id);
+    var result_txt = document.getElementById("result"+row_id);
+    var reg1 = RegExp(/Fail/i);
+    var ff = Array();
 
-    //Test order從第五列開始
-    for(var i=4; i<cell_length; i++){
-        var s = oTbody.rows[row_no].cells[i].innerHTML;    //獲取原來單元格的html内容
-        var m = "";
-        if(!s.match(reg1)){
-            m = s.replace(reg2,"Pass");    //有test order字符串的TBD改成Pass
-            oTbody.rows[row_no].cells[i].innerHTML = m;    //新的html替換原來的html内容
+    for(var i=MIN; i<MAX; i++){
+        var res_id = "subject18["+i+"]";
+        var order_id = "test_order["+i+"]";
+        var unit_result = document.getElementById(res_id);
+        var unit_order = document.getElementById(order_id);
+        if(unit_order.value!="" && !unit_result.value.match(reg1)){
+            unit_result.value="Pass";
         }
     }
-    oTbody.rows[row_no].cells[cell_length+2].innerHTML = "<input style='width:70px;' name='status' id='status' type='text' value='Complete' readonly />";
-        oTbody.rows[row_no].cells[cell_length+3].innerHTML = "<input style='width:110px;' name='result' id='result' type='text' value='Pass' readonly />";
-    layer.msg("第"+(row_no+1)+"行全部設置為Pass U•ェ•*U",{icon: 6});
+    status_txt.value = "Complete";
+    for(var j=MIN; j<MAX; j++){
+        var res_id = "subject18["+j+"]";
+        var unit_result = document.getElementById(res_id);
+        ff.push(unit_result.value);
+    }
+    if(ff.includes("EC Fail")){
+        result_txt.value = "EC Fail";
+    }
+    else if(ff.includes("Fail")){
+        result_txt.value = "Fail";
+    }
+    else if(ff.includes("Known Fail (Open)")){
+        result_txt.value = "Known Fail (Open)";
+    }
+    else if(ff.includes("Known Fail (Close)")){
+        result_txt.value = "Known Fail (Close)";
+    }
+    else{
+        result_txt.value = "Pass";
+    }
+    layer.msg("第"+(row_no+1)+"行,除Fail外其余設置為Pass",{icon: 6});
 }
 
-//addLoadEvent(addRow);
 addLoadEvent(checkTemp);

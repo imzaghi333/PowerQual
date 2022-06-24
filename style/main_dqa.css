@@ -359,7 +359,7 @@ hr{color: #00592d;}
     margin: 0 auto;
 }
 .container .right .form1 tr,td {padding: 4px 4px;}
-.container .right .form1 select,input[type=text],input[type=month],input[type=number] {
+.container .right .form1 select,input[type=text],input[type=month],input[type=number],input[type=date] {
     width: 90%;
     padding: 7px;
     border: 1px solid #888;
@@ -1100,23 +1100,4 @@ hr{color: #00592d;}
     font-size:16px;
     color:#fff;
     background-color: #7c355d;
-}
-
-/**/
-
-.container .left .mul_select{
-    width: 95%;
-    height: 100px;
-    border: 1px solid #888;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: transparent;
-}
-.container .left .mul_select2{
-    width: 95%;
-    height: 50px;
-    border: 1px solid #888;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: transparent;
 }
