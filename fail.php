@@ -90,7 +90,6 @@ if(isset($_GET["updatetemp"])){
                 mysqli_query($con,$sql_query1);
             }
         }
-
     }
     $sql_query1="UPDATE DQA_Test_Main SET Temp='$updateTemp' WHERE RecordID='$RecordId'";
     mysqli_query($con,$sql_query1);

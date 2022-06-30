@@ -166,20 +166,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    //result is TBD+start day is null
-                    if($val[17]=="TBD" && $val[13]==""){
-                        $test_status = "Not Start";
+                    if($val[16]=="" || $val[16]=="Not start"){
+                        $test_status = "Not start";
                     }
-                    //result is TBD+start day filled
-                    else if($val[17]=="TBD" && $val[13]){
-                        $test_status = "In Progress";
-                    }
-                    //result is In progress
-                    else if($val[17]=="In Progress"){
-                        $test_status = "In Progress";
-                    }
-                    else{
+                    if($val[16]=="Complete"){
                         $test_status = "Complete";
+                    }
+                    if($val[16]=="In progress"){
+                        $test_status = "In progress";
                     }
 
                     //非Pass的结果单独处理 $val[17]
@@ -265,20 +259,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    //result is TBD+start day is null
-                    if($val[17]=="TBD" && $val[13]==""){
-                        $test_status = "Not Start";
+                    if($val[16]=="" || $val[16]=="Not start"){
+                        $test_status = "Not start";
                     }
-                    //result is TBD+start day filled
-                    else if($val[17]=="TBD" && $val[13]){
-                        $test_status = "In Progress";
-                    }
-                    //result is In progress
-                    else if($val[17]=="In Progress"){
-                        $test_status = "In Progress";
-                    }
-                    else{
+                    if($val[16]=="Complete"){
                         $test_status = "Complete";
+                    }
+                    if($val[16]=="In progress"){
+                        $test_status = "In progress";
                     }
 
                     //非Pass的结果单独处理 $val[17]
@@ -461,20 +449,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
 
                     //设置test status $val[16]
                     $test_status = "";
-                    //result is TBD+start day is null
-                    if($val[17]=="TBD" && $val[13]==""){
-                        $test_status = "Not Start";
+                    if($val[16]=="" || $val[16]=="Not start"){
+                        $test_status = "Not start";
                     }
-                    //result is TBD+start day filled
-                    else if($val[17]=="TBD" && $val[13]){
-                        $test_status = "In Progress";
-                    }
-                    //result is In progress
-                    else if($val[17]=="In Progress"){
-                        $test_status = "In Progress";
-                    }
-                    else{
+                    if($val[16]=="Complete"){
                         $test_status = "Complete";
+                    }
+                    if($val[16]=="In progress"){
+                        $test_status = "In progress";
                     }
 
                     //非Pass的结果单独处理 $val[17]
@@ -565,20 +547,14 @@ if(isset($_POST["to_excel"]) && $_POST["to_excel"]=="to_excel_do"){
                     }
                     //设置test status $val[16]
                     $test_status = "";
-                    //result is TBD+start day is null
-                    if($val[17]=="TBD" && $val[13]==""){
-                        $test_status = "Not Start";
+                    if($val[16]=="" || $val[16]=="Not start"){
+                        $test_status = "Not start";
                     }
-                    //result is TBD+start day filled
-                    else if($val[17]=="TBD" && $val[13]){
-                        $test_status = "In Progress";
-                    }
-                    //result is In progress
-                    else if($val[17]=="In Progress"){
-                        $test_status = "In Progress";
-                    }
-                    else{
+                    if($val[16]=="Complete"){
                         $test_status = "Complete";
+                    }
+                    if($val[16]=="In progress"){
+                        $test_status = "In progress";
                     }
 
                     //非Pass的结果单独处理 $val[17]

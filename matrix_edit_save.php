@@ -42,7 +42,7 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
     $timedt    = $_POST["timedt"];
     $title     = $_POST["title"];
     $pre_id    = $_POST["record_id"];    //原来的RecordID   
-    $number       = $_POST["number"];        //测试机数量
+    $number    = $_POST["number"];        //测试机数量
     // ====================================================
 
     $arr_requests = $_POST["requests"];      //Yes,No,N/A  
@@ -57,7 +57,8 @@ if(isset($_POST["matrix_edit"]) && $_POST["matrix_edit"]=="matrix_edit_do" ){
     $arr_fa       = $_POST["rcca"];          //FA
     $arr_remark   = $_POST["remarks"];       //备注，不清楚DQA想写什么玩意
     $arr_result   = $_POST["subject18"];     //default is PASS
-    $arr_fail9 = $_POST["subject9"];       //TEMP 
+    $arr_fail9    = $_POST["subject9"];      //TEMP
+
     //urlencode,给浏览器使用
     $get_test_name = urlencode($tester);
     $get_product_name = urlencode($pr_name);

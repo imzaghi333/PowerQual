@@ -288,13 +288,13 @@ function checkTemp(){
 //rowid是表格行编号,selectid是单元格编号,count是机台数量,current是RecordID,rows是总行数
 function printResult(rowid,selectid,count,currentid,rows){
     //alert("参数列表，表格行编号: "+rowid+", 单元格编号: "+selectid+", 机台数量: "+count+", RecordID: "+currentid+", 总行数: "+rows);
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100","toolbar=yes","menubar=yes");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"Fail Links","height=800, width=950, top=100, left=100,menubar=yes,toolbar=yes,status=yes,scrollbars=yes");
     layer.msg("别忘记Matrix页面点击'Save'按钮",{icon:6,time:5000});
 }
 
 //JS中fail调用fail.php
 function printMatrixResult(rowid,selectid,count,currentid,rows){
-    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"_blank","填写Fail的原因","height=800, width=950, top=100, left=100");
+    window.open("fail.php?rowid="+rowid+"&cellid="+selectid+"&count="+count+"&currentid="+currentid+"&rows="+rows,"填写Fail的原因","height=800, width=950, top=100, left=100");
 }
 
 /**
@@ -329,7 +329,7 @@ function getRows(){
 /**
  * @param {*} row_id button所在的行号,从0开始计数
  * @param {*} number 测试机数量
- * 这是原来的方法,已经放弃
+ * 每一行第一个单元格编号是row_id*number,最后一个单元格编号是row_id*number+number
 */
 function oneRowAllPass(row_id,number){
     var MIN = row_id*number;
@@ -369,7 +369,7 @@ function oneRowAllPass(row_id,number){
     else{
         result_txt.value = "Pass";
     }
-    layer.msg("第"+(row_no+1)+"行,除Fail外其余設置為Pass",{icon: 6});
+    layer.msg("第"+(row_id+1)+"行,除Fail外其余設置為Pass",{icon: 6});
 }
 
 addLoadEvent(checkTemp);

@@ -41,8 +41,8 @@ function addLoadEvent(func){
 
 function savegoback(id,row_id,selectid,number,currentid,rows,temp){
     //alert(window.parent.location);
-    window.location.replace("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
-    //window.location.replace("http://localhost/DQA/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
+    //window.location.replace("http://dqa.myftp.org:8080/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
+    window.location.replace("http://localhost/DQA/fail.php?rowid="+row_id+"&cellid="+selectid+"&count="+number+"&currentid="+currentid+"&rows="+rows+"&id="+id+"&temp="+temp);
 }
 
 function goback(cell,row_id,selectid,number,currentid,rows,reload){
@@ -111,8 +111,8 @@ function setTemperature(cell,row_no,iid,unit_id,numbers,select_id,currentid,rows
     }
     document.getElementById(unit_id).href="fail.php?cell="+cell+"&id="+iid+"&rowid="+row_no+"&unit=Unit"+unit_id+"&temp="+selbox_val+"&cellidII="+select_id+"&counts="+numbers+"&currentid="+currentid+"&rows="+rows+"&reload=2";
     if(rownums!=0){
-        window.location = "http://dqa.myftp.org:8080/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
-        //window.location = "http://localhost/DQA/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
+        //window.location = "http://dqa.myftp.org:8080/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
+        window.location = "http://localhost/DQA/fail.php?rowid="+row_no+"&cell="+cell+"&cellid="+select_id+"&count="+numbers+"&currentid="+currentid+"&rows="+rows+"&updatetemp=" + selbox_val+"&RecordId="+tmpid;
     }
 }
 
@@ -307,8 +307,9 @@ function delOneFailure(rowid,cellid,count,currentid,rows,temp){
 
 /**
  * press button for a row tests set to pass
- * @param {*} rowid button所在的行号
+ * @param {*} rowid button所在的行号,从0开始计数
  * @param {*} number 测试机数量
+ * 每一行第一个单元格编号(rowid-1)*number,最后一个单元格编号(rowid-1)*number+number
 */
 function oneRowAllPass(rowid,number){
     var MIN = (rowid-1)*number;
